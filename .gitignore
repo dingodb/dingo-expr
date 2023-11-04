@@ -1,0 +1,22 @@
+.*
+!.gitignore
+!.gitattributes
+!.editorconfig
+!.github
+
+# Java Files
+*.class
+!gradle-wrapper.jar
+
+# IntelliJ IDEA Files
+*.iml
+!.idea
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build/
+
+# Error log
+hs_err_*

@@ -1,0 +1,12 @@
+# 默认忽略的文件
+/shelf/
+/dictionaries/
+/workspace.xml
+
+# Additional added
+/compiler.xml
+/gradle.xml
+/jarRepositories.xml
+/modules.xml
+/uiDesigner.xml
+/vcs.xml

@@ -1,0 +1,3 @@
+[submodule "libexpr"]
+	path = libexpr
+	url = git@github.com:dingodb/dingo-libexpr.git
