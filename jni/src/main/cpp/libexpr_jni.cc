@@ -21,7 +21,7 @@
 
 using namespace dingodb::expr;
 
-static jobject NewInteger(JNIEnv *jenv, const wrap<int32_t> &v)
+static jobject NewInteger(JNIEnv *jenv, const Wrap<int32_t> &v)
 {
     if (v.has_value()) {
         jclass resClass = jenv->FindClass("Ljava/lang/Integer;");
@@ -31,7 +31,7 @@ static jobject NewInteger(JNIEnv *jenv, const wrap<int32_t> &v)
     return nullptr;
 }
 
-static jobject NewLong(JNIEnv *jenv, const wrap<int64_t> &v)
+static jobject NewLong(JNIEnv *jenv, const Wrap<int64_t> &v)
 {
     if (v.has_value()) {
         jclass resClass = jenv->FindClass("Ljava/lang/Long;");
@@ -41,7 +41,7 @@ static jobject NewLong(JNIEnv *jenv, const wrap<int64_t> &v)
     return nullptr;
 }
 
-static jobject NewBoolean(JNIEnv *jenv, const wrap<bool> &v)
+static jobject NewBoolean(JNIEnv *jenv, const Wrap<bool> &v)
 {
     if (v.has_value()) {
         jclass resClass = jenv->FindClass("Ljava/lang/Boolean;");
@@ -51,7 +51,7 @@ static jobject NewBoolean(JNIEnv *jenv, const wrap<bool> &v)
     return nullptr;
 }
 
-static jobject NewFloat(JNIEnv *jenv, const wrap<float> &v)
+static jobject NewFloat(JNIEnv *jenv, const Wrap<float> &v)
 {
     if (v.has_value()) {
         jclass resClass = jenv->FindClass("Ljava/lang/Float;");
@@ -61,7 +61,7 @@ static jobject NewFloat(JNIEnv *jenv, const wrap<float> &v)
     return nullptr;
 }
 
-static jobject NewDouble(JNIEnv *jenv, const wrap<double> &v)
+static jobject NewDouble(JNIEnv *jenv, const Wrap<double> &v)
 {
     if (v.has_value()) {
         jclass resClass = jenv->FindClass("Ljava/lang/Double;");
@@ -71,7 +71,7 @@ static jobject NewDouble(JNIEnv *jenv, const wrap<double> &v)
     return nullptr;
 }
 
-static jobject NewString(JNIEnv *jenv, const wrap<String> &v)
+static jobject NewString(JNIEnv *jenv, const Wrap<String> &v)
 {
     if (v.has_value()) {
         return jenv->NewStringUTF(v.value()->c_str());

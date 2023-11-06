@@ -29,6 +29,10 @@ import io.dingodb.expr.runtime.expr.VariadicOpExpr;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.OrFun;
+import io.dingodb.expr.runtime.op.mathematical.AbsFunFactory;
+import io.dingodb.expr.runtime.op.mathematical.MaxFunFactory;
+import io.dingodb.expr.runtime.op.mathematical.MinFunFactory;
+import io.dingodb.expr.runtime.op.mathematical.ModFunFactory;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
@@ -66,6 +70,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     private static final byte SUB = (byte) 0x84;
     private static final byte MUL = (byte) 0x85;
     private static final byte DIV = (byte) 0x86;
+    private static final byte MOD = (byte) 0x87;
 
     private static final byte EQ = (byte) 0x91;
     private static final byte GE = (byte) 0x92;
@@ -81,6 +86,10 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     private static final byte IS_NULL = (byte) 0xA1;
     private static final byte IS_TRUE = (byte) 0xA2;
     private static final byte IS_FALSE = (byte) 0xA3;
+
+    private static final byte MIN = (byte) 0xB1;
+    private static final byte MAX = (byte) 0xB2;
+    private static final byte ABS = (byte) 0xB3;
 
     private static final byte CAST = (byte) 0xF0;
 
@@ -183,6 +192,9 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                         case IsFalseFunFactory.NAME:
                             success = writeOpWithType(obj, IS_FALSE, (Type) expr.getOp().getKey());
                             break;
+                        case AbsFunFactory.NAME:
+                            success = writeOpWithType(obj, ABS, (Type) expr.getOp().getKey());
+                            break;
                         default:
                             success = writeFun(obj, FunIndex.getUnary(expr.getOp()));
                             break;
@@ -243,7 +255,20 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                     success = true;
                     break;
                 case FUN:
-                    success = writeFun(obj, FunIndex.getBinary(expr.getOp()));
+                    switch (expr.getOp().getName()) {
+                        case MinFunFactory.NAME:
+                            success = writeOpWithType(obj, MIN, (Type) expr.getOp().getKey());
+                            break;
+                        case MaxFunFactory.NAME:
+                            success = writeOpWithType(obj, MAX, (Type) expr.getOp().getKey());
+                            break;
+                        case ModFunFactory.NAME:
+                            success = writeOpWithType(obj, MOD, (Type) expr.getOp().getKey());
+                            break;
+                        default:
+                            success = writeFun(obj, FunIndex.getBinary(expr.getOp()));
+                            break;
+                    }
                     break;
                 default:
                     break;
@@ -301,7 +326,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                     CodecUtils.encodeVarInt(obj, value);
                 } else {
                     obj.write(CONST_N | TypeCoder.TYPE_INT32);
-                    CodecUtils.encodeVarInt(obj, -value);
+                    CodecUtils.encodeVarInt(obj, -(long) value); // value may overflow for `Integer.MIN_VALUE`.
                 }
             } else {
                 obj.write(NULL | TypeCoder.TYPE_INT32);
@@ -314,7 +339,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
         public CodingFlag visitLongType(@NonNull LongType type, OutputStream obj) {
             Long value = (Long) val.getValue();
             if (value != null) {
-                if (value >= 0) {
+                if (value >= 0 || value == Long.MIN_VALUE) {
                     obj.write(CONST | TypeCoder.TYPE_INT64);
                     CodecUtils.encodeVarInt(obj, value);
                 } else {
