@@ -17,6 +17,7 @@
 package io.dingodb.expr.coding;
 
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.mathematical.AcosFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.AsinFunFactory;
@@ -35,8 +36,12 @@ import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
 import io.dingodb.expr.runtime.op.string.LTrimFunFactory;
 import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
+import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
+import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
 import io.dingodb.expr.runtime.op.string.RTrimFunFactory;
 import io.dingodb.expr.runtime.op.string.RightFunFactory;
+import io.dingodb.expr.runtime.op.string.Substr2FunFactory;
+import io.dingodb.expr.runtime.op.string.Substr3FunFactory;
 import io.dingodb.expr.runtime.op.string.TrimFunFactory;
 import io.dingodb.expr.runtime.op.string.UpperFunFactory;
 import io.dingodb.expr.runtime.type.Types;
@@ -132,6 +137,28 @@ final class FunIndex {
                 break;
             case RightFunFactory.NAME:
                 funIndex = 0x25;
+                break;
+            case Substr2FunFactory.NAME:
+                funIndex = 0x2D;
+                break;
+            case Mid2FunFactory.NAME:
+                funIndex = 0x2F;
+                break;
+            default:
+                break;
+        }
+        return funIndex;
+    }
+
+    static int getTertiary(@NonNull TertiaryOp op) {
+        String funName = op.getName();
+        int funIndex = -1;
+        switch (funName) {
+            case Substr3FunFactory.NAME:
+                funIndex = 0x2C;
+                break;
+            case Mid3FunFactory.NAME:
+                funIndex = 0x2E;
                 break;
             default:
                 break;

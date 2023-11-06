@@ -26,7 +26,10 @@ abstract class Substr2Fun extends BinaryStringIntFun {
     private static final long serialVersionUID = 992163045871277543L;
 
     static @NonNull String substr(@NonNull String value0, int start) {
-        return value0.substring(start);
+        if (start < 0) {
+            start = 0;
+        }
+        return (start == 0) ? value0 : value0.substring(start);
     }
 
     @Override

@@ -280,9 +280,22 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
         return null;
     }
 
+    @SneakyThrows
     @Override
     public CodingFlag visitTertiaryOpExpr(@NonNull TertiaryOpExpr expr, @NonNull OutputStream obj) {
-        return super.visitTertiaryOpExpr(expr, obj);
+        if (visit(expr.getOperand0(), obj) == OK
+            && visit(expr.getOperand1(), obj) == OK
+            && visit(expr.getOperand2(), obj) == OK
+        ) {
+            boolean success = false;
+            if (expr.getOpType() == OpType.FUN) {
+                success = writeFun(obj, FunIndex.getTertiary(expr.getOp()));
+            }
+            if (success) {
+                return OK;
+            }
+        }
+        return null;
     }
 
     @SneakyThrows

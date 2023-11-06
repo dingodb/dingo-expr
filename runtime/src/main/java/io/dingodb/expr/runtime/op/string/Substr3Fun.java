@@ -26,7 +26,13 @@ abstract class Substr3Fun extends TertiaryStringIntIntFun {
     private static final long serialVersionUID = -5730776211565201950L;
 
     static @NonNull String substr(@NonNull String value0, int start, int end) {
-        return value0.substring(start, end);
+        if (start < 0) {
+            start = 0;
+        }
+        if (start == 0) {
+            return end >= value0.length() ? value0 : value0.substring(start, end);
+        }
+        return end >= value0.length() ? value0.substring(start) : value0.substring(start, end);
     }
 
     @Override
