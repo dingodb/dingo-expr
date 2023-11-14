@@ -17,12 +17,15 @@
 plugins {
     id 'java'
     id 'checkstyle'
+    id 'signing'
 }
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 checkstyle {

@@ -69,6 +69,7 @@ public final class DataParser extends Parser {
     /**
      * Create a {@link DataParser} of json format.
      *
+     * @param schemaRoot the {@link SchemaRoot}
      * @return a {@link DataParser}
      */
     public static @NonNull DataParser json(SchemaRoot schemaRoot) {
@@ -78,6 +79,7 @@ public final class DataParser extends Parser {
     /**
      * Create a {@link DataParser} of yaml format.
      *
+     * @param schemaRoot the {@link SchemaRoot}
      * @return a {@link DataParser}
      */
     public static @NonNull DataParser yaml(SchemaRoot schemaRoot) {
@@ -87,7 +89,8 @@ public final class DataParser extends Parser {
     /**
      * Create a {@link DataParser} of a specified format.
      *
-     * @param format the {@link DataFormat}
+     * @param format     the {@link DataFormat}
+     * @param schemaRoot the {@link SchemaRoot}
      * @return a {@link DataParser}
      */
     public static @NonNull DataParser get(DataFormat format, SchemaRoot schemaRoot) {

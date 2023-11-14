@@ -17,8 +17,35 @@
 plugins {
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
+}
+
+gitProperties {
+    keys = gradle.gitPropertiesKeys
 }
 
 dependencies {
     api project(':dingo-expr-runtime')
+}
+
+publishing {
+    publications {
+        coding(MavenPublication) {
+            artifactId = 'dingo-expr-coding'
+            from components.java
+            pom {
+                name = 'dingo-expr-coding'
+                description = 'Coding library of Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.coding
 }
