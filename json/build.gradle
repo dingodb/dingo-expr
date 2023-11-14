@@ -17,6 +17,12 @@
 plugins {
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
+}
+
+gitProperties {
+    keys = gradle.gitPropertiesKeys
 }
 
 dependencies {
@@ -25,4 +31,25 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: 'jackson'.v()
     implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-afterburner', version: 'jackson'.v()
     implementation project(':dingo-expr-runtime')
+}
+
+publishing {
+    publications {
+        json(MavenPublication) {
+            artifactId = 'dingo-expr-json'
+            from components.java
+            pom {
+                name = 'dingo-expr-json'
+                description = 'Json library of Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.json
 }

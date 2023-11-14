@@ -18,6 +18,12 @@ plugins {
     id 'antlr'
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
+}
+
+gitProperties {
+    keys = gradle.gitPropertiesKeys
 }
 
 dependencies {
@@ -37,4 +43,25 @@ tasks.withType(Checkstyle).configureEach {
     exclude '**/DingoExprParser.java'
     exclude '**/DingoExprParserBaseVisitor.java'
     exclude '**/DingoExprParserVisitor.java'
+}
+
+publishing {
+    publications {
+        parser(MavenPublication) {
+            artifactId = 'dingo-expr-parser'
+            from components.java
+            pom {
+                name = 'dingo-expr-parser'
+                description = 'Literal parser of Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.parser
 }

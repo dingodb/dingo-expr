@@ -17,6 +17,12 @@
 plugins {
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
+}
+
+gitProperties {
+    keys = gradle.gitPropertiesKeys
 }
 
 dependencies {
@@ -24,4 +30,25 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: 'auto-service'.v()
     implementation group: 'com.squareup', name: 'javapoet', version: 'javapoet'.v()
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: 'commons-lang3'.v()
+}
+
+publishing {
+    publications {
+        annotations(MavenPublication) {
+            artifactId = 'dingo-expr-annotations'
+            from components.java
+            pom {
+                name = 'dingo-expr-annotations'
+                description = 'Annotation processors for Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.annotations
 }

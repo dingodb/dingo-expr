@@ -15,7 +15,9 @@
  */
 
 group GROUP
+version VERSION
 
 subprojects {
     group GROUP
+    version VERSION
 }

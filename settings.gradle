@@ -19,6 +19,57 @@ rootProject.name = 'dingo-expr'
 // function String.v()
 String.metaClass.v = { ext[(delegate as String) + '.version'] }
 
+gradle.ext.gitPropertiesKeys = [
+    'git.branch',
+    'git.commit.id',
+    'git.commit.time',
+    'git.dirty',
+    'git.remote.origin.url',
+    'git.tags',
+    'git.total.commit.count',
+]
+
+gradle.ext.setOssrhRepo = { handler, project ->
+    handler.maven {
+        name = "OSSRH"
+        def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+        url = (project.version as String).endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        credentials {
+            username = System.getenv("MAVEN_USERNAME") != null
+                ? System.getenv("MAVEN_USERNAME")
+                : project.findProperty("ossrhUsername")
+            password = System.getenv("MAVEN_TOKEN") != null
+                ? System.getenv("MAVEN_TOKEN")
+                : project.findProperty("ossrhPassword")
+        }
+    }
+}
+
+gradle.ext.setPom = {
+    it.pom {
+        url = 'https://www.dingodb.com/'
+        scm {
+            connection = 'scm:git:git@github.com:dingodb/dingo-expr.git'
+            developerConnection = 'scm:git:git@github.com:dingodb/dingo-expr.git'
+            url = 'https://github.com/dingodb/dingo-expr/tree/main'
+        }
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        developers {
+            developer {
+                id = 'dingodb'
+                name = 'DingoDB Develop Team'
+                email = 'dingodb@zetyun.com'
+            }
+        }
+    }
+}
+
 // Modules
 include 'annotations'
 findProject(':annotations')?.name = 'dingo-expr-annotations'

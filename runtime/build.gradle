@@ -17,6 +17,12 @@
 plugins {
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
+}
+
+gitProperties {
+    keys = gradle.gitPropertiesKeys
 }
 
 dependencies {
@@ -24,4 +30,25 @@ dependencies {
     compileOnly project(':dingo-expr-annotations')
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: 'commons-lang3'.v()
     implementation group: 'org.apache.commons', name: 'commons-text', version: 'commons-text'.v()
+}
+
+publishing {
+    publications {
+        runtime(MavenPublication) {
+            artifactId = 'dingo-expr-runtime'
+            from components.java
+            pom {
+                name = 'dingo-expr-runtime'
+                description = 'Runtime library of Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.runtime
 }
