@@ -38,6 +38,11 @@ abstract class LogicalOp extends BinaryOp {
     }
 
     @Override
+    public BinaryOp getOp(Object key) {
+        return (key != null && key.equals(Types.BOOL)) ? this : null;
+    }
+
+    @Override
     public final Type getType() {
         return Types.BOOL;
     }

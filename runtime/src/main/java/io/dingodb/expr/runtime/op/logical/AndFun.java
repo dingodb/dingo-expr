@@ -38,11 +38,6 @@ public final class AndFun extends LogicalFun {
     private static final long serialVersionUID = -8938572625737275182L;
 
     @Override
-    public AndFun getOp(Object key) {
-        return (key != null && key.equals(Types.BOOL)) ? INSTANCE : null;
-    }
-
-    @Override
     public @NonNull String getName() {
         return NAME;
     }

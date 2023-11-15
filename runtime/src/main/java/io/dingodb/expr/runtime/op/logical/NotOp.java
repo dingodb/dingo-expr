@@ -19,8 +19,6 @@ package io.dingodb.expr.runtime.op.logical;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
@@ -29,11 +27,6 @@ abstract class NotOp extends UnaryOp {
 
     static boolean not(boolean value) {
         return !value;
-    }
-
-    @Override
-    public Type getType() {
-        return Types.BOOL;
     }
 
     @Override

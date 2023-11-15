@@ -28,6 +28,21 @@ java {
     withJavadocJar()
 }
 
+tasks.named('jar') {
+    manifest {
+        attributes(
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            "Created-By": "Gradle ${gradle.gradleVersion}",
+            "Build-Timestamp": new Date().format("yyyy-MM-dd HH:mm:ss.SSSZ"),
+            "Build-Jdk": "${System.properties['java.version']} "
+                + "(${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+            "Build-OS": "${System.properties['os.name']}"
+                + " ${System.properties['os.arch']} ${System.properties['os.version']}",
+        )
+    }
+}
+
 checkstyle {
     ignoreFailures = false
     maxWarnings = 0
@@ -57,6 +72,6 @@ dependencies {
     testCompileOnly group: 'org.checkerframework', name: 'checker-qual', version: 'checkerframework'.v()
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
