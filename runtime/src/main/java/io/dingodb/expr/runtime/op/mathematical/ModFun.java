@@ -28,16 +28,16 @@ abstract class ModFun extends BinaryNumericOp {
 
     private static final long serialVersionUID = -1273869618861708383L;
 
-    static int mod(int value0, int value1) {
-        return value0 % value1;
+    static Integer mod(int value0, int value1) {
+        return value1 != 0 ? value0 % value1 : null;
     }
 
-    static long mod(long value0, long value1) {
-        return value0 % value1;
+    static Long mod(long value0, long value1) {
+        return value1 != 0 ? value0 % value1 : null;
     }
 
-    static @NonNull BigDecimal mod(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
-        return value0.remainder(value1);
+    static BigDecimal mod(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
+        return value1.compareTo(BigDecimal.ZERO) != 0 ? value0.remainder(value1) : null;
     }
 
     @Override
