@@ -23,7 +23,6 @@ import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.op.OpType;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -84,11 +83,6 @@ public final class OrOp extends LogicalOp {
             }
         }
         return super.simplify(expr);
-    }
-
-    @Override
-    public OrOp getOp(Object key) {
-        return (key != null && key.equals(Types.BOOL)) ? INSTANCE : null;
     }
 
     @Override

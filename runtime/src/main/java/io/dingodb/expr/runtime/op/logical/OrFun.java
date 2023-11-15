@@ -38,11 +38,6 @@ public final class OrFun extends LogicalFun {
     private static final long serialVersionUID = 3188822445704260853L;
 
     @Override
-    public OrFun getOp(Object key) {
-        return (key != null && key.equals(Types.BOOL)) ? INSTANCE : null;
-    }
-
-    @Override
     public @NonNull String getName() {
         return NAME;
     }
