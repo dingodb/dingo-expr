@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ArrayBuilder extends TypeVisitorBase<Object, @NonNull Integer> {
+public final class ArrayBuilder extends TypeVisitorBase<Object, @NonNull Integer> {
     public static final ArrayBuilder INSTANCE = new ArrayBuilder();
 
     @Override
