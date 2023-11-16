@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static io.dingodb.expr.runtime.expr.Exprs.ABS;
@@ -33,6 +34,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.ACOS;
 import static io.dingodb.expr.runtime.expr.Exprs.ADD;
 import static io.dingodb.expr.runtime.expr.Exprs.AND;
 import static io.dingodb.expr.runtime.expr.Exprs.AND_FUN;
+import static io.dingodb.expr.runtime.expr.Exprs.ARRAY;
 import static io.dingodb.expr.runtime.expr.Exprs.ASIN;
 import static io.dingodb.expr.runtime.expr.Exprs.ATAN;
 import static io.dingodb.expr.runtime.expr.Exprs.CEIL;
@@ -52,6 +54,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.IS_NULL;
 import static io.dingodb.expr.runtime.expr.Exprs.IS_TRUE;
 import static io.dingodb.expr.runtime.expr.Exprs.LE;
 import static io.dingodb.expr.runtime.expr.Exprs.LEFT;
+import static io.dingodb.expr.runtime.expr.Exprs.LIST;
 import static io.dingodb.expr.runtime.expr.Exprs.LOCATE2;
 import static io.dingodb.expr.runtime.expr.Exprs.LOCATE3;
 import static io.dingodb.expr.runtime.expr.Exprs.LOG;
@@ -123,6 +126,8 @@ public class EvalConstProvider implements ArgumentsProvider {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
         return Stream.of(
+
+            // Values
             arguments(val(1), 1),
             arguments(val(2L), 2L),
             arguments(val(3.3f), 3.3f),
@@ -136,6 +141,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(time(2L), new Time(sec(2L))),
             arguments(ts(3L), new Timestamp(sec(3L))),
             arguments(val(null), null),
+
+            // Castings
             arguments(op(TO_INT, 1), 1),
             arguments(op(TO_INT, 1L), 1),
             arguments(op(TO_INT_C, 1L), 1),
@@ -226,6 +233,8 @@ public class EvalConstProvider implements ArgumentsProvider {
                 DateTimeUtils.parseTimestamp("1970-01-01 00:00:00")
             ),
             arguments(op(TO_TIMESTAMP, ts(1L)), new Timestamp(sec(1L))),
+
+            // Arithmetics
             arguments(op(POS, 1), 1),
             arguments(op(POS, 1L), 1L),
             arguments(op(POS, 1.1f), 1.1f),
@@ -273,6 +282,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(DIV, 1L, 2.0f), 0.5f),
             arguments(op(DIV, 1.1f, 2.2), 0.5),
             arguments(op(DIV, 1.1, dec(2.2)), BigDecimal.valueOf(0.5)),
+
+            // Relations
             arguments(op(EQ, 1, 1), true),
             arguments(op(EQ, 1L, 2L), false),
             arguments(op(EQ, 1.1f, 1.1f), true),
@@ -333,6 +344,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(LE, date(1L), date(2L)), true),
             arguments(op(LE, time(1L), time(1L)), true),
             arguments(op(LE, ts(2L), ts(1L)), false),
+
+            // Logics
             arguments(op(AND, false, false), false),
             arguments(op(AND, false, true), false),
             arguments(op(AND, false, NULL_BOOL), false),
@@ -360,6 +373,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(OR_FUN, true, false, true), true),
             arguments(op(OR_FUN, false, NULL_BOOL, false), null),
             arguments(op(OR_FUN, false, false, false), false),
+
+            // Specials
             arguments(op(IS_NULL, 1), false),
             arguments(op(IS_NULL, NULL_INT), true),
             arguments(op(IS_NULL, 1L), false),
@@ -442,6 +457,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(IS_FALSE, NULL_TIME), false),
             arguments(op(IS_FALSE, ts(0)), false),
             arguments(op(IS_FALSE, NULL_TIMESTAMP), false),
+
+            // Mathematics
             arguments(op(ABS, -1), 1),
             arguments(op(ABS, 1), 1),
             arguments(op(ABS, -1L), 1L),
@@ -534,6 +551,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(FLOOR, 2.5f), 2.0),
             arguments(op(FLOOR, 3.6), 3.0),
             arguments(op(FLOOR, dec(1.23)), BigDecimal.valueOf(1)),
+
+            // Strings
             arguments(op(CHAR_LENGTH, NULL_STRING), 0),
             arguments(op(CHAR_LENGTH, ""), 0),
             arguments(op(CHAR_LENGTH, "Alice"), 5),
@@ -596,7 +615,15 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(_CTF, "%Y-%m-%d"), "uuuu'-'MM'-'dd"),
             arguments(op(_CTF, "%A%B%C"), "'ABC'"),
             arguments(op(_CTF, "Year: %Y, Month: %m"), "'Year: 'uuuu', Month: 'MM"),
-            arguments(op(HEX, "414243"), "ABC".getBytes(StandardCharsets.UTF_8))
+            arguments(op(HEX, "414243"), "ABC".getBytes(StandardCharsets.UTF_8)),
+
+            // Collections
+            arguments(op(ARRAY, 1, 2, 3), new int[]{1, 2, 3}),
+            arguments(op(ARRAY, 1L, 2, 3), new long[]{1L, 2L, 3L}),
+            arguments(op(ARRAY, 1L, 2.0, 3), new double[]{1.0, 2.0, 3.0}),
+            arguments(op(LIST, 1, 2, 3), Arrays.asList(1, 2, 3)),
+            arguments(op(LIST, 1L, 2, 3), Arrays.asList(1L, 2L, 3L)),
+            arguments(op(LIST, 1L, 2.0, 3), Arrays.asList(1.0, 2.0, 3.0))
         );
     }
 }

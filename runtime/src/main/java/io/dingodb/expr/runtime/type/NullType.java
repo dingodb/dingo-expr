@@ -24,8 +24,13 @@ public class NullType extends ScalarType {
 
     private static final int CODE = 0;
 
-    protected NullType() {
+    NullType() {
         super();
+    }
+
+    @Override
+    public int numericPrecedence() {
+        return 0;
     }
 
     @Override

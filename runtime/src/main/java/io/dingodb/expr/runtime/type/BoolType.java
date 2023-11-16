@@ -28,6 +28,11 @@ public final class BoolType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 1;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitBoolType(this, obj);
     }

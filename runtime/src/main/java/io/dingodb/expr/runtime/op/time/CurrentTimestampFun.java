@@ -38,12 +38,12 @@ public class CurrentTimestampFun extends NullaryOp {
     }
 
     @Override
-    public @NonNull String getName() {
-        return super.getName();
+    public Type getType() {
+        return Types.TIMESTAMP;
     }
 
     @Override
-    public Type getType() {
-        return Types.TIMESTAMP;
+    public @NonNull String getName() {
+        return NAME;
     }
 }

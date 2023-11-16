@@ -14,26 +14,32 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op;
+package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Arrays;
 
-public abstract class BinaryNumericOp extends BinaryOp {
-    private static final long serialVersionUID = -3432586934529603722L;
+abstract class CollectionConstructorOpFactory extends VariadicOp {
+    private static final long serialVersionUID = -5648876774812972099L;
 
     @Override
-    public final @Nullable Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (type0.equals(type1)) ? type0 : null;
+    public Object keyOf(@NonNull Type @NonNull ... types) {
+        long c = Arrays.stream(types).distinct().count();
+        if (c == 1) {
+            return types[0];
+        } else if (c == 0) {
+            return Types.INT;
+        }
+        return null;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Type best = Types.bestType(types[0], types[1]);
+        Type best = Types.bestType(types);
         if (best != null) {
             Arrays.fill(types, best);
         }

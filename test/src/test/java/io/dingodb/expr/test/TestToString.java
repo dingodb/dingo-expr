@@ -45,7 +45,12 @@ public class TestToString {
             arguments("1 < 2 && 3 < 4 || false", "1 < 2 && 3 < 4 || false"),
             arguments("5 + a[6]*3.2 - 1.0", "5 + a[6]*3.2 - 1.0"),
             arguments("(a.b + (c + d)) * max(f, g)", "(a['b'] + c + d)*MAX(f, g)"),
-            arguments("bytes('abc')", "BYTES('abc')")
+            arguments("bytes('abc')", "BYTES('abc')"),
+            arguments("current_date()", "CURRENT_DATE()"),
+            arguments("current_time()", "CURRENT_TIME()"),
+            arguments("current_timestamp()", "CURRENT_TIMESTAMP()"),
+            arguments("array(1, 2, 3)", "ARRAY(1, 2, 3)"),
+            arguments("list(1, 2, 3)", "LIST(1, 2, 3)")
         );
     }
 
@@ -72,7 +77,9 @@ public class TestToString {
             arguments("bool(null) || c", "BOOL(NULL) || $[2]"),
             arguments("c || bool(null)", "$[2] || BOOL(NULL)"),
             arguments("and(true, true, true)", "AND(true, true, true)"),
-            arguments("or(false, false, false)", "OR(false, false, false)")
+            arguments("or(false, false, false)", "OR(false, false, false)"),
+            arguments("array(1, 2.0, 3)", "ARRAY(DECIMAL(1), 2.0, DECIMAL(3))"),
+            arguments("list(1, 2.0, 3)", "LIST(DECIMAL(1), 2.0, DECIMAL(3))")
         );
     }
 

@@ -41,6 +41,8 @@ import io.dingodb.expr.runtime.op.cast.LongCastOpFactory;
 import io.dingodb.expr.runtime.op.cast.StringCastOpFactory;
 import io.dingodb.expr.runtime.op.cast.TimeCastOpFactory;
 import io.dingodb.expr.runtime.op.cast.TimestampCastOpFactory;
+import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
+import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.index.IndexOp;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.AndOp;
@@ -223,6 +225,10 @@ public final class Exprs {
     public static final TimeFormat2FunFactory TIME_FORMAT2 = TimeFormat2FunFactory.INSTANCE;
     public static final TimestampFormat1FunFactory TIMESTAMP_FORMAT1 = TimestampFormat1FunFactory.INSTANCE;
     public static final TimestampFormat2FunFactory TIMESTAMP_FORMAT2 = TimestampFormat2FunFactory.INSTANCE;
+
+    // Collections
+    public static final ArrayConstructorOpFactory ARRAY = ArrayConstructorOpFactory.INSTANCE;
+    public static final ListConstructorOpFactory LIST = ListConstructorOpFactory.INSTANCE;
 
     private Exprs() {
     }

@@ -22,6 +22,8 @@ import io.dingodb.expr.runtime.op.NullaryOp;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.VariadicOp;
+import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
+import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.OrFun;
 import io.dingodb.expr.runtime.op.mathematical.AbsFunFactory;
@@ -172,6 +174,10 @@ public class DefaultFunFactory implements FunFactory {
         registerBinaryFun(TimeFormat2FunFactory.NAME, Exprs.TIME_FORMAT2);
         registerUnaryFun(TimestampFormat1FunFactory.NAME, Exprs.TIMESTAMP_FORMAT1);
         registerBinaryFun(TimestampFormat2FunFactory.NAME, Exprs.TIMESTAMP_FORMAT2);
+
+        // Collection functions
+        registerVariadicFun(ArrayConstructorOpFactory.NAME, Exprs.ARRAY);
+        registerVariadicFun(ListConstructorOpFactory.NAME, Exprs.LIST);
     }
 
     @Override

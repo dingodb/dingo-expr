@@ -29,6 +29,11 @@ public final class IntType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 2;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, @Nullable T obj) {
         return visitor.visitIntType(this, obj);
     }

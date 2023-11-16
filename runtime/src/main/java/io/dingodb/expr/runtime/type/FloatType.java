@@ -28,6 +28,11 @@ public final class FloatType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 4;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitFloatType(this, obj);
     }

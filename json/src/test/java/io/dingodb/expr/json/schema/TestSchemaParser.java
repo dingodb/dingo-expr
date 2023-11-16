@@ -48,7 +48,7 @@ public class TestSchemaParser {
         DataSchema schema = root.getSchema();
         assertThat(schema.getChild("arrA")).hasFieldOrPropertyWithValue("type", Types.ARRAY_LONG);
         assertThat(schema.getChild("arrB")).hasFieldOrPropertyWithValue("type", Types.ARRAY_STRING);
-        assertThat(schema.getChild("arrC")).hasFieldOrPropertyWithValue("type", Types.LIST);
+        assertThat(schema.getChild("arrC")).hasFieldOrPropertyWithValue("type", Types.LIST_ANY);
         assertThat(schema.getChild("arrD")).hasFieldOrPropertyWithValue("type", null)
             .satisfies(s -> assertThat(s.getChild(0)).hasFieldOrPropertyWithValue("type", Types.LONG))
             .satisfies(s -> assertThat(s.getChild(1)).hasFieldOrPropertyWithValue("type", Types.STRING));
