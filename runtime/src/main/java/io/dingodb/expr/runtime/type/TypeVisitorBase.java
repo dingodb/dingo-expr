@@ -106,4 +106,9 @@ public abstract class TypeVisitorBase<R, T> implements TypeVisitor<R, T> {
     public R visitMapType(@NonNull MapType type, T obj) {
         return null;
     }
+
+    @Override
+    public R visitTupleType(@NonNull TupleType type, T obj) {
+        return null;
+    }
 }

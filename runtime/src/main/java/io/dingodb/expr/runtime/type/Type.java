@@ -21,6 +21,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public interface Type {
     int NOT_NUMERIC = 100;
 
+    boolean isScalar();
+
     default int numericPrecedence() {
         return NOT_NUMERIC;
     }

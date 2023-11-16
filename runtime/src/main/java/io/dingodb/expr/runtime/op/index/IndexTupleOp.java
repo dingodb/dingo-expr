@@ -17,20 +17,37 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.runtime.type.Types;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Array;
 
-public final class IndexArrayAny extends IndexOp {
-    private static final long serialVersionUID = 368593503014605079L;
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class IndexTupleOp extends IndexOpFactory {
+    private static final long serialVersionUID = -2166673591808125204L;
 
-    IndexArrayAny(Type type) {
-        super(type);
+    private final TupleType originalType;
+
+    public static @NonNull IndexTupleOp of(@NonNull TupleType type) {
+        return new IndexTupleOp(type);
     }
 
     @Override
     protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        return Array.get(value0, (int) value1);
+        return Array.get(value0, (Integer) value1);
+    }
+
+    @Override
+    public Type getType() {
+        return Types.ANY;
+    }
+
+    @Override
+    public Object getKey() {
+        return originalType;
     }
 }

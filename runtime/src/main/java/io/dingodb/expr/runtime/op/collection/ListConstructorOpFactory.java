@@ -32,6 +32,7 @@ import io.dingodb.expr.runtime.type.MapType;
 import io.dingodb.expr.runtime.type.StringType;
 import io.dingodb.expr.runtime.type.TimeType;
 import io.dingodb.expr.runtime.type.TimestampType;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.type.Types;
@@ -148,6 +149,11 @@ public class ListConstructorOpFactory extends CollectionConstructorOpFactory {
 
         @Override
         public @NonNull ListConstructorOp visitMapType(@NonNull MapType type, Type obj) {
+            return new ListConstructorOp(type);
+        }
+
+        @Override
+        public @NonNull ListConstructorOp visitTupleType(@NonNull TupleType type, Type obj) {
             return new ListConstructorOp(type);
         }
     }

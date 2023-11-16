@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.CollectionType;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.MapType;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
@@ -29,35 +30,23 @@ import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class IndexOp extends BinaryOp {
-    public static final IndexOp INSTANCE = new IndexOp(null);
+public class IndexOpFactory extends BinaryOp {
+    public static final IndexOpFactory INSTANCE = new IndexOpFactory();
 
     private static final long serialVersionUID = 4166202157298784594L;
 
-    private final Type type;
-
     @Override
-    public IndexOp getOp(Object key) {
-        if (key == null) {
-            return null;
-        }
-        Type type = (Type) key;
-        if (type instanceof ArrayType) {
-            return IndexArrayOpCreator.INSTANCE.visit(((ArrayType) type).getElementType());
-        } else if (type instanceof ListType) {
-            return new IndexList(type);
-        } else if (type instanceof MapType) {
-            return new IndexMap(type);
-        }
-        return null;
-    }
-
-    @Override
-    public Type getType() {
-        if (type instanceof ArrayType) {
-            return ((ArrayType) type).getElementType();
-        } else if (type instanceof MapType) {
-            return ((MapType) type).getValueType();
+    public IndexOpFactory getOp(Object key) {
+        if (key != null) {
+            if (key instanceof ArrayType) {
+                return IndexArrayOp.of((ArrayType) key);
+            } else if (key instanceof ListType) {
+                return IndexListOp.of((ListType) key);
+            } else if (key instanceof MapType) {
+                return IndexMapOp.of((MapType) key);
+            } else if (key instanceof TupleType) {
+                return IndexTupleOp.of((TupleType) key);
+            }
         }
         return null;
     }
@@ -65,11 +54,6 @@ public class IndexOp extends BinaryOp {
     @Override
     public final @NonNull OpType getOpType() {
         return OpType.INDEX;
-    }
-
-    @Override
-    public Object getKey() {
-        return !(type == null) ? type : super.getKey();
     }
 
     @Override
@@ -82,13 +66,13 @@ public class IndexOp extends BinaryOp {
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0] instanceof CollectionType) {
+        if (types[0] instanceof CollectionType || types[0] instanceof TupleType) {
             types[1] = Types.INT;
+            return types[0];
         } else if (types[0] instanceof MapType) {
             types[1] = ((MapType) types[0]).getKeyType();
-        } else {
-            return null;
+            return types[0];
         }
-        return types[0];
+        return null;
     }
 }
