@@ -219,6 +219,21 @@ public final class Types {
         public ArrayType visitAnyType(@NonNull AnyType type, Void obj) {
             return ARRAY_ANY;
         }
+
+        @Override
+        public @NonNull ArrayType visitArrayType(@NonNull ArrayType type, Void obj) {
+            return new ArrayType(type);
+        }
+
+        @Override
+        public @NonNull ArrayType visitListType(@NonNull ListType type, Void obj) {
+            return new ArrayType(type);
+        }
+
+        @Override
+        public @NonNull ArrayType visitMapType(@NonNull MapType type, Void obj) {
+            return new ArrayType(type);
+        }
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -283,6 +298,21 @@ public final class Types {
         @Override
         public ListType visitAnyType(@NonNull AnyType type, Void obj) {
             return LIST_ANY;
+        }
+
+        @Override
+        public @NonNull ListType visitArrayType(@NonNull ArrayType type, Void obj) {
+            return new ListType(type);
+        }
+
+        @Override
+        public @NonNull ListType visitListType(@NonNull ListType type, Void obj) {
+            return new ListType(type);
+        }
+
+        @Override
+        public @NonNull ListType visitMapType(@NonNull MapType type, Void obj) {
+            return new ListType(type);
         }
     }
 }

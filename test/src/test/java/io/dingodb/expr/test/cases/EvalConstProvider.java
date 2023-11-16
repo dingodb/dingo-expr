@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.test.cases;
 
+import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,6 +28,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static io.dingodb.expr.runtime.expr.Exprs.ABS;
@@ -80,6 +82,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.RIGHT;
 import static io.dingodb.expr.runtime.expr.Exprs.RTRIM;
 import static io.dingodb.expr.runtime.expr.Exprs.SIN;
 import static io.dingodb.expr.runtime.expr.Exprs.SINH;
+import static io.dingodb.expr.runtime.expr.Exprs.SLICE;
 import static io.dingodb.expr.runtime.expr.Exprs.SUB;
 import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR2;
 import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR3;
@@ -623,7 +626,33 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(ARRAY, 1L, 2.0, 3), new double[]{1.0, 2.0, 3.0}),
             arguments(op(LIST, 1, 2, 3), Arrays.asList(1, 2, 3)),
             arguments(op(LIST, 1L, 2, 3), Arrays.asList(1L, 2L, 3L)),
-            arguments(op(LIST, 1L, 2.0, 3), Arrays.asList(1.0, 2.0, 3.0))
+            arguments(op(LIST, 1L, 2.0, 3), Arrays.asList(1.0, 2.0, 3.0)),
+            arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 0), new int[]{1, 3, 5}),
+            arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 1), new int[]{2, 4, 6}),
+            arguments(op(SLICE, val(
+                new List[]{Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)},
+                Types.array(Types.LIST_INT)
+            ), 0), new int[]{1, 3, 5}),
+            arguments(op(SLICE, val(
+                new List[]{Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)},
+                Types.array(Types.LIST_INT)
+            ), 1), new int[]{2, 4, 6}),
+            arguments(op(SLICE, val(
+                Arrays.asList(new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}),
+                Types.list(Types.ARRAY_INT)
+            ), 0), Arrays.asList(1, 3, 5)),
+            arguments(op(SLICE, val(
+                Arrays.asList(new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}),
+                Types.list(Types.ARRAY_INT)
+            ), 1), Arrays.asList(2, 4, 6)),
+            arguments(op(SLICE, val(
+                Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)),
+                Types.list(Types.LIST_INT)
+            ), 0), Arrays.asList(1, 3, 5)),
+            arguments(op(SLICE, val(
+                Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)),
+                Types.list(Types.LIST_INT)
+            ), 1), Arrays.asList(2, 4, 6))
         );
     }
 }
