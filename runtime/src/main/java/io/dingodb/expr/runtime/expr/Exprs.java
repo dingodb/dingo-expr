@@ -44,7 +44,7 @@ import io.dingodb.expr.runtime.op.cast.TimestampCastOpFactory;
 import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.SliceOpFactory;
-import io.dingodb.expr.runtime.op.index.IndexOp;
+import io.dingodb.expr.runtime.op.index.IndexOpFactory;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.AndOp;
 import io.dingodb.expr.runtime.op.logical.NotOpFactory;
@@ -121,6 +121,7 @@ import io.dingodb.expr.runtime.type.NullType;
 import io.dingodb.expr.runtime.type.StringType;
 import io.dingodb.expr.runtime.type.TimeType;
 import io.dingodb.expr.runtime.type.TimestampType;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.type.Types;
@@ -214,7 +215,7 @@ public final class Exprs {
     public static final HexFunFactory HEX = HexFunFactory.INSTANCE;
 
     // Index
-    public static final IndexOp INDEX = IndexOp.INSTANCE;
+    public static final IndexOpFactory INDEX = IndexOpFactory.INSTANCE;
 
     // Date and time
     public static final CurrentDateFun CURRENT_DATE = CurrentDateFun.INSTANCE;
@@ -280,7 +281,7 @@ public final class Exprs {
         Expr expr0 = transOperand(operand0);
         Expr expr1 = transOperand(operand1);
         if (op.getOpType() == OpType.INDEX) {
-            return new IndexOpExpr((IndexOp) op, expr0, expr1);
+            return new IndexOpExpr((IndexOpFactory) op, expr0, expr1);
         } else {
             return new BinaryOpExpr(op, expr0, expr1);
         }
@@ -396,6 +397,11 @@ public final class Exprs {
 
         @Override
         public @NonNull Val visitMapType(@NonNull MapType type, Void obj) {
+            return new Val(null, type);
+        }
+
+        @Override
+        public @NonNull Val visitTupleType(@NonNull TupleType type, Void obj) {
             return new Val(null, type);
         }
     }

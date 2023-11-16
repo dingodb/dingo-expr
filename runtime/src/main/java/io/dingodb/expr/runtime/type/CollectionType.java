@@ -24,4 +24,9 @@ import lombok.RequiredArgsConstructor;
 public abstract class CollectionType implements Type {
     @Getter
     protected final Type elementType;
+
+    @Override
+    public boolean isScalar() {
+        return false;
+    }
 }

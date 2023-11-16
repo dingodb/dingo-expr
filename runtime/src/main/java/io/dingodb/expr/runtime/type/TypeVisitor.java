@@ -50,4 +50,6 @@ public interface TypeVisitor<R, T> {
     R visitListType(@NonNull ListType type, T obj);
 
     R visitMapType(@NonNull MapType type, T obj);
+
+    R visitTupleType(@NonNull TupleType type, T obj);
 }

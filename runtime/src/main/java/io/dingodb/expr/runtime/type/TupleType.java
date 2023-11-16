@@ -14,23 +14,27 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.index;
+package io.dingodb.expr.runtime.type;
 
-import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.type.Type;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.Map;
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+public class TupleType implements Type {
+    private final Type[] types;
 
-public final class IndexMap extends IndexOp {
-    private static final long serialVersionUID = -5277892825485455044L;
-
-    IndexMap(Type type) {
-        super(type);
+    public int getSize() {
+        return types.length;
     }
 
     @Override
-    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        return ((Map<?, ?>) value0).get(value1);
+    public boolean isScalar() {
+        return false;
+    }
+
+    @Override
+    public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
+        return visitor.visitTupleType(this, obj);
     }
 }

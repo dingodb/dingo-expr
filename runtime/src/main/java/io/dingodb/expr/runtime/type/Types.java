@@ -234,6 +234,11 @@ public final class Types {
         public @NonNull ArrayType visitMapType(@NonNull MapType type, Void obj) {
             return new ArrayType(type);
         }
+
+        @Override
+        public @NonNull ArrayType visitTupleType(@NonNull TupleType type, Void obj) {
+            return new ArrayType(type);
+        }
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -312,6 +317,11 @@ public final class Types {
 
         @Override
         public @NonNull ListType visitMapType(@NonNull MapType type, Void obj) {
+            return new ListType(type);
+        }
+
+        @Override
+        public @NonNull ListType visitTupleType(@NonNull TupleType type, Void obj) {
             return new ListType(type);
         }
     }

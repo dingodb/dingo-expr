@@ -17,20 +17,36 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.type.MapType;
 import io.dingodb.expr.runtime.type.Type;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
+import java.util.Map;
 
-public final class IndexList extends IndexOp {
-    private static final long serialVersionUID = -7901415430051702471L;
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class IndexMapOp extends IndexOpFactory {
+    private static final long serialVersionUID = -5277892825485455044L;
 
-    IndexList(Type type) {
-        super(type);
+    private final MapType originalType;
+
+    public static @NonNull IndexMapOp of(MapType type) {
+        return new IndexMapOp(type);
     }
 
     @Override
     protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        return ((List<?>) value0).get((int) value1);
+        return ((Map<?, ?>) value0).get(value1);
+    }
+
+    @Override
+    public Type getType() {
+        return originalType.getValueType();
+    }
+
+    @Override
+    public Object getKey() {
+        return originalType;
     }
 }

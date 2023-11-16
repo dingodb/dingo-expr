@@ -20,5 +20,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class ScalarType implements Type {
+abstract class ScalarType implements Type {
+    @Override
+    public boolean isScalar() {
+        return true;
+    }
 }

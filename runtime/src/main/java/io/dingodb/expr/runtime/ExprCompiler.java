@@ -33,8 +33,6 @@ import io.dingodb.expr.runtime.expr.UnaryOpExpr;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.Var;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
-import io.dingodb.expr.runtime.type.CollectionType;
-import io.dingodb.expr.runtime.type.MapType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
@@ -53,8 +51,8 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Override
     public Expr visitVal(@NonNull Val expr, CompileContext obj) {
         Type type = expr.getType();
-        // Do not touch collection type and map type for there's no casting for them.
-        if (!(type instanceof CollectionType || type instanceof MapType)) {
+        // Do not touch non-scalar type for there's no casting for them.
+        if (type.isScalar()) {
             Object value = expr.getValue();
             Type valueType = Types.valueType(value);
             if (valueType.equals(type) || value == null) {

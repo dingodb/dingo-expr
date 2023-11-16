@@ -28,6 +28,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -51,6 +52,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.FLOOR;
 import static io.dingodb.expr.runtime.expr.Exprs.GE;
 import static io.dingodb.expr.runtime.expr.Exprs.GT;
 import static io.dingodb.expr.runtime.expr.Exprs.HEX;
+import static io.dingodb.expr.runtime.expr.Exprs.INDEX;
 import static io.dingodb.expr.runtime.expr.Exprs.IS_FALSE;
 import static io.dingodb.expr.runtime.expr.Exprs.IS_NULL;
 import static io.dingodb.expr.runtime.expr.Exprs.IS_TRUE;
@@ -652,7 +654,14 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(SLICE, val(
                 Arrays.asList(Arrays.asList(1, 2), Arrays.asList(3, 4), Arrays.asList(5, 6)),
                 Types.list(Types.LIST_INT)
-            ), 1), Arrays.asList(2, 4, 6))
+            ), 1), Arrays.asList(2, 4, 6)),
+
+            // Index
+            arguments(op(INDEX, new int[]{1, 2, 3}, 0), 1),
+            arguments(op(INDEX, new int[]{1, 2, 3}, 2), 3),
+            arguments(op(INDEX, Arrays.asList(1, 2, 3), 0), 1),
+            arguments(op(INDEX, Arrays.asList(1, 2, 3), 2), 3),
+            arguments(op(INDEX, Collections.singletonMap("a", 10), "a"), 10)
         );
     }
 }

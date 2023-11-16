@@ -33,6 +33,11 @@ public final class MapType implements Type {
     private final Type valueType;
 
     @Override
+    public boolean isScalar() {
+        return false;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitMapType(this, obj);
     }

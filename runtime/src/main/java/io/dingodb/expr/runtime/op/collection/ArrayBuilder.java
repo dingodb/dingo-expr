@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.type.MapType;
 import io.dingodb.expr.runtime.type.StringType;
 import io.dingodb.expr.runtime.type.TimeType;
 import io.dingodb.expr.runtime.type.TimestampType;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -48,78 +49,82 @@ public final class ArrayBuilder extends TypeVisitorBase<Object, @NonNull Integer
     public static final ArrayBuilder INSTANCE = new ArrayBuilder();
 
     @Override
-    public Object visitIntType(@NonNull IntType type, @NonNull Integer obj) {
+    public @NonNull Object visitIntType(@NonNull IntType type, @NonNull Integer obj) {
         return new int[obj];
     }
 
     @Override
-    public Object visitLongType(@NonNull LongType type, @NonNull Integer obj) {
+    public @NonNull Object visitLongType(@NonNull LongType type, @NonNull Integer obj) {
         return new long[obj];
     }
 
     @Override
-    public Object visitFloatType(@NonNull FloatType type, @NonNull Integer obj) {
+    public @NonNull Object visitFloatType(@NonNull FloatType type, @NonNull Integer obj) {
         return new float[obj];
     }
 
     @Override
-    public Object visitDoubleType(@NonNull DoubleType type, @NonNull Integer obj) {
+    public @NonNull Object visitDoubleType(@NonNull DoubleType type, @NonNull Integer obj) {
         return new double[obj];
     }
 
     @Override
-    public Object visitBoolType(@NonNull BoolType type, @NonNull Integer obj) {
+    public @NonNull Object visitBoolType(@NonNull BoolType type, @NonNull Integer obj) {
         return new boolean[obj];
     }
 
     @Override
-    public Object visitDecimalType(@NonNull DecimalType type, @NonNull Integer obj) {
+    public @NonNull Object visitDecimalType(@NonNull DecimalType type, @NonNull Integer obj) {
         return new BigDecimal[obj];
     }
 
     @Override
-    public Object visitStringType(@NonNull StringType type, @NonNull Integer obj) {
+    public @NonNull Object visitStringType(@NonNull StringType type, @NonNull Integer obj) {
         return new String[obj];
     }
 
     @Override
-    public Object visitBytesType(@NonNull BytesType type, @NonNull Integer obj) {
-        // TODO: bytes array cannot be implemented by 2-d array.
-        return null;
+    public @NonNull Object visitBytesType(@NonNull BytesType type, @NonNull Integer obj) {
+        return new byte[obj][];
     }
 
     @Override
-    public Object visitDateType(@NonNull DateType type, @NonNull Integer obj) {
+    public @NonNull Object visitDateType(@NonNull DateType type, @NonNull Integer obj) {
         return new Date[obj];
     }
 
     @Override
-    public Object visitTimeType(@NonNull TimeType type, @NonNull Integer obj) {
+    public @NonNull Object visitTimeType(@NonNull TimeType type, @NonNull Integer obj) {
         return new Time[obj];
     }
 
     @Override
-    public Object visitTimestampType(@NonNull TimestampType type, @NonNull Integer obj) {
+    public @NonNull Object visitTimestampType(@NonNull TimestampType type, @NonNull Integer obj) {
         return new Timestamp[obj];
     }
 
     @Override
-    public Object visitAnyType(@NonNull AnyType type, @NonNull Integer obj) {
+    public @NonNull Object visitAnyType(@NonNull AnyType type, @NonNull Integer obj) {
         return new Object[obj];
     }
 
     @Override
-    public Object visitArrayType(@NonNull ArrayType type, @NonNull Integer obj) {
+    public @NonNull Object visitArrayType(@NonNull ArrayType type, @NonNull Integer obj) {
         return new Object[obj];
     }
 
     @Override
-    public Object visitListType(@NonNull ListType type, @NonNull Integer obj) {
+    public @NonNull Object visitListType(@NonNull ListType type, @NonNull Integer obj) {
         return new List<?>[obj];
     }
 
     @Override
-    public Object visitMapType(@NonNull MapType type, @NonNull Integer obj) {
+    public @NonNull Object visitMapType(@NonNull MapType type, @NonNull Integer obj) {
         return new Map<?, ?>[obj];
+    }
+
+    @Override
+    public @NonNull Object visitTupleType(@NonNull TupleType type, @NonNull Integer obj) {
+        return new Object[obj][type.getSize()];
     }
 }

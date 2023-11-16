@@ -16,13 +16,13 @@
 
 package io.dingodb.expr.runtime.expr;
 
-import io.dingodb.expr.runtime.op.index.IndexOp;
+import io.dingodb.expr.runtime.op.index.IndexOpFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class IndexOpExpr extends BinaryOpExpr {
     private static final long serialVersionUID = 3632232029198213923L;
 
-    public IndexOpExpr(IndexOp op, Expr operand0, Expr operand1) {
+    public IndexOpExpr(IndexOpFactory op, Expr operand0, Expr operand1) {
         super(op, operand0, operand1);
     }
 
