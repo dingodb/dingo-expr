@@ -19,11 +19,13 @@ package io.dingodb.expr.runtime.type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -55,10 +57,30 @@ public final class Types {
     public static final ArrayType ARRAY_TIMESTAMP = new ArrayType(TIMESTAMP);
     public static final ArrayType ARRAY_ANY = new ArrayType(ANY);
 
-    public static final ListType LIST = new ListType(ANY);
+    public static final ListType LIST_INT = new ListType(INT);
+    public static final ListType LIST_LONG = new ListType(LONG);
+    public static final ListType LIST_FLOAT = new ListType(FLOAT);
+    public static final ListType LIST_DOUBLE = new ListType(DOUBLE);
+    public static final ListType LIST_BOOL = new ListType(BOOL);
+    public static final ListType LIST_DECIMAL = new ListType(DECIMAL);
+    public static final ListType LIST_STRING = new ListType(STRING);
+    public static final ListType LIST_BYTES = new ListType(BYTES);
+    public static final ListType LIST_DATE = new ListType(DATE);
+    public static final ListType LIST_TIME = new ListType(TIME);
+    public static final ListType LIST_TIMESTAMP = new ListType(TIMESTAMP);
+    public static final ListType LIST_ANY = new ListType(ANY);
+
     public static final MapType MAP = new MapType(ANY, ANY);
 
     private Types() {
+    }
+
+    public static ArrayType array(@NonNull Type elementType) {
+        return ArrayTypeBuilder.INSTANCE.visit(elementType);
+    }
+
+    public static ListType list(@NonNull Type elementType) {
+        return ListTypeBuilder.INSTANCE.visit(elementType);
     }
 
     /**
@@ -75,7 +97,7 @@ public final class Types {
             if (byte[].class.isAssignableFrom(clazz)) {
                 return BYTES;
             }
-            return ArrayTypeBuilder.INSTANCE.visit(classType(clazz.getComponentType()));
+            return array(classType(clazz.getComponentType()));
         } else if (int.class.isAssignableFrom(clazz) || Integer.class.isAssignableFrom(clazz)) {
             return INT;
         } else if (long.class.isAssignableFrom(clazz) || Long.class.isAssignableFrom(clazz)) {
@@ -97,7 +119,7 @@ public final class Types {
         } else if (Timestamp.class.isAssignableFrom(clazz)) {
             return TIMESTAMP;
         } else if (List.class.isAssignableFrom(clazz)) {
-            return LIST;
+            return LIST_ANY;
         } else if (Map.class.isAssignableFrom(clazz)) {
             return MAP;
         } else if (void.class.isAssignableFrom(clazz) || Void.class.isAssignableFrom(clazz)) {
@@ -117,6 +139,21 @@ public final class Types {
             return NULL;
         }
         return classType(value.getClass());
+    }
+
+    public static @Nullable Type bestType(@NonNull Type @NonNull ... types) {
+        Type best = NULL;
+        for (Type type : types) {
+            best = (type.numericPrecedence() > best.numericPrecedence() ? type : best);
+        }
+        if (best.numericPrecedence() != Type.NOT_NUMERIC) {
+            return (!best.equals(NULL) && !best.equals(BOOL)) ? best : INT;
+        }
+        Type finalBest = best;
+        if (Arrays.stream(types).allMatch(t -> t.equals(finalBest) || t.equals(NULL))) {
+            return best;
+        }
+        return null;
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -181,6 +218,71 @@ public final class Types {
         @Override
         public ArrayType visitAnyType(@NonNull AnyType type, Void obj) {
             return ARRAY_ANY;
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class ListTypeBuilder extends TypeVisitorBase<ListType, Void> {
+        private static final ListTypeBuilder INSTANCE = new ListTypeBuilder();
+
+        @Override
+        public ListType visitIntType(@NonNull IntType type, Void obj) {
+            return LIST_INT;
+        }
+
+        @Override
+        public ListType visitLongType(@NonNull LongType type, Void obj) {
+            return LIST_LONG;
+        }
+
+        @Override
+        public ListType visitFloatType(@NonNull FloatType type, Void obj) {
+            return LIST_FLOAT;
+        }
+
+        @Override
+        public ListType visitDoubleType(@NonNull DoubleType type, Void obj) {
+            return LIST_DOUBLE;
+        }
+
+        @Override
+        public ListType visitBoolType(@NonNull BoolType type, Void obj) {
+            return LIST_BOOL;
+        }
+
+        @Override
+        public ListType visitDecimalType(@NonNull DecimalType type, Void obj) {
+            return LIST_DECIMAL;
+        }
+
+        @Override
+        public ListType visitStringType(@NonNull StringType type, Void obj) {
+            return LIST_STRING;
+        }
+
+        @Override
+        public ListType visitBytesType(@NonNull BytesType type, Void obj) {
+            return LIST_BYTES;
+        }
+
+        @Override
+        public ListType visitDateType(@NonNull DateType type, Void obj) {
+            return LIST_DATE;
+        }
+
+        @Override
+        public ListType visitTimeType(@NonNull TimeType type, Void obj) {
+            return LIST_TIME;
+        }
+
+        @Override
+        public ListType visitTimestampType(@NonNull TimestampType type, Void obj) {
+            return LIST_TIMESTAMP;
+        }
+
+        @Override
+        public ListType visitAnyType(@NonNull AnyType type, Void obj) {
+            return LIST_ANY;
         }
     }
 }

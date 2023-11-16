@@ -23,7 +23,7 @@ public final class ListType extends CollectionType {
 
     private static final int CODE = 1002;
 
-    public ListType(Type elementType) {
+    ListType(Type elementType) {
         super(elementType);
     }
 

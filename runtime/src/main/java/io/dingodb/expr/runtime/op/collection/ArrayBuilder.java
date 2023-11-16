@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.json.runtime;
+package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;

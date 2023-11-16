@@ -19,5 +19,11 @@ package io.dingodb.expr.runtime.type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface Type {
+    int NOT_NUMERIC = 100;
+
+    default int numericPrecedence() {
+        return NOT_NUMERIC;
+    }
+
     <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj);
 }

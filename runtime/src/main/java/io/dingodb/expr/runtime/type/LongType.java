@@ -28,6 +28,11 @@ public final class LongType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 3;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitLongType(this, obj);
     }

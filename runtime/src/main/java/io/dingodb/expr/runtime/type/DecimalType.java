@@ -28,6 +28,11 @@ public final class DecimalType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 6;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitDecimalType(this, obj);
     }

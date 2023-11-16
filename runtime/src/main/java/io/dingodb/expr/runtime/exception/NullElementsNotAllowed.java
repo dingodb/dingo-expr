@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-group GROUP
-version VERSION
+package io.dingodb.expr.runtime.exception;
 
-subprojects {
-    group GROUP
-    version VERSION
+public class NullElementsNotAllowed extends ExprEvaluatingException {
+    private static final long serialVersionUID = -7337702585552612680L;
 
-    project.gradle.taskGraph.whenReady { graph ->
-        if ((version as String).endsWith("SNAPSHOT")) {
-            project.tasks.findAll().forEach { task ->
-                if (task.name.startsWith("sign")) {
-                    task.enabled = false
-                }
-            }
-        }
+    public NullElementsNotAllowed() {
+        super("Null values are not allowed in collection types.");
     }
 }

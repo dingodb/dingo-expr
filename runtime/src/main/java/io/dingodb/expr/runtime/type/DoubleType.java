@@ -28,6 +28,11 @@ public final class DoubleType extends ScalarType {
     }
 
     @Override
+    public int numericPrecedence() {
+        return 5;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitDoubleType(this, obj);
     }

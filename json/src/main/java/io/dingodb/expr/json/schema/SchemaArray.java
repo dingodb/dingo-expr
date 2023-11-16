@@ -38,7 +38,7 @@ public final class SchemaArray extends Schema {
     public @NonNull DataSchema createDataSchema() {
         if (additionalItems == null || additionalItems) {
             if (items == null) {
-                return new DataLeaf(Types.LIST);
+                return new DataLeaf(Types.LIST_ANY);
             }
             SchemaType type = items.getType();
             switch (type) {
