@@ -17,11 +17,19 @@
 package io.dingodb.expr.runtime.type;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Arrays;
+
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class TupleType implements Type {
+    public static final String NAME = "TUPLE";
+
+    private static final int CODE = 2002;
+
+    @Getter
     private final Type[] types;
 
     public int getSize() {
@@ -36,5 +44,26 @@ public class TupleType implements Type {
     @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitTupleType(this, obj);
+    }
+
+    @Override
+    public int hashCode() {
+        int code = CODE;
+        for (Type type : types) {
+            code *= 31;
+            code += type.hashCode();
+        }
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof TupleType
+            && Arrays.equals(types, ((TupleType) obj).types);
+    }
+
+    @Override
+    public String toString() {
+        return NAME + Arrays.toString(types);
     }
 }

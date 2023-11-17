@@ -19,32 +19,36 @@ package io.dingodb.expr.runtime.op.collection;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.ListType;
+import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
-public final class SliceArrayOfListOp extends SliceArrayOp {
-    private static final long serialVersionUID = 5059637882397547648L;
+public final class SliceListOfTupleOp extends SliceListOp {
+    private static final long serialVersionUID = -580934004823081222L;
 
-    @Getter
-    private final ArrayType type;
-
-    SliceArrayOfListOp(ArrayType originalType) {
+    SliceListOfTupleOp(ListType originalType) {
         super(originalType);
-        type = Types.array(((ListType) originalType.getElementType()).getElementType());
     }
 
     @Override
-    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
+    protected @NonNull Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
         int index = (Integer) value1;
-        int size = Array.getLength(value0);
-        Object result = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
-        for (int i = 0; i < size; ++i) {
-            Array.set(result, i, ((List<?>) Array.get(value0, i)).get(index));
+        List<?> list = (List<?>) value0;
+        int size = list.size();
+        List<Object> result = new ArrayList<>(size);
+        for (Object element : list) {
+            result.add(Array.get(element, index));
         }
         return result;
+    }
+
+    @Override
+    public Type getType() {
+        return Types.LIST_ANY;
     }
 }

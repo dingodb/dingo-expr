@@ -18,6 +18,8 @@ package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.ListType;
+import io.dingodb.expr.runtime.type.Types;
+import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
@@ -26,8 +28,12 @@ import java.util.List;
 public final class SliceListOfListOp extends SliceListOp {
     private static final long serialVersionUID = 5059637882397547648L;
 
-    SliceListOfListOp(ListType type) {
-        super(type);
+    @Getter
+    private final ListType type;
+
+    SliceListOfListOp(ListType originalType) {
+        super(originalType);
+        type = Types.list(((ListType) originalType.getElementType()).getElementType());
     }
 
     @Override
