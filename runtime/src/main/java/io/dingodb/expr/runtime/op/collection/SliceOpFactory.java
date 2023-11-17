@@ -20,6 +20,7 @@ import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.CollectionType;
 import io.dingodb.expr.runtime.type.ListType;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
@@ -35,22 +36,23 @@ public class SliceOpFactory extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (type0 instanceof CollectionType
-            && ((CollectionType) type0).getElementType() instanceof CollectionType
-            && type1.equals(Types.INT)
-        ) {
-            return type0;
+        if (type0 instanceof CollectionType) {
+            Type elementType = ((CollectionType) type0).getElementType();
+            if (elementType instanceof CollectionType || elementType instanceof TupleType) {
+                return type0;
+            }
         }
         return null;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0] instanceof CollectionType
-            && ((CollectionType) types[0]).getElementType() instanceof CollectionType
-        ) {
-            types[1] = Types.INT;
-            return types[0];
+        if (types[0] instanceof CollectionType) {
+            Type elementType = ((CollectionType) types[0]).getElementType();
+            if (elementType instanceof CollectionType || elementType instanceof TupleType) {
+                types[1] = Types.INT;
+                return types[0];
+            }
         }
         return null;
     }

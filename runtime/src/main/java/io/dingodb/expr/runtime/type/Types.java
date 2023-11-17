@@ -76,11 +76,25 @@ public final class Types {
     }
 
     public static ArrayType array(@NonNull Type elementType) {
-        return ArrayTypeBuilder.INSTANCE.visit(elementType);
+        if (elementType.isScalar()) {
+            return ArrayTypeBuilder.INSTANCE.visit(elementType);
+        }
+        return new ArrayType(elementType);
     }
 
     public static ListType list(@NonNull Type elementType) {
-        return ListTypeBuilder.INSTANCE.visit(elementType);
+        if (elementType.isScalar()) {
+            return ListTypeBuilder.INSTANCE.visit(elementType);
+        }
+        return new ListType(elementType);
+    }
+
+    public static @NonNull MapType map(@NonNull Type keyType, @NonNull Type valueType) {
+        return new MapType(keyType, valueType);
+    }
+
+    public static @NonNull TupleType tuple(@NonNull Type[] types) {
+        return new TupleType(types);
     }
 
     /**
@@ -219,26 +233,6 @@ public final class Types {
         public ArrayType visitAnyType(@NonNull AnyType type, Void obj) {
             return ARRAY_ANY;
         }
-
-        @Override
-        public @NonNull ArrayType visitArrayType(@NonNull ArrayType type, Void obj) {
-            return new ArrayType(type);
-        }
-
-        @Override
-        public @NonNull ArrayType visitListType(@NonNull ListType type, Void obj) {
-            return new ArrayType(type);
-        }
-
-        @Override
-        public @NonNull ArrayType visitMapType(@NonNull MapType type, Void obj) {
-            return new ArrayType(type);
-        }
-
-        @Override
-        public @NonNull ArrayType visitTupleType(@NonNull TupleType type, Void obj) {
-            return new ArrayType(type);
-        }
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -303,26 +297,6 @@ public final class Types {
         @Override
         public ListType visitAnyType(@NonNull AnyType type, Void obj) {
             return LIST_ANY;
-        }
-
-        @Override
-        public @NonNull ListType visitArrayType(@NonNull ArrayType type, Void obj) {
-            return new ListType(type);
-        }
-
-        @Override
-        public @NonNull ListType visitListType(@NonNull ListType type, Void obj) {
-            return new ListType(type);
-        }
-
-        @Override
-        public @NonNull ListType visitMapType(@NonNull MapType type, Void obj) {
-            return new ListType(type);
-        }
-
-        @Override
-        public @NonNull ListType visitTupleType(@NonNull TupleType type, Void obj) {
-            return new ListType(type);
         }
     }
 }

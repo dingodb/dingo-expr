@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.CollectionType;
 import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.Types;
-import lombok.Getter;
+import io.dingodb.expr.runtime.type.TupleType;
+import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -28,19 +27,19 @@ class SliceListOp extends SliceOpFactory {
     private static final long serialVersionUID = -1472675231395486262L;
 
     protected final ListType originalType;
-    @Getter
-    protected final ListType type;
 
     protected SliceListOp(@NonNull ListType originalType) {
         this.originalType = originalType;
-        this.type = Types.list(((CollectionType) originalType.getElementType()).getElementType());
     }
 
-    public static @Nullable SliceListOp of(ListType type) {
-        if (type.getElementType() instanceof ArrayType) {
+    public static @Nullable SliceListOp of(@NonNull ListType type) {
+        Type elementType = type.getElementType();
+        if (elementType instanceof ArrayType) {
             return new SliceListOfArrayOp(type);
-        } else if (type.getElementType() instanceof ListType) {
+        } else if (elementType instanceof ListType) {
             return new SliceListOfListOp(type);
+        } else if (elementType instanceof TupleType) {
+            return new SliceListOfTupleOp(type);
         }
         return null;
     }

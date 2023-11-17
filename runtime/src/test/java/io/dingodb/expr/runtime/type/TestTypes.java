@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -89,10 +90,26 @@ public class TestTypes {
         );
     }
 
+    private static @NonNull Stream<Arguments> getToStringParameters() {
+        return Stream.of(
+            arguments(Types.NULL, NullType.NAME),
+            arguments(Types.array(Types.DOUBLE), "ARRAY<DOUBLE>"),
+            arguments(Types.list(Types.DOUBLE), "LIST<DOUBLE>"),
+            arguments(Types.map(Types.STRING, Types.LONG), "MAP<STRING, LONG>"),
+            arguments(Types.tuple(new Type[]{Types.INT, Types.LONG}), "TUPLE[INT, LONG]")
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("getParameters")
     public void testClassType(Class<?> clazz, Type type) {
         assertEquals(Types.classType(clazz), type);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getToStringParameters")
+    public void testToString(@NonNull Type type, String expected) {
+        assertThat(type.toString()).isEqualTo(expected);
     }
 
     @Test
@@ -110,7 +127,31 @@ public class TestTypes {
             Types.DATE,
             Types.TIME,
             Types.TIMESTAMP,
-            Types.ANY
+            Types.ANY,
+            Types.ARRAY_INT,
+            Types.ARRAY_LONG,
+            Types.ARRAY_FLOAT,
+            Types.ARRAY_DOUBLE,
+            Types.ARRAY_BOOL,
+            Types.ARRAY_DECIMAL,
+            Types.ARRAY_STRING,
+            Types.ARRAY_BYTES,
+            Types.ARRAY_DATE,
+            Types.ARRAY_TIME,
+            Types.ARRAY_TIMESTAMP,
+            Types.ARRAY_ANY,
+            Types.LIST_INT,
+            Types.LIST_LONG,
+            Types.LIST_FLOAT,
+            Types.LIST_DOUBLE,
+            Types.LIST_BOOL,
+            Types.LIST_DECIMAL,
+            Types.LIST_STRING,
+            Types.LIST_BYTES,
+            Types.LIST_DATE,
+            Types.LIST_TIME,
+            Types.LIST_TIMESTAMP,
+            Types.LIST_ANY,
         };
         Set<Integer> codeSet = new HashSet<>();
         for (Type type : types) {
