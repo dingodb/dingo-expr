@@ -24,6 +24,7 @@ dependencies {
     implementation group: 'org.assertj', name: 'assertj-core', version: 'assertj'.v()
     implementation project(':dingo-expr-json')
     implementation project(':dingo-expr-runtime')
+    testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     testImplementation project(':dingo-expr-coding')
     testImplementation project(':dingo-expr-jni')
     testImplementation project(':dingo-expr-parser')

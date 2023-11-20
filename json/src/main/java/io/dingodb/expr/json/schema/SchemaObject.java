@@ -43,7 +43,7 @@ public final class SchemaObject extends Schema {
     @Override
     public @NonNull DataSchema createDataSchema() {
         if (additionalProperties == null || additionalProperties || properties == null) {
-            return new DataLeaf(Types.MAP);
+            return new DataLeaf(Types.MAP_ANY_ANY);
         }
         Map<String, DataSchema> children = new HashMap<>(properties.size());
         for (Map.Entry<String, Schema> entry : properties.entrySet()) {

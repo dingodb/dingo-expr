@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.test.cases;
 
+import com.google.common.collect.ImmutableMap;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -65,6 +66,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.LOG;
 import static io.dingodb.expr.runtime.expr.Exprs.LOWER;
 import static io.dingodb.expr.runtime.expr.Exprs.LT;
 import static io.dingodb.expr.runtime.expr.Exprs.LTRIM;
+import static io.dingodb.expr.runtime.expr.Exprs.MAP;
 import static io.dingodb.expr.runtime.expr.Exprs.MAX;
 import static io.dingodb.expr.runtime.expr.Exprs.MID2;
 import static io.dingodb.expr.runtime.expr.Exprs.MID3;
@@ -629,6 +631,9 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(LIST, 1, 2, 3), Arrays.asList(1, 2, 3)),
             arguments(op(LIST, 1L, 2, 3), Arrays.asList(1L, 2L, 3L)),
             arguments(op(LIST, 1L, 2.0, 3), Arrays.asList(1.0, 2.0, 3.0)),
+            arguments(op(MAP, 'a', 1, 'b', 2), ImmutableMap.of('a', 1, 'b', 2)),
+            arguments(op(MAP, 1, 1, 2, 2), ImmutableMap.of(1, 1, 2, 2)),
+            arguments(op(MAP, '1', 1, 2, '2'), ImmutableMap.of('1', 1, 2, '2')),
             arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 0), new int[]{1, 3, 5}),
             arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 1), new int[]{2, 4, 6}),
             arguments(op(SLICE, val(
