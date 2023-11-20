@@ -20,6 +20,6 @@ public class NullElementsNotAllowed extends ExprEvaluatingException {
     private static final long serialVersionUID = -7337702585552612680L;
 
     public NullElementsNotAllowed() {
-        super("Null values are not allowed in collection types.");
+        super("Null values are not allowed in collection or map types.");
     }
 }

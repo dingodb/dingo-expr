@@ -32,7 +32,7 @@ abstract class CollectionConstructorOpFactory extends VariadicOp {
         if (c == 1) {
             return types[0];
         } else if (c == 0) {
-            return Types.INT;
+            return Types.ANY;
         }
         return null;
     }

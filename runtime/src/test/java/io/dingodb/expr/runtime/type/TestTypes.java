@@ -80,10 +80,10 @@ public class TestTypes {
             arguments(List.class, Types.LIST_ANY),
             arguments(LinkedList.class, Types.LIST_ANY),
             arguments(ArrayList.class, Types.LIST_ANY),
-            arguments(Map.class, Types.MAP),
-            arguments(HashMap.class, Types.MAP),
-            arguments(TreeMap.class, Types.MAP),
-            arguments(LinkedHashMap.class, Types.MAP),
+            arguments(Map.class, Types.MAP_ANY_ANY),
+            arguments(HashMap.class, Types.MAP_ANY_ANY),
+            arguments(TreeMap.class, Types.MAP_ANY_ANY),
+            arguments(LinkedHashMap.class, Types.MAP_ANY_ANY),
             // any
             arguments(TestTypes.class, Types.ANY),
             arguments(Object.class, Types.ANY)

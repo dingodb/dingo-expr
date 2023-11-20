@@ -70,7 +70,19 @@ public final class Types {
     public static final ListType LIST_TIMESTAMP = new ListType(TIMESTAMP);
     public static final ListType LIST_ANY = new ListType(ANY);
 
-    public static final MapType MAP = new MapType(ANY, ANY);
+    public static final MapType MAP_STRING_INT = new MapType(STRING, INT);
+    public static final MapType MAP_STRING_LONG = new MapType(STRING, LONG);
+    public static final MapType MAP_STRING_FLOAT = new MapType(STRING, FLOAT);
+    public static final MapType MAP_STRING_DOUBLE = new MapType(STRING, DOUBLE);
+    public static final MapType MAP_STRING_BOOL = new MapType(STRING, BOOL);
+    public static final MapType MAP_STRING_DECIMAL = new MapType(STRING, DECIMAL);
+    public static final MapType MAP_STRING_STRING = new MapType(STRING, STRING);
+    public static final MapType MAP_STRING_BYTES = new MapType(STRING, BYTES);
+    public static final MapType MAP_STRING_DATE = new MapType(STRING, DATE);
+    public static final MapType MAP_STRING_TIME = new MapType(STRING, TIME);
+    public static final MapType MAP_STRING_TIMESTAMP = new MapType(STRING, TIMESTAMP);
+    public static final MapType MAP_STRING_ANY = new MapType(STRING, ANY);
+    public static final MapType MAP_ANY_ANY = new MapType(ANY, ANY);
 
     private Types() {
     }
@@ -90,6 +102,11 @@ public final class Types {
     }
 
     public static @NonNull MapType map(@NonNull Type keyType, @NonNull Type valueType) {
+        if (keyType.equals(STRING) && valueType.isScalar()) {
+            return StringMapTypeBuilder.INSTANCE.visit(valueType);
+        } else if (keyType.equals(ANY) && valueType.equals(ANY)) {
+            return MAP_ANY_ANY;
+        }
         return new MapType(keyType, valueType);
     }
 
@@ -135,7 +152,7 @@ public final class Types {
         } else if (List.class.isAssignableFrom(clazz)) {
             return LIST_ANY;
         } else if (Map.class.isAssignableFrom(clazz)) {
-            return MAP;
+            return MAP_ANY_ANY;
         } else if (void.class.isAssignableFrom(clazz) || Void.class.isAssignableFrom(clazz)) {
             return NULL;
         }
@@ -297,6 +314,71 @@ public final class Types {
         @Override
         public ListType visitAnyType(@NonNull AnyType type, Void obj) {
             return LIST_ANY;
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class StringMapTypeBuilder extends TypeVisitorBase<MapType, Void> {
+        private static final StringMapTypeBuilder INSTANCE = new StringMapTypeBuilder();
+
+        @Override
+        public MapType visitIntType(@NonNull IntType type, Void obj) {
+            return MAP_STRING_INT;
+        }
+
+        @Override
+        public MapType visitLongType(@NonNull LongType type, Void obj) {
+            return MAP_STRING_LONG;
+        }
+
+        @Override
+        public MapType visitFloatType(@NonNull FloatType type, Void obj) {
+            return MAP_STRING_FLOAT;
+        }
+
+        @Override
+        public MapType visitDoubleType(@NonNull DoubleType type, Void obj) {
+            return MAP_STRING_DOUBLE;
+        }
+
+        @Override
+        public MapType visitBoolType(@NonNull BoolType type, Void obj) {
+            return MAP_STRING_BOOL;
+        }
+
+        @Override
+        public MapType visitDecimalType(@NonNull DecimalType type, Void obj) {
+            return MAP_STRING_DECIMAL;
+        }
+
+        @Override
+        public MapType visitStringType(@NonNull StringType type, Void obj) {
+            return MAP_STRING_STRING;
+        }
+
+        @Override
+        public MapType visitBytesType(@NonNull BytesType type, Void obj) {
+            return MAP_STRING_BYTES;
+        }
+
+        @Override
+        public MapType visitDateType(@NonNull DateType type, Void obj) {
+            return MAP_STRING_DATE;
+        }
+
+        @Override
+        public MapType visitTimeType(@NonNull TimeType type, Void obj) {
+            return MAP_STRING_TIME;
+        }
+
+        @Override
+        public MapType visitTimestampType(@NonNull TimestampType type, Void obj) {
+            return MAP_STRING_TIMESTAMP;
+        }
+
+        @Override
+        public MapType visitAnyType(@NonNull AnyType type, Void obj) {
+            return MAP_STRING_ANY;
         }
     }
 }

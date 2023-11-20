@@ -52,7 +52,7 @@ public class TestSchemaParser {
         assertThat(schema.getChild("arrD")).hasFieldOrPropertyWithValue("type", null)
             .satisfies(s -> assertThat(s.getChild(0)).hasFieldOrPropertyWithValue("type", Types.LONG))
             .satisfies(s -> assertThat(s.getChild(1)).hasFieldOrPropertyWithValue("type", Types.STRING));
-        assertThat(schema.getChild("mapA")).hasFieldOrPropertyWithValue("type", Types.MAP);
+        assertThat(schema.getChild("mapA")).hasFieldOrPropertyWithValue("type", Types.MAP_ANY_ANY);
         assertThat(schema.getChild("mapB")).hasFieldOrPropertyWithValue("type", null)
             .satisfies(s -> assertThat(s.getChild("foo")).hasFieldOrPropertyWithValue("type", Types.DOUBLE))
             .satisfies(s -> assertThat(s.getChild("bar")).hasFieldOrPropertyWithValue("type", Types.STRING));

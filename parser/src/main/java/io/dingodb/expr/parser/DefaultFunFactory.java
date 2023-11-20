@@ -24,6 +24,7 @@ import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
+import io.dingodb.expr.runtime.op.collection.MapConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.SliceOpFactory;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.OrFun;
@@ -179,6 +180,7 @@ public class DefaultFunFactory implements FunFactory {
         // Collection functions
         registerVariadicFun(ArrayConstructorOpFactory.NAME, Exprs.ARRAY);
         registerVariadicFun(ListConstructorOpFactory.NAME, Exprs.LIST);
+        registerVariadicFun(MapConstructorOpFactory.NAME, Exprs.MAP);
         registerBinaryFun(SliceOpFactory.NAME, Exprs.SLICE);
     }
 
