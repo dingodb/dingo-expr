@@ -17,38 +17,39 @@
 package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.type.ArrayType;
+import io.dingodb.expr.runtime.expr.BinaryOpExpr;
+import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.Exprs;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
-import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class SliceListOfTupleOp extends SliceListOp {
     private static final long serialVersionUID = -580934004823081222L;
 
-    SliceListOfTupleOp(ListType originalType) {
-        super(originalType);
+    SliceListOfTupleOp(ListType originalType, ListType type) {
+        super(originalType, type);
     }
 
     @Override
-    protected @NonNull Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        int index = (Integer) value1;
-        List<?> list = (List<?>) value0;
-        int size = list.size();
-        List<Object> result = new ArrayList<>(size);
-        for (Object element : list) {
-            result.add(Array.get(element, index));
+    Object getValueOf(Object value, int index) {
+        return ((Object[]) value)[index];
+    }
+
+    @Override
+    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {
+        Type elementType = guessElementType(expr, config);
+        if (elementType != null) {
+            if (!elementType.equals(type.getElementType())) {
+                return Exprs.op(new SliceListOfTupleOp(
+                    (ListType) originalType,
+                    Types.list(elementType)
+                ), expr.getOperand0(), expr.getOperand1());
+            }
+            return expr;
         }
-        return result;
-    }
-
-    @Override
-    public Type getType() {
-        return Types.LIST_ANY;
+        return Val.NULL;
     }
 }

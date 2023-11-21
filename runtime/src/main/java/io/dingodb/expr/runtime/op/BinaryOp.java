@@ -33,7 +33,7 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
         throw new EvalNotImplemented(this.getClass().getCanonicalName());
     }
 
-    protected Object evalValue(Object value0, Object value1, ExprConfig config) {
+    public Object evalValue(Object value0, Object value1, ExprConfig config) {
         return (value0 != null && value1 != null) ? evalNonNullValue(value0, value1, config) : null;
     }
 
@@ -65,10 +65,10 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
                 throw new OperatorTypeNotExist(this, type0, type1);
             }
         }
-        return config.isDoSimplification() ? result.simplify() : result;
+        return config.isDoSimplification() ? result.simplify(config) : result;
     }
 
-    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {
         assert expr.getOp() == this;
         return expr;
     }

@@ -16,6 +16,9 @@
 
 package io.dingodb.expr.test.asserts;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.offset;
 
@@ -28,10 +31,24 @@ public class AssertValue extends Assert<Object> {
     public AssertValue isEqualTo(Object expected) {
         if (expected == null) {
             assertThat(instance).isNull();
-        } else if (instance instanceof Float) {
+        } else if (expected instanceof Float) {
             assertThat((Float) instance).isCloseTo((Float) expected, offset(1E-6f));
-        } else if (instance instanceof Double) {
+        } else if (expected instanceof Double) {
             assertThat((Double) instance).isCloseTo((Double) expected, offset(1E-6));
+        } else if (expected.getClass().isArray()) {
+            int size = Array.getLength(expected);
+            assertThat(instance.getClass().isArray()).isTrue();
+            assertThat(Array.getLength(instance)).isEqualTo(size);
+            for (int i = 0; i < size; ++i) {
+                new AssertValue(Array.get(instance, i)).isEqualTo(Array.get(expected, i));
+            }
+        } else if (expected instanceof List) {
+            int size = ((List<?>) expected).size();
+            assertThat(instance).isInstanceOf(List.class);
+            assertThat(((List<?>) instance).size()).isEqualTo(size);
+            for (int i = 0; i < size; ++i) {
+                new AssertValue(((List<?>) instance).get(i)).isEqualTo(((List<?>) expected).get(i));
+            }
         } else {
             assertThat(instance).isEqualTo(expected);
         }

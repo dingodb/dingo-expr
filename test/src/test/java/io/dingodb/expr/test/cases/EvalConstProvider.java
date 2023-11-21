@@ -29,7 +29,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -92,6 +91,19 @@ import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR2;
 import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR3;
 import static io.dingodb.expr.runtime.expr.Exprs.TAN;
 import static io.dingodb.expr.runtime.expr.Exprs.TANH;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_BOOL;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_BYTES;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_DATE;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_DECIMAL;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_DOUBLE;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_FLOAT;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_INT;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_INT_C;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_LONG;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_LONG_C;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_STRING;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_TIME;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_TIMESTAMP;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_BOOL;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_BYTES;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_DATE;
@@ -100,6 +112,19 @@ import static io.dingodb.expr.runtime.expr.Exprs.TO_DOUBLE;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_FLOAT;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_INT;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_INT_C;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_BOOL;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_BYTES;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_DATE;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_DECIMAL;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_DOUBLE;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_FLOAT;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_INT;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_INT_C;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_LONG;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_LONG_C;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_STRING;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_TIME;
+import static io.dingodb.expr.runtime.expr.Exprs.TO_LIST_TIMESTAMP;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_LONG;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_LONG_C;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_STRING;
@@ -634,6 +659,62 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(MAP, 'a', 1, 'b', 2), ImmutableMap.of('a', 1, 'b', 2)),
             arguments(op(MAP, 1, 1, 2, 2), ImmutableMap.of(1, 1, 2, 2)),
             arguments(op(MAP, '1', 1, 2, '2'), ImmutableMap.of('1', 1, 2, '2')),
+            arguments(op(TO_ARRAY_INT, op(ARRAY, 1.1, 2.2, 3.3, 4.4, 5.5)), new int[]{1, 2, 3, 4, 6}),
+            arguments(op(TO_ARRAY_INT_C, op(ARRAY, 1.1, 2.2, 3.3, 4.4, 5.5)), new int[]{1, 2, 3, 4, 6}),
+            arguments(op(TO_ARRAY_LONG, op(ARRAY, "1", "2", "3")), new long[]{1L, 2L, 3L}),
+            arguments(op(TO_ARRAY_LONG_C, op(ARRAY, "1", "2", "3")), new long[]{1L, 2L, 3L}),
+            arguments(op(TO_ARRAY_FLOAT, op(ARRAY, 1, 2, 3)), new float[]{1.0f, 2.0f, 3.0f}),
+            arguments(op(TO_ARRAY_DOUBLE, op(ARRAY, 1, 2, 3)), new double[]{1.0, 2.0, 3.0}),
+            arguments(op(TO_ARRAY_BOOL, op(ARRAY, 1, 0, 1)), new boolean[]{true, false, true}),
+            arguments(op(TO_ARRAY_DECIMAL, op(ARRAY, 1, 0)), new BigDecimal[]{BigDecimal.ONE, BigDecimal.ZERO}),
+            arguments(op(TO_ARRAY_STRING, op(ARRAY, 1, 2, 3)), new String[]{"1", "2", "3"}),
+            arguments(op(TO_ARRAY_BYTES, op(ARRAY, "a", "b")), new byte[][]{"a".getBytes(), "b".getBytes()}),
+            arguments(op(TO_ARRAY_DATE, op(ARRAY, 1, 2)), new Date[]{new Date(sec(1L)), new Date(sec(2L))}),
+            arguments(op(TO_ARRAY_TIME, op(ARRAY, 1, 2)), new Time[]{new Time(sec(1L)), new Time(sec(2L))}),
+            arguments(op(TO_ARRAY_TIMESTAMP, op(ARRAY, 1, 2)),
+                new Timestamp[]{new Timestamp(sec(1L)), new Timestamp(sec(2L))}),
+            arguments(op(TO_ARRAY_INT, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), new int[]{1, 2, 3, 4, 6}),
+            arguments(op(TO_ARRAY_INT_C, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), new int[]{1, 2, 3, 4, 6}),
+            arguments(op(TO_ARRAY_LONG, op(LIST, "1", "2", "3")), new long[]{1, 2, 3}),
+            arguments(op(TO_ARRAY_LONG_C, op(LIST, "1", "2", "3")), new long[]{1, 2, 3}),
+            arguments(op(TO_ARRAY_FLOAT, op(LIST, 1, 2, 3)), new float[]{1.0f, 2.0f, 3.0f}),
+            arguments(op(TO_ARRAY_DOUBLE, op(LIST, 1, 2, 3)), new double[]{1.0, 2.0, 3.0}),
+            arguments(op(TO_ARRAY_BOOL, op(LIST, 1, 0, 1)), new boolean[]{true, false, true}),
+            arguments(op(TO_ARRAY_DECIMAL, op(LIST, 1, 0)), new BigDecimal[]{BigDecimal.ONE, BigDecimal.ZERO}),
+            arguments(op(TO_ARRAY_STRING, op(LIST, 1, 2, 3)), new String[]{"1", "2", "3"}),
+            arguments(op(TO_ARRAY_BYTES, op(LIST, "a", "b")), new byte[][]{"a".getBytes(), "b".getBytes()}),
+            arguments(op(TO_ARRAY_DATE, op(LIST, 1, 2)), new Date[]{new Date(sec(1L)), new Date(sec(2L))}),
+            arguments(op(TO_ARRAY_TIME, op(LIST, 1, 2)), new Time[]{new Time(sec(1L)), new Time(sec(2L))}),
+            arguments(op(TO_ARRAY_TIMESTAMP, op(LIST, 1, 2)),
+                new Timestamp[]{new Timestamp(sec(1L)), new Timestamp(sec(2L))}),
+            arguments(op(TO_LIST_INT, op(ARRAY, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
+            arguments(op(TO_LIST_INT_C, op(ARRAY, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
+            arguments(op(TO_LIST_LONG, op(ARRAY, "1", "2", "3")), Arrays.asList(1L, 2L, 3L)),
+            arguments(op(TO_LIST_LONG_C, op(ARRAY, "1", "2", "3")), Arrays.asList(1L, 2L, 3L)),
+            arguments(op(TO_LIST_FLOAT, op(ARRAY, 1, 2, 3)), Arrays.asList(1.0f, 2.0f, 3.0f)),
+            arguments(op(TO_LIST_DOUBLE, op(ARRAY, 1, 2, 3)), Arrays.asList(1.0, 2.0, 3.0)),
+            arguments(op(TO_LIST_BOOL, op(ARRAY, 1, 0, 1)), Arrays.asList(true, false, true)),
+            arguments(op(TO_LIST_DECIMAL, op(ARRAY, 1, 0)), Arrays.asList(BigDecimal.ONE, BigDecimal.ZERO)),
+            arguments(op(TO_LIST_STRING, op(ARRAY, 1, 2, 3)), Arrays.asList("1", "2", "3")),
+            arguments(op(TO_LIST_BYTES, op(ARRAY, "a", "b")), Arrays.asList("a".getBytes(), "b".getBytes())),
+            arguments(op(TO_LIST_DATE, op(ARRAY, 1, 2)), Arrays.asList(new Date(sec(1L)), new Date(sec(2L)))),
+            arguments(op(TO_LIST_TIME, op(ARRAY, 1, 2)), Arrays.asList(new Time(sec(1L)), new Time(sec(2L)))),
+            arguments(op(TO_LIST_TIMESTAMP, op(ARRAY, 1, 2)),
+                Arrays.asList(new Timestamp(sec(1L)), new Timestamp(sec(2L)))),
+            arguments(op(TO_LIST_INT, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
+            arguments(op(TO_LIST_INT_C, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
+            arguments(op(TO_LIST_LONG, op(LIST, "1", "2", "3")), Arrays.asList(1L, 2L, 3L)),
+            arguments(op(TO_LIST_LONG_C, op(LIST, "1", "2", "3")), Arrays.asList(1L, 2L, 3L)),
+            arguments(op(TO_LIST_FLOAT, op(LIST, 1, 2, 3)), Arrays.asList(1.0f, 2.0f, 3.0f)),
+            arguments(op(TO_LIST_DOUBLE, op(LIST, 1, 2, 3)), Arrays.asList(1.0, 2.0, 3.0)),
+            arguments(op(TO_LIST_BOOL, op(LIST, 1, 0, 1)), Arrays.asList(true, false, true)),
+            arguments(op(TO_LIST_DECIMAL, op(LIST, 1, 0)), Arrays.asList(BigDecimal.ONE, BigDecimal.ZERO)),
+            arguments(op(TO_LIST_STRING, op(LIST, 1, 2, 3)), Arrays.asList("1", "2", "3")),
+            arguments(op(TO_LIST_BYTES, op(LIST, "a", "b")), Arrays.asList("a".getBytes(), "b".getBytes())),
+            arguments(op(TO_LIST_DATE, op(LIST, 1, 2)), Arrays.asList(new Date(sec(1L)), new Date(sec(2L)))),
+            arguments(op(TO_LIST_TIME, op(LIST, 1, 2)), Arrays.asList(new Time(sec(1L)), new Time(sec(2L)))),
+            arguments(op(TO_LIST_TIMESTAMP, op(LIST, 1, 2)),
+                Arrays.asList(new Timestamp(sec(1L)), new Timestamp(sec(2L)))),
             arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 0), new int[]{1, 3, 5}),
             arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 1), new int[]{2, 4, 6}),
             arguments(op(SLICE, val(
@@ -666,7 +747,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(INDEX, new int[]{1, 2, 3}, 2), 3),
             arguments(op(INDEX, Arrays.asList(1, 2, 3), 0), 1),
             arguments(op(INDEX, Arrays.asList(1, 2, 3), 2), 3),
-            arguments(op(INDEX, Collections.singletonMap("a", 10), "a"), 10)
+            arguments(op(INDEX, ImmutableMap.of("a", 10, "b", 20), "a"), 10),
+            arguments(op(INDEX, ImmutableMap.of("a", 10, "b", 20), "b"), 20)
         );
     }
 }

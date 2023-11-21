@@ -28,7 +28,7 @@ abstract class BinaryFormatFun extends BinaryOp {
     @Override
     public @NonNull Expr compile(@NonNull Expr operand0, @NonNull Expr operand1, @NonNull ExprConfig config) {
         if (config.getTimeFormatStringStyle() == ExprConfig.TimeFormatStringStyle.SQL) {
-            operand1 = Exprs._CTF.compile(operand1, config).simplify();
+            operand1 = Exprs._CTF.compile(operand1, config).simplify(config);
         }
         return super.compile(operand0, operand1, config);
     }

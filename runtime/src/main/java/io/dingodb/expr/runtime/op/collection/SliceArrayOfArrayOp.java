@@ -16,33 +16,20 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
-import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.Types;
-import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Array;
 
 public final class SliceArrayOfArrayOp extends SliceArrayOp {
     private static final long serialVersionUID = -580934004823081222L;
 
-    @Getter
-    private final ArrayType type;
-
     SliceArrayOfArrayOp(ArrayType originalType) {
-        super(originalType);
-        type = Types.array(((ArrayType) originalType.getElementType()).getElementType());
+        super(originalType, Types.array(((ArrayType) originalType.getElementType()).getElementType()));
     }
 
     @Override
-    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        int index = (Integer) value1;
-        int size = Array.getLength(value0);
-        Object result = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
-        for (int i = 0; i < size; ++i) {
-            Array.set(result, i, Array.get(Array.get(value0, i), index));
-        }
-        return result;
+    Object getValueOf(Object value, int index) {
+        return Array.get(value, index);
     }
 }

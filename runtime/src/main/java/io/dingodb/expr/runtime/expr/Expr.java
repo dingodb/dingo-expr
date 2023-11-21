@@ -34,12 +34,12 @@ public interface Expr extends Serializable {
     Object eval(EvalContext context, ExprConfig config);
 
     default Object eval() {
-        return eval(null, null);
+        return eval(null, ExprConfig.TRIVIAL);
     }
 
     Type getType();
 
-    @NonNull Expr simplify();
+    @NonNull Expr simplify(ExprConfig config);
 
     <R, T> R accept(@NonNull ExprVisitor<R, T> visitor, T obj);
 }

@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.test.cases;
 
+import com.google.common.collect.ImmutableMap;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,6 +26,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -202,7 +204,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("locate('potatoes', 'o')", 2),
             arguments("locate('potatoes', 'o', 3)", 6),
 
-            // date & time
+            // Date & time
             arguments("date('1970-1-1')", new Date(0)),
             arguments("time('00:00:00')", new Time(0)),
             arguments("timestamp('1970-1-1 00:00:00')", Timestamp.valueOf("1970-01-01 00:00:00")),
@@ -223,7 +225,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
                 DateTimeUtils.timestampFormat(new Timestamp(0), "uuuuMMddHHmmss")
             ),
 
-            // null
+            // Nulls
             arguments("null", null),
             arguments("1 + null", null),
             arguments("1 + null * 3", null),
@@ -242,7 +244,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("min(null, 5)", null),
             arguments("max(3, null)", null),
 
-            // three-valued logic
+            // Three-valued logic
             arguments("null && null", null),
             arguments("null && false", false),
             arguments("null && true", null),
@@ -274,7 +276,13 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("is_false(0)", true),
             arguments("is_false(100)", false),
             arguments("is_true(0)", false),
-            arguments("is_true(100)", true)
+            arguments("is_true(100)", true),
+
+            // Collections
+            arguments("array(1, 2, 3)", new int[]{1, 2, 3}),
+            arguments("map('a', 1, 'b', 2)", ImmutableMap.of("a", 1, "b", 2)),
+            arguments("array_int(list(7, 8, 9))", new int[]{7, 8, 9}),
+            arguments("list_int(array(3, 4, 5))", Arrays.asList(3, 4, 5))
         );
     }
 }

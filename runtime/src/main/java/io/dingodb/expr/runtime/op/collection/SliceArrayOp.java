@@ -16,20 +16,22 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-class SliceArrayOp extends SliceOpFactory {
+import java.lang.reflect.Array;
+
+abstract class SliceArrayOp extends SliceOp {
     private static final long serialVersionUID = 6362732903056529224L;
 
-    protected final ArrayType originalType;
-
-    protected SliceArrayOp(@NonNull ArrayType originalType) {
-        this.originalType = originalType;
+    protected SliceArrayOp(@NonNull ArrayType originalType, ArrayType type) {
+        super(originalType, type);
     }
 
     public static @Nullable SliceArrayOp of(@NonNull ArrayType type) {
@@ -39,13 +41,19 @@ class SliceArrayOp extends SliceOpFactory {
         } else if (elementType instanceof ListType) {
             return new SliceArrayOfListOp(type);
         } else if (elementType instanceof TupleType) {
-            return new SliceArrayOfTupleOp(type);
+            return new SliceArrayOfTupleOp(type, Types.ARRAY_ANY);
         }
         return null;
     }
 
     @Override
-    public Object getKey() {
-        return originalType;
+    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
+        int index = (Integer) value1;
+        int size = Array.getLength(value0);
+        Object result = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
+        for (int i = 0; i < size; ++i) {
+            Array.set(result, i, getValueOf(Array.get(value0, i), index));
+        }
+        return result;
     }
 }

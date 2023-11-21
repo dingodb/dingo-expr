@@ -20,7 +20,7 @@ import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-abstract class CastOp extends UnaryOp {
+public abstract class CastOp extends UnaryOp {
     private static final long serialVersionUID = -7770311788157283602L;
 
     @Override

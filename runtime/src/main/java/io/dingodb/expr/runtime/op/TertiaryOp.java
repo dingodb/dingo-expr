@@ -38,7 +38,7 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         throw new EvalNotImplemented(this.getClass().getCanonicalName());
     }
 
-    protected Object evalValue(
+    public Object evalValue(
         Object value0,
         Object value1,
         Object value2,
@@ -93,10 +93,10 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
                 throw new OperatorTypeNotExist(this, type0, type1);
             }
         }
-        return config.isDoSimplification() ? result.simplify() : result;
+        return config.isDoSimplification() ? result.simplify(config) : result;
     }
 
-    public @NonNull Expr simplify(@NonNull TertiaryOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull TertiaryOpExpr expr, ExprConfig ignoredConfig) {
         assert expr.getOp() == this;
         return expr;
     }

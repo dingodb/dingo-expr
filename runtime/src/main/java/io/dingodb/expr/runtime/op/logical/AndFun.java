@@ -60,12 +60,12 @@ public final class AndFun extends LogicalFun {
     }
 
     @Override
-    public @NonNull Expr simplify(@NonNull VariadicOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull VariadicOpExpr expr, ExprConfig config) {
         Expr[] operands = expr.getOperands();
         List<Expr> newOperands = new ArrayList<>(operands.length);
         for (Expr operand : operands) {
             if (operand instanceof Val) {
-                Object v0 = operand.eval();
+                Object v0 = operand.eval(null, config);
                 if (v0 != null) {
                     if (!(Boolean) v0) {
                         return Val.FALSE;
@@ -87,7 +87,7 @@ public final class AndFun extends LogicalFun {
                     Exprs.AND.getOp(Exprs.AND.keyOf(Types.BOOL, Types.BOOL)),
                     newOperands.get(0),
                     newOperands.get(1)
-                ).simplify();
+                ).simplify(config);
             default:
                 break;
         }

@@ -16,35 +16,20 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
-import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.Types;
-import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class SliceListOfListOp extends SliceListOp {
     private static final long serialVersionUID = 5059637882397547648L;
 
-    @Getter
-    private final ListType type;
-
     SliceListOfListOp(ListType originalType) {
-        super(originalType);
-        type = Types.list(((ListType) originalType.getElementType()).getElementType());
+        super(originalType, Types.list(((ListType) originalType.getElementType()).getElementType()));
     }
 
     @Override
-    protected @NonNull Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        int index = (Integer) value1;
-        List<?> list = (List<?>) value0;
-        int size = list.size();
-        List<Object> result = new ArrayList<>(size);
-        for (Object element : list) {
-            result.add(((List<?>) element).get(index));
-        }
-        return result;
+    Object getValueOf(Object value, int index) {
+        return ((List<?>) value).get(index);
     }
 }

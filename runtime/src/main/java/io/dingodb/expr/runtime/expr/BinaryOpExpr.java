@@ -50,11 +50,11 @@ public class BinaryOpExpr implements OpExpr {
     }
 
     @Override
-    public @NonNull Expr simplify() {
+    public @NonNull Expr simplify(ExprConfig config) {
         if (operand0 instanceof Val && operand1 instanceof Val) {
-            return Exprs.val(eval(), getType());
+            return Exprs.val(eval(null, config), getType());
         }
-        return op.simplify(this);
+        return op.simplify(this, config);
     }
 
     @Override
