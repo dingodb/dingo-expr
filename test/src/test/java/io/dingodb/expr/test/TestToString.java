@@ -49,6 +49,7 @@ public class TestToString {
             arguments("current_date()", "CURRENT_DATE()"),
             arguments("current_time()", "CURRENT_TIME()"),
             arguments("current_timestamp()", "CURRENT_TIMESTAMP()"),
+            arguments("from_unixtime(123)", "FROM_UNIXTIME(123)"),
             arguments("array(1, 2, 3)", "ARRAY(1, 2, 3)"),
             arguments("list(1, 2, 3)", "LIST(1, 2, 3)"),
             arguments("slice(array(array(1), array(2)), 0)", "SLICE(ARRAY(ARRAY(1), ARRAY(2)), 0)")

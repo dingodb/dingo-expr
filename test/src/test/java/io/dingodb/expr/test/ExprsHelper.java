@@ -21,6 +21,8 @@ import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.BigDecimal;
+
 import static io.dingodb.expr.runtime.expr.Exprs.val;
 
 public final class ExprsHelper {
@@ -48,6 +50,10 @@ public final class ExprsHelper {
     }
 
     public static long sec(long second) {
+        return DateTimeUtils.fromSecond(second);
+    }
+
+    public static long sec(BigDecimal second) {
         return DateTimeUtils.fromSecond(second);
     }
 }
