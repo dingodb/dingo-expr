@@ -54,12 +54,12 @@ public final class AndOp extends LogicalOp {
     }
 
     @Override
-    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {
         Expr operand0 = expr.getOperand0();
         Expr operand1 = expr.getOperand1();
         // Both 2 operands are Val is processed in BinaryOpExpr.simplify.
         if (operand0 instanceof Val) {
-            Object v0 = operand0.eval();
+            Object v0 = operand0.eval(null, config);
             if (v0 != null) {
                 if ((Boolean) v0) {
                     return operand1;
@@ -71,7 +71,7 @@ public final class AndOp extends LogicalOp {
             }
         }
         if (operand1 instanceof Val) {
-            Object v1 = operand1.eval();
+            Object v1 = operand1.eval(null, config);
             if (v1 != null) {
                 if ((Boolean) v1) {
                     return operand0;
@@ -82,7 +82,7 @@ public final class AndOp extends LogicalOp {
                 return Exprs.op(this, operand0, Val.NULL_BOOL);
             }
         }
-        return super.simplify(expr);
+        return expr;
     }
 
     @Override

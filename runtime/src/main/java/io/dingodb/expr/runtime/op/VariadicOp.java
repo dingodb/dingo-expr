@@ -37,7 +37,7 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
         throw new EvalNotImplemented(this.getClass().getCanonicalName());
     }
 
-    protected Object evalValue(Object @NonNull [] values, ExprConfig config) {
+    public Object evalValue(Object @NonNull [] values, ExprConfig config) {
         if (Arrays.stream(values).noneMatch(Objects::isNull)) {
             return evalNonNullValue(values, config);
         }
@@ -72,10 +72,10 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
                 throw new OperatorTypeNotExist(this, types);
             }
         }
-        return config.isDoSimplification() ? result.simplify() : result;
+        return config.isDoSimplification() ? result.simplify(config) : result;
     }
 
-    public @NonNull Expr simplify(@NonNull VariadicOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull VariadicOpExpr expr, ExprConfig config) {
         assert expr.getOp() == this;
         return expr;
     }

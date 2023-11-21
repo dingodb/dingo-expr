@@ -33,7 +33,7 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
         throw new EvalNotImplemented(this.getClass().getCanonicalName());
     }
 
-    protected Object evalValue(Object value, ExprConfig config) {
+    public Object evalValue(Object value, ExprConfig config) {
         return (value != null) ? evalNonNullValue(value, config) : null;
     }
 
@@ -65,10 +65,10 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
                 throw new OperatorTypeNotExist(this, type);
             }
         }
-        return config.isDoSimplification() ? result.simplify() : result;
+        return config.isDoSimplification() ? result.simplify(config) : result;
     }
 
-    public @NonNull Expr simplify(@NonNull UnaryOpExpr expr) {
+    public @NonNull Expr simplify(@NonNull UnaryOpExpr expr, ExprConfig ignoredConfig) {
         assert expr.getOp() == this;
         return expr;
     }

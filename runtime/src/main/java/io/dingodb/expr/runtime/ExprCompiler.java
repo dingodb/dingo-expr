@@ -83,7 +83,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
 
     @Override
     public Expr visitNullaryOpExpr(@NonNull NullaryOpExpr expr, CompileContext obj) {
-        return config.isDoSimplification() ? expr.simplify() : expr;
+        return config.isDoSimplification() ? expr.simplify(config) : expr;
     }
 
     @Override
@@ -121,7 +121,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
         Expr operand1 = visit(expr.getOperand1(), obj);
         if (operand0 instanceof VarStub) {
             try {
-                Object index = operand1.eval();
+                Object index = operand1.eval(null, config);
                 return ((VarStub) operand0).getElement(index);
             } catch (ExprEvaluatingException e) {
                 throw new ExprCompileException("Not a valid var index: " + operand1);

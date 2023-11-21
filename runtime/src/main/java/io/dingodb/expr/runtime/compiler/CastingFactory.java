@@ -20,6 +20,9 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.ExprCompileException;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.op.UnaryOp;
+import io.dingodb.expr.runtime.op.collection.CastArrayOpFactory;
+import io.dingodb.expr.runtime.op.collection.CastListOpFactory;
+import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.BoolType;
 import io.dingodb.expr.runtime.type.BytesType;
 import io.dingodb.expr.runtime.type.DateType;
@@ -27,6 +30,7 @@ import io.dingodb.expr.runtime.type.DecimalType;
 import io.dingodb.expr.runtime.type.DoubleType;
 import io.dingodb.expr.runtime.type.FloatType;
 import io.dingodb.expr.runtime.type.IntType;
+import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.LongType;
 import io.dingodb.expr.runtime.type.StringType;
 import io.dingodb.expr.runtime.type.TimeType;
@@ -106,6 +110,136 @@ public final class CastingFactory {
         @Override
         public UnaryOp visitTimestampType(@NonNull TimestampType type, ExprConfig obj) {
             return Exprs.TO_TIMESTAMP;
+        }
+
+        @Override
+        public UnaryOp visitArrayType(@NonNull ArrayType type, ExprConfig obj) {
+            return CastArrayOpSelector.INSTANCE.visit(type.getElementType(), obj);
+        }
+
+        @Override
+        public UnaryOp visitListType(@NonNull ListType type, ExprConfig obj) {
+            return CastListOpSelector.INSTANCE.visit(type.getElementType(), obj);
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class CastArrayOpSelector extends TypeVisitorBase<CastArrayOpFactory, ExprConfig> {
+        private static final CastArrayOpSelector INSTANCE = new CastArrayOpSelector();
+
+        @Override
+        public CastArrayOpFactory visitIntType(@NonNull IntType type, @NonNull ExprConfig obj) {
+            return obj.isDoCastingCheck() ? Exprs.TO_ARRAY_INT_C : Exprs.TO_ARRAY_INT;
+        }
+
+        @Override
+        public CastArrayOpFactory visitLongType(@NonNull LongType type, @NonNull ExprConfig obj) {
+            return obj.isDoCastingCheck() ? Exprs.TO_ARRAY_LONG_C : Exprs.TO_ARRAY_LONG;
+        }
+
+        @Override
+        public CastArrayOpFactory visitFloatType(@NonNull FloatType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_FLOAT;
+        }
+
+        @Override
+        public CastArrayOpFactory visitDoubleType(@NonNull DoubleType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_DOUBLE;
+        }
+
+        @Override
+        public CastArrayOpFactory visitBoolType(@NonNull BoolType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_BOOL;
+        }
+
+        @Override
+        public CastArrayOpFactory visitDecimalType(@NonNull DecimalType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_DECIMAL;
+        }
+
+        @Override
+        public CastArrayOpFactory visitStringType(@NonNull StringType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_STRING;
+        }
+
+        @Override
+        public CastArrayOpFactory visitBytesType(@NonNull BytesType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_BYTES;
+        }
+
+        @Override
+        public CastArrayOpFactory visitDateType(@NonNull DateType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_DATE;
+        }
+
+        @Override
+        public CastArrayOpFactory visitTimeType(@NonNull TimeType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_TIME;
+        }
+
+        @Override
+        public CastArrayOpFactory visitTimestampType(@NonNull TimestampType type, ExprConfig obj) {
+            return Exprs.TO_ARRAY_TIMESTAMP;
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class CastListOpSelector extends TypeVisitorBase<CastListOpFactory, ExprConfig> {
+        private static final CastListOpSelector INSTANCE = new CastListOpSelector();
+
+        @Override
+        public CastListOpFactory visitIntType(@NonNull IntType type, @NonNull ExprConfig obj) {
+            return obj.isDoCastingCheck() ? Exprs.TO_LIST_INT_C : Exprs.TO_LIST_INT;
+        }
+
+        @Override
+        public CastListOpFactory visitLongType(@NonNull LongType type, @NonNull ExprConfig obj) {
+            return obj.isDoCastingCheck() ? Exprs.TO_LIST_LONG_C : Exprs.TO_LIST_LONG;
+        }
+
+        @Override
+        public CastListOpFactory visitFloatType(@NonNull FloatType type, ExprConfig obj) {
+            return Exprs.TO_LIST_FLOAT;
+        }
+
+        @Override
+        public CastListOpFactory visitDoubleType(@NonNull DoubleType type, ExprConfig obj) {
+            return Exprs.TO_LIST_DOUBLE;
+        }
+
+        @Override
+        public CastListOpFactory visitBoolType(@NonNull BoolType type, ExprConfig obj) {
+            return Exprs.TO_LIST_BOOL;
+        }
+
+        @Override
+        public CastListOpFactory visitDecimalType(@NonNull DecimalType type, ExprConfig obj) {
+            return Exprs.TO_LIST_DECIMAL;
+        }
+
+        @Override
+        public CastListOpFactory visitStringType(@NonNull StringType type, ExprConfig obj) {
+            return Exprs.TO_LIST_STRING;
+        }
+
+        @Override
+        public CastListOpFactory visitBytesType(@NonNull BytesType type, ExprConfig obj) {
+            return Exprs.TO_LIST_BYTES;
+        }
+
+        @Override
+        public CastListOpFactory visitDateType(@NonNull DateType type, ExprConfig obj) {
+            return Exprs.TO_LIST_DATE;
+        }
+
+        @Override
+        public CastListOpFactory visitTimeType(@NonNull TimeType type, ExprConfig obj) {
+            return Exprs.TO_LIST_TIME;
+        }
+
+        @Override
+        public CastListOpFactory visitTimestampType(@NonNull TimestampType type, ExprConfig obj) {
+            return Exprs.TO_LIST_TIMESTAMP;
         }
     }
 }

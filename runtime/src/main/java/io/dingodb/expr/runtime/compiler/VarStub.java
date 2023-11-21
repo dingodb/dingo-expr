@@ -47,7 +47,7 @@ public class VarStub implements Expr {
     }
 
     @Override
-    public @NonNull Expr simplify() {
+    public @NonNull Expr simplify(ExprConfig config) {
         throw new NeverRunHere();
     }
 

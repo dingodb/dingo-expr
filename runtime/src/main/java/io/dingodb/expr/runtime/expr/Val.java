@@ -108,7 +108,7 @@ public final class Val implements Expr {
     }
 
     @Override
-    public @NonNull Expr simplify() {
+    public @NonNull Expr simplify(ExprConfig config) {
         return this;
     }
 

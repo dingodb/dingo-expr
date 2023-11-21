@@ -46,8 +46,8 @@ public class NullaryOpExpr implements OpExpr {
     }
 
     @Override
-    public @NonNull Expr simplify() {
-        return op.simplify(this);
+    public @NonNull Expr simplify(ExprConfig config) {
+        return op.simplify(this, config);
     }
 
     @Override

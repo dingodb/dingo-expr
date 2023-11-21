@@ -118,6 +118,28 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(DateType.NAME, Exprs.TO_DATE);
         registerUnaryFun(TimeType.NAME, Exprs.TO_TIME);
         registerUnaryFun(TimestampType.NAME, Exprs.TO_TIMESTAMP);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + IntType.NAME, Exprs.TO_ARRAY_INT);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + LongType.NAME, Exprs.TO_ARRAY_LONG);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + FloatType.NAME, Exprs.TO_ARRAY_FLOAT);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + DoubleType.NAME, Exprs.TO_ARRAY_DOUBLE);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + BoolType.NAME, Exprs.TO_ARRAY_BOOL);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + DecimalType.NAME, Exprs.TO_ARRAY_DECIMAL);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + StringType.NAME, Exprs.TO_ARRAY_STRING);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + BytesType.NAME, Exprs.TO_ARRAY_BYTES);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + DateType.NAME, Exprs.TO_ARRAY_DATE);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + TimeType.NAME, Exprs.TO_ARRAY_TIME);
+        registerUnaryFun(ArrayConstructorOpFactory.NAME + "_" + TimestampType.NAME, Exprs.TO_ARRAY_TIMESTAMP);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + IntType.NAME, Exprs.TO_LIST_INT);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + LongType.NAME, Exprs.TO_LIST_LONG);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + FloatType.NAME, Exprs.TO_LIST_FLOAT);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + DoubleType.NAME, Exprs.TO_LIST_DOUBLE);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + BoolType.NAME, Exprs.TO_LIST_BOOL);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + DecimalType.NAME, Exprs.TO_LIST_DECIMAL);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + StringType.NAME, Exprs.TO_LIST_STRING);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + BytesType.NAME, Exprs.TO_LIST_BYTES);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + DateType.NAME, Exprs.TO_LIST_DATE);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimeType.NAME, Exprs.TO_LIST_TIME);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimestampType.NAME, Exprs.TO_LIST_TIMESTAMP);
 
         // Mathematical
         registerUnaryFun(AbsFunFactory.NAME, Exprs.ABS);

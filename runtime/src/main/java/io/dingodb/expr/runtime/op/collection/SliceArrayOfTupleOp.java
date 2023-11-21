@@ -17,34 +17,39 @@
 package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.expr.BinaryOpExpr;
+import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.Exprs;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.lang.reflect.Array;
-
 public final class SliceArrayOfTupleOp extends SliceArrayOp {
     private static final long serialVersionUID = 2417363233945832611L;
 
-    SliceArrayOfTupleOp(ArrayType type) {
-        super(type);
+    SliceArrayOfTupleOp(ArrayType originalType, ArrayType type) {
+        super(originalType, type);
     }
 
     @Override
-    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        int index = (Integer) value1;
-        int size = Array.getLength(value0);
-        Object result = ArrayBuilder.INSTANCE.visit(((TupleType) originalType.getElementType()).getTypes()[index]);
-        for (int i = 0; i < size; ++i) {
-            Array.set(result, i, ((Object[]) Array.get(value0, i))[index]);
+    Object getValueOf(Object value, int index) {
+        return ((Object[]) value)[index];
+    }
+
+    @Override
+    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {
+        Type elementType = guessElementType(expr, config);
+        if (elementType != null) {
+            if (!elementType.equals(type.getElementType())) {
+                return Exprs.op(new SliceArrayOfTupleOp(
+                    (ArrayType) originalType,
+                    Types.array(elementType)
+                ), expr.getOperand0(), expr.getOperand1());
+            }
+            return expr;
         }
-        return result;
-    }
-
-    @Override
-    public Type getType() {
-        return Types.ARRAY_ANY;
+        return Val.NULL;
     }
 }

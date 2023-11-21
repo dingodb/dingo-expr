@@ -16,21 +16,26 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.cast.CastOp;
 
 import java.lang.reflect.Array;
 
-public final class SliceListOfArrayOp extends SliceListOp {
-    private static final long serialVersionUID = -580934004823081222L;
+public final class CastArrayArrayOp extends CastArrayOpFactory {
+    private static final long serialVersionUID = 1060485143951972916L;
 
-    SliceListOfArrayOp(ListType originalType) {
-        super(originalType, Types.list(((ArrayType) originalType.getElementType()).getElementType()));
+    CastArrayArrayOp(CastOp castOp) {
+        super(castOp);
     }
 
     @Override
-    Object getValueOf(Object value, int index) {
-        return Array.get(value, index);
+    public Object evalValue(Object value, ExprConfig config) {
+        int size = Array.getLength(value);
+        Object array = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
+        for (int i = 0; i < size; ++i) {
+            Object v = castOp.evalValue(Array.get(value, i), config);
+            Array.set(array, i, v);
+        }
+        return array;
     }
 }

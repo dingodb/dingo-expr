@@ -14,29 +14,30 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op;
+package io.dingodb.expr.runtime.op.collection;
 
-import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.exception.EvalNotImplemented;
-import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.NullaryOpExpr;
+import io.dingodb.expr.runtime.op.cast.CastOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class NullaryOp extends AbstractOp<NullaryOp> {
-    private static final long serialVersionUID = -5008875403399768833L;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Object eval(EvalContext context, ExprConfig config) {
-        throw new EvalNotImplemented(this.getClass().getCanonicalName());
-    }
+public final class CastListListOp extends CastListOpFactory {
+    private static final long serialVersionUID = -8600370779776339085L;
 
-    public @NonNull Expr simplify(@NonNull NullaryOpExpr expr, ExprConfig ignoredConfig) {
-        assert expr.getOp() == this;
-        return expr;
+    CastListListOp(CastOp castOp) {
+        super(castOp);
     }
 
     @Override
-    public NullaryOp getOp(Object key) {
-        return this;
+    public @NonNull Object evalValue(Object value, ExprConfig config) {
+        int size = ((List<?>) value).size();
+        List<Object> list = new ArrayList<>(size);
+        for (int i = 0; i < size; ++i) {
+            Object v = castOp.evalValue(((List<?>) value).get(i), config);
+            list.add(v);
+        }
+        return list;
     }
 }

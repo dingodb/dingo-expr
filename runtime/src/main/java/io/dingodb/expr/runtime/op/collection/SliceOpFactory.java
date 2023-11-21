@@ -23,11 +23,8 @@ import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class SliceOpFactory extends BinaryOp {
     public static final SliceOpFactory INSTANCE = new SliceOpFactory();
     public static final String NAME = "SLICE";
