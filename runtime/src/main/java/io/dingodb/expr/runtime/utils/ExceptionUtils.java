@@ -24,14 +24,14 @@ public final class ExceptionUtils {
 
     public static @NonNull ArithmeticException exceedsIntRange() {
         return new ArithmeticException(
-            "Input value exceeds limits of INT, which is from "
+            "Value exceeds limits of INT, which is from "
                 + Integer.MIN_VALUE + " to " + Integer.MAX_VALUE + "."
         );
     }
 
     public static @NonNull ArithmeticException exceedsLongRange() {
         return new ArithmeticException(
-            "Input value exceeds limits of LONG, which is from "
+            "Value exceeds limits of LONG, which is from "
                 + Long.MIN_VALUE + " to " + Long.MAX_VALUE + "."
         );
     }

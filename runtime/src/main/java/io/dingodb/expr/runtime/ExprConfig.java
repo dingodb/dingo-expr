@@ -69,7 +69,7 @@ public class ExprConfig {
     @Getter
     private final boolean doSimplification;
     @Getter
-    private final boolean doCastingCheck;
+    private final boolean doRangeCheck;
     @Getter
     private final TimeFormatStringStyle timeFormatStringStyle;
 

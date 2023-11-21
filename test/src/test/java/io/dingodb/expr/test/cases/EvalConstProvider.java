@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static io.dingodb.expr.runtime.expr.Exprs.ABS;
+import static io.dingodb.expr.runtime.expr.Exprs.ABS_C;
 import static io.dingodb.expr.runtime.expr.Exprs.ACOS;
 import static io.dingodb.expr.runtime.expr.Exprs.ADD;
 import static io.dingodb.expr.runtime.expr.Exprs.AND;
@@ -502,6 +503,16 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(ABS, 0.5), 0.5),
             arguments(op(ABS, dec(-0.5)), BigDecimal.valueOf(0.5)),
             arguments(op(ABS, dec(0.5)), BigDecimal.valueOf(0.5)),
+            arguments(op(ABS_C, -1), 1),
+            arguments(op(ABS_C, 1), 1),
+            arguments(op(ABS_C, -1L), 1L),
+            arguments(op(ABS_C, 1L), 1L),
+            arguments(op(ABS_C, -0.5f), 0.5f),
+            arguments(op(ABS_C, 0.5f), 0.5f),
+            arguments(op(ABS_C, -0.5), 0.5),
+            arguments(op(ABS_C, 0.5), 0.5),
+            arguments(op(ABS_C, dec(-0.5)), BigDecimal.valueOf(0.5)),
+            arguments(op(ABS_C, dec(0.5)), BigDecimal.valueOf(0.5)),
             arguments(op(MIN, 1, 2), 1),
             arguments(op(MIN, 1L, 2L), 1L),
             arguments(op(MIN, 1.1f, 2.2f), 1.1f),

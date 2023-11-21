@@ -53,6 +53,7 @@ import io.dingodb.expr.runtime.op.logical.AndOp;
 import io.dingodb.expr.runtime.op.logical.NotOpFactory;
 import io.dingodb.expr.runtime.op.logical.OrFun;
 import io.dingodb.expr.runtime.op.logical.OrOp;
+import io.dingodb.expr.runtime.op.mathematical.AbsCheckFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.AbsFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.AcosFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.AsinFunFactory;
@@ -179,6 +180,7 @@ public final class Exprs {
 
     // Mathematics
     public static final AbsFunFactory ABS = AbsFunFactory.INSTANCE;
+    public static final AbsCheckFunFactory ABS_C = AbsCheckFunFactory.INSTANCE;
     public static final ModFunFactory MOD = ModFunFactory.INSTANCE;
     public static final MaxFunFactory MAX = MaxFunFactory.INSTANCE;
     public static final MinFunFactory MIN = MinFunFactory.INSTANCE;
