@@ -17,7 +17,6 @@
 package io.dingodb.expr.test;
 
 import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.exception.CastingException;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
@@ -106,9 +105,9 @@ public class TestEvalConst {
 
     @ParameterizedTest
     @ArgumentsSource(EvalExceptionProvider.class)
-    public void testRangeCheck(@NonNull Expr expr, Object ignoredValue) {
+    public void testRangeCheck(@NonNull Expr expr, Class<? extends Exception> exceptionClass) {
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
-        assertThrows(CastingException.class, expr1::eval);
+        assertThrows(exceptionClass, expr1::eval);
     }
 
     @Test

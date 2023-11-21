@@ -59,12 +59,12 @@ public final class CastingFactory {
 
         @Override
         public UnaryOp visitIntType(@NonNull IntType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_INT_C : Exprs.TO_INT;
+            return obj.isDoRangeCheck() ? Exprs.TO_INT_C : Exprs.TO_INT;
         }
 
         @Override
         public UnaryOp visitLongType(@NonNull LongType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_LONG_C : Exprs.TO_LONG;
+            return obj.isDoRangeCheck() ? Exprs.TO_LONG_C : Exprs.TO_LONG;
         }
 
         @Override
@@ -129,12 +129,12 @@ public final class CastingFactory {
 
         @Override
         public CastArrayOpFactory visitIntType(@NonNull IntType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_ARRAY_INT_C : Exprs.TO_ARRAY_INT;
+            return obj.isDoRangeCheck() ? Exprs.TO_ARRAY_INT_C : Exprs.TO_ARRAY_INT;
         }
 
         @Override
         public CastArrayOpFactory visitLongType(@NonNull LongType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_ARRAY_LONG_C : Exprs.TO_ARRAY_LONG;
+            return obj.isDoRangeCheck() ? Exprs.TO_ARRAY_LONG_C : Exprs.TO_ARRAY_LONG;
         }
 
         @Override
@@ -189,12 +189,12 @@ public final class CastingFactory {
 
         @Override
         public CastListOpFactory visitIntType(@NonNull IntType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_LIST_INT_C : Exprs.TO_LIST_INT;
+            return obj.isDoRangeCheck() ? Exprs.TO_LIST_INT_C : Exprs.TO_LIST_INT;
         }
 
         @Override
         public CastListOpFactory visitLongType(@NonNull LongType type, @NonNull ExprConfig obj) {
-            return obj.isDoCastingCheck() ? Exprs.TO_LIST_LONG_C : Exprs.TO_LIST_LONG;
+            return obj.isDoRangeCheck() ? Exprs.TO_LIST_LONG_C : Exprs.TO_LIST_LONG;
         }
 
         @Override
