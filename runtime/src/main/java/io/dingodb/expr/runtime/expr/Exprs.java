@@ -104,6 +104,7 @@ import io.dingodb.expr.runtime.op.time.CurrentTimeFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimestampFun;
 import io.dingodb.expr.runtime.op.time.DateFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat2FunFactory;
+import io.dingodb.expr.runtime.op.time.FromUnixTimeFunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
@@ -230,6 +231,7 @@ public final class Exprs {
     public static final TimeFormat2FunFactory TIME_FORMAT2 = TimeFormat2FunFactory.INSTANCE;
     public static final TimestampFormat1FunFactory TIMESTAMP_FORMAT1 = TimestampFormat1FunFactory.INSTANCE;
     public static final TimestampFormat2FunFactory TIMESTAMP_FORMAT2 = TimestampFormat2FunFactory.INSTANCE;
+    public static final FromUnixTimeFunFactory FROM_UNIXTIME = FromUnixTimeFunFactory.INSTANCE;
 
     // Collections
     public static final ArrayConstructorOpFactory ARRAY = ArrayConstructorOpFactory.INSTANCE;

@@ -72,6 +72,7 @@ import io.dingodb.expr.runtime.op.time.CurrentTimeFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimestampFun;
 import io.dingodb.expr.runtime.op.time.DateFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat2FunFactory;
+import io.dingodb.expr.runtime.op.time.FromUnixTimeFunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
@@ -198,6 +199,7 @@ public class DefaultFunFactory implements FunFactory {
         registerBinaryFun(TimeFormat2FunFactory.NAME, Exprs.TIME_FORMAT2);
         registerUnaryFun(TimestampFormat1FunFactory.NAME, Exprs.TIMESTAMP_FORMAT1);
         registerBinaryFun(TimestampFormat2FunFactory.NAME, Exprs.TIMESTAMP_FORMAT2);
+        registerUnaryFun(FromUnixTimeFunFactory.NAME, Exprs.FROM_UNIXTIME);
 
         // Collection functions
         registerVariadicFun(ArrayConstructorOpFactory.NAME, Exprs.ARRAY);
