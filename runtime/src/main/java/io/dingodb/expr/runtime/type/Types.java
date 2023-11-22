@@ -177,7 +177,7 @@ public final class Types {
         for (Type type : types) {
             best = (type.numericPrecedence() > best.numericPrecedence() ? type : best);
         }
-        if (best.numericPrecedence() != Type.NOT_NUMERIC) {
+        if (best.isNumeric()) {
             return (!best.equals(NULL) && !best.equals(BOOL)) ? best : INT;
         }
         Type finalBest = best;

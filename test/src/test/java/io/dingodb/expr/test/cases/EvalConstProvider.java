@@ -50,6 +50,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.DIV;
 import static io.dingodb.expr.runtime.expr.Exprs.EQ;
 import static io.dingodb.expr.runtime.expr.Exprs.EXP;
 import static io.dingodb.expr.runtime.expr.Exprs.FLOOR;
+import static io.dingodb.expr.runtime.expr.Exprs.FORMAT;
 import static io.dingodb.expr.runtime.expr.Exprs.FROM_UNIXTIME;
 import static io.dingodb.expr.runtime.expr.Exprs.GE;
 import static io.dingodb.expr.runtime.expr.Exprs.GT;
@@ -660,6 +661,11 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(_CTF, "%A%B%C"), "'ABC'"),
             arguments(op(_CTF, "Year: %Y, Month: %m"), "'Year: 'uuuu', Month: 'MM"),
             arguments(op(HEX, "414243"), "ABC".getBytes(StandardCharsets.UTF_8)),
+            arguments(op(FORMAT, 100.21, 1), "100.2"),
+            arguments(op(FORMAT, 99.00000, 2), "99.00"),
+            arguments(op(FORMAT, 1220.532, 0), "1221"),
+            arguments(op(FORMAT, 18, 2), "18.00"),
+            arguments(op(FORMAT, 15354.6651, 1.6), "15354.67"),
 
             // Date & times
             arguments(op(FROM_UNIXTIME, 1), new Timestamp(sec(1L))),

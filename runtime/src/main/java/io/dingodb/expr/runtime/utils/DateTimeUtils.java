@@ -24,8 +24,10 @@ import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.CharacterIterator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -310,5 +312,70 @@ public final class DateTimeUtils {
     public static @NonNull Timestamp currentTimestamp() {
         long millis = System.currentTimeMillis();
         return new Timestamp(millis);
+    }
+
+    public static @NonNull String convertFormat(@NonNull String format) {
+        StringBuilder builder = new StringBuilder();
+        CharacterIterator it = new StringCharacterIterator(format);
+        boolean literalStarted = false;
+        for (char ch = it.first(); ch != CharacterIterator.DONE; ch = it.next()) {
+            if (ch == '%') {
+                ch = it.next();
+                String fmt = null;
+                switch (ch) {
+                    case 'Y':
+                        fmt = "uuuu";
+                        break;
+                    case 'm':
+                        fmt = "MM";
+                        break;
+                    case 'd':
+                        fmt = "dd";
+                        break;
+                    case 'H':
+                        fmt = "HH";
+                        break;
+                    case 'i':
+                        fmt = "mm";
+                        break;
+                    case 's':
+                    case 'S':
+                        fmt = "ss";
+                        break;
+                    case 'T':
+                        fmt = "HH:mm:ss";
+                        break;
+                    case 'f':
+                        fmt = "SSS";
+                        break;
+                    case CharacterIterator.DONE:
+                        continue;
+                    default:
+                        if (!literalStarted) {
+                            builder.append('\'');
+                            literalStarted = true;
+                        }
+                        builder.append(ch);
+                        break;
+                }
+                if (fmt != null) {
+                    if (literalStarted) {
+                        builder.append('\'');
+                        literalStarted = false;
+                    }
+                    builder.append(fmt);
+                }
+            } else {
+                if (!literalStarted) {
+                    builder.append('\'');
+                    literalStarted = true;
+                }
+                builder.append(ch);
+            }
+        }
+        if (literalStarted) {
+            builder.append('\'');
+        }
+        return builder.toString();
     }
 }

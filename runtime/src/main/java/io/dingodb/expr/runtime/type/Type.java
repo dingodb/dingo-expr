@@ -27,5 +27,9 @@ public interface Type {
         return NOT_NUMERIC;
     }
 
+    default boolean isNumeric() {
+        return numericPrecedence() != NOT_NUMERIC;
+    }
+
     <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj);
 }
