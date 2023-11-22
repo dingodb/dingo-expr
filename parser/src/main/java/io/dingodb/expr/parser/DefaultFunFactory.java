@@ -58,6 +58,7 @@ import io.dingodb.expr.runtime.op.string.Locate3FunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
 import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
 import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
+import io.dingodb.expr.runtime.op.string.NumberFormatFunFactory;
 import io.dingodb.expr.runtime.op.string.RTrimFunFactory;
 import io.dingodb.expr.runtime.op.string.RepeatFunFactory;
 import io.dingodb.expr.runtime.op.string.ReplaceFunFactory;
@@ -188,6 +189,7 @@ public class DefaultFunFactory implements FunFactory {
         registerBinaryFun(Locate2FunFactory.NAME, Exprs.LOCATE2);
         registerTertiaryFun(Locate3FunFactory.NAME, Exprs.LOCATE3);
         registerUnaryFun(HexFunFactory.NAME, Exprs.HEX);
+        registerBinaryFun(NumberFormatFunFactory.NAME, Exprs.FORMAT);
 
         // Time functions
         registerNullaryFun(CurrentDateFun.NAME, Exprs.CURRENT_DATE);

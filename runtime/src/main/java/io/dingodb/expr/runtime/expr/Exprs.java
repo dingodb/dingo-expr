@@ -91,6 +91,7 @@ import io.dingodb.expr.runtime.op.string.Locate3FunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
 import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
 import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
+import io.dingodb.expr.runtime.op.string.NumberFormatFunFactory;
 import io.dingodb.expr.runtime.op.string.RTrimFunFactory;
 import io.dingodb.expr.runtime.op.string.RepeatFunFactory;
 import io.dingodb.expr.runtime.op.string.ReplaceFunFactory;
@@ -219,6 +220,7 @@ public final class Exprs {
     public static final Locate3FunFactory LOCATE3 = Locate3FunFactory.INSTANCE;
     public static final ConvertTimeFormatFunFactory _CTF = ConvertTimeFormatFunFactory.INSTANCE;
     public static final HexFunFactory HEX = HexFunFactory.INSTANCE;
+    public static final NumberFormatFunFactory FORMAT = NumberFormatFunFactory.INSTANCE;
 
     // Index
     public static final IndexOpFactory INDEX = IndexOpFactory.INSTANCE;
