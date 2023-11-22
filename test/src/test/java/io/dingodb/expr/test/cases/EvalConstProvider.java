@@ -81,6 +81,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.NOT;
 import static io.dingodb.expr.runtime.expr.Exprs.OR;
 import static io.dingodb.expr.runtime.expr.Exprs.OR_FUN;
 import static io.dingodb.expr.runtime.expr.Exprs.POS;
+import static io.dingodb.expr.runtime.expr.Exprs.POW;
 import static io.dingodb.expr.runtime.expr.Exprs.REPEAT;
 import static io.dingodb.expr.runtime.expr.Exprs.REPLACE;
 import static io.dingodb.expr.runtime.expr.Exprs.REVERSE;
@@ -596,6 +597,10 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(FLOOR, 2.5f), 2.0),
             arguments(op(FLOOR, 3.6), 3.0),
             arguments(op(FLOOR, dec(1.23)), BigDecimal.valueOf(1)),
+            arguments(op(POW, 2, 3), 8.0),
+            arguments(op(POW, 3, 3), 27.0),
+            arguments(op(POW, -3.1, 3), -29.791),
+            arguments(op(POW, "10", -2), 0.01),
 
             // Strings
             arguments(op(CHAR_LENGTH, NULL_STRING), 0),

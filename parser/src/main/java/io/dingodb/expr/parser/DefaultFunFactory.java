@@ -41,6 +41,7 @@ import io.dingodb.expr.runtime.op.mathematical.LogFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.MaxFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.MinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.ModFunFactory;
+import io.dingodb.expr.runtime.op.mathematical.PowFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
@@ -161,6 +162,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(LogFunFactory.NAME, Exprs.LOG);
         registerUnaryFun(CeilFunFactory.NAME, Exprs.CEIL);
         registerUnaryFun(FloorFunFactory.NAME, Exprs.FLOOR);
+        registerBinaryFun(PowFunFactory.NAME, Exprs.POW);
 
         // Logical and special
         registerVariadicFun(AndFun.NAME, Exprs.AND_FUN);
