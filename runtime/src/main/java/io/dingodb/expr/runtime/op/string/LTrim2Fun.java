@@ -19,25 +19,26 @@ package io.dingodb.expr.runtime.op.string;
 import io.dingodb.expr.annotations.Operators;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
-abstract class ConcatFun extends BinaryStringStringFun {
-    public static final String NAME = "CONCAT";
+@Operators
+abstract class LTrim2Fun extends BinaryStringStringFun {
+    public static final String NAME = "LTRIM";
 
-    private static final long serialVersionUID = 5454356467741754567L;
+    private static final long serialVersionUID = 4010086278241913516L;
 
-    static String concat(String value0, String value1) {
-        if (value0 != null) {
-            if (value1 != null) {
-                return value0 + value1;
-            }
-            return value0;
+    static @NonNull String ltrim(@NonNull String value0, @NonNull String value1) {
+        int result = -1;
+        int len = value0.length();
+        int len1 = value1.length();
+        int index = 0;
+        while (value0.startsWith(value1, index) && index < len) {
+            index += len1;
+            result = index;
         }
-        return value1;
+        return result >= 0 ? value0.substring(result) : value0;
     }
 
     @Override
     public @NonNull String getName() {
         return NAME;
     }
-
 }

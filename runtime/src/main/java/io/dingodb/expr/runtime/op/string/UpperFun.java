@@ -26,7 +26,7 @@ abstract class UpperFun extends UnaryOp {
 
     private static final long serialVersionUID = -8253160535754824850L;
 
-    static String upper(@NonNull String value) {
+    static @NonNull String upper(@NonNull String value) {
         return value.toUpperCase();
     }
 

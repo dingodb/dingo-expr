@@ -178,10 +178,10 @@ public final class Types {
             best = (type.numericPrecedence() > best.numericPrecedence() ? type : best);
         }
         if (best.isNumeric()) {
-            return (!best.equals(NULL) && !best.equals(BOOL)) ? best : INT;
+            return (!BOOL.isCompatible(best)) ? best : INT;
         }
         Type finalBest = best;
-        if (Arrays.stream(types).allMatch(t -> t.equals(finalBest) || t.equals(NULL))) {
+        if (Arrays.stream(types).allMatch(finalBest::isCompatible)) {
             return best;
         }
         return null;

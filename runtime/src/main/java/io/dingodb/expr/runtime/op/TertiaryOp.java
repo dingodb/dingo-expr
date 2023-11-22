@@ -77,7 +77,7 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         TertiaryOpExpr result;
         Type type0 = operand0.getType();
         Type type1 = operand1.getType();
-        Type type2 = operand1.getType();
+        Type type2 = operand2.getType();
         TertiaryOp op = getOp(keyOf(type0, type1, type2));
         if (op != null) {
             result = Exprs.op(op, operand0, operand1, operand2);
@@ -92,7 +92,7 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
                     doCast(operand2, types[2], config)
                 );
             } else {
-                throw new OperatorTypeNotExist(this, type0, type1);
+                throw new OperatorTypeNotExist(this, type0, type1, type2);
             }
         }
         return config.isDoSimplification() ? result.simplify(config) : result;

@@ -17,27 +17,21 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
-abstract class ConcatFun extends BinaryStringStringFun {
-    public static final String NAME = "CONCAT";
+@Operators
+abstract class Trim1Fun extends UnaryOp {
+    public static final String NAME = "TRIM";
 
-    private static final long serialVersionUID = 5454356467741754567L;
+    private static final long serialVersionUID = 2251491105230358309L;
 
-    static String concat(String value0, String value1) {
-        if (value0 != null) {
-            if (value1 != null) {
-                return value0 + value1;
-            }
-            return value0;
-        }
-        return value1;
+    static @NonNull String trim(@NonNull String value) {
+        return value.trim();
     }
 
     @Override
     public @NonNull String getName() {
         return NAME;
     }
-
 }
