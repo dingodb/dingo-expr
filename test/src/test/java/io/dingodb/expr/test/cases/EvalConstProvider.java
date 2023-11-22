@@ -67,7 +67,8 @@ import static io.dingodb.expr.runtime.expr.Exprs.LOCATE3;
 import static io.dingodb.expr.runtime.expr.Exprs.LOG;
 import static io.dingodb.expr.runtime.expr.Exprs.LOWER;
 import static io.dingodb.expr.runtime.expr.Exprs.LT;
-import static io.dingodb.expr.runtime.expr.Exprs.LTRIM;
+import static io.dingodb.expr.runtime.expr.Exprs.LTRIM1;
+import static io.dingodb.expr.runtime.expr.Exprs.LTRIM2;
 import static io.dingodb.expr.runtime.expr.Exprs.MAP;
 import static io.dingodb.expr.runtime.expr.Exprs.MAX;
 import static io.dingodb.expr.runtime.expr.Exprs.MID2;
@@ -88,7 +89,8 @@ import static io.dingodb.expr.runtime.expr.Exprs.REVERSE;
 import static io.dingodb.expr.runtime.expr.Exprs.RIGHT;
 import static io.dingodb.expr.runtime.expr.Exprs.ROUND1;
 import static io.dingodb.expr.runtime.expr.Exprs.ROUND2;
-import static io.dingodb.expr.runtime.expr.Exprs.RTRIM;
+import static io.dingodb.expr.runtime.expr.Exprs.RTRIM1;
+import static io.dingodb.expr.runtime.expr.Exprs.RTRIM2;
 import static io.dingodb.expr.runtime.expr.Exprs.SIN;
 import static io.dingodb.expr.runtime.expr.Exprs.SINH;
 import static io.dingodb.expr.runtime.expr.Exprs.SLICE;
@@ -136,11 +138,13 @@ import static io.dingodb.expr.runtime.expr.Exprs.TO_LONG_C;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_STRING;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_TIME;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_TIMESTAMP;
-import static io.dingodb.expr.runtime.expr.Exprs.TRIM;
+import static io.dingodb.expr.runtime.expr.Exprs.TRIM1;
+import static io.dingodb.expr.runtime.expr.Exprs.TRIM2;
 import static io.dingodb.expr.runtime.expr.Exprs.UPPER;
 import static io.dingodb.expr.runtime.expr.Exprs._CTF;
 import static io.dingodb.expr.runtime.expr.Exprs.op;
 import static io.dingodb.expr.runtime.expr.Exprs.val;
+import static io.dingodb.expr.runtime.expr.Val.NULL;
 import static io.dingodb.expr.runtime.expr.Val.NULL_BOOL;
 import static io.dingodb.expr.runtime.expr.Val.NULL_BYTES;
 import static io.dingodb.expr.runtime.expr.Val.NULL_DATE;
@@ -639,11 +643,14 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(RIGHT, "Alice", 10), "Alice"),
             arguments(op(RIGHT, "Alice", 3), "ice"),
             arguments(op(RIGHT, "Alice", 3.5), "lice"),
-            arguments(op(TRIM, " HeLLo  "), "HeLLo"),
-            arguments(op(LTRIM, NULL_STRING), null),
-            arguments(op(LTRIM, " HeLLo  "), "HeLLo  "),
-            arguments(op(RTRIM, NULL_STRING), null),
-            arguments(op(RTRIM, " HeLLo  "), " HeLLo"),
+            arguments(op(TRIM1, " HeLLo  "), "HeLLo"),
+            arguments(op(TRIM2, "aBcHeLLoaBcaBc", "aBc"), "HeLLo"),
+            arguments(op(LTRIM1, NULL_STRING), null),
+            arguments(op(LTRIM1, " HeLLo  "), "HeLLo  "),
+            arguments(op(LTRIM2, "aBcaBcHeLLoaBc", "aBc"), "HeLLoaBc"),
+            arguments(op(RTRIM1, NULL_STRING), null),
+            arguments(op(RTRIM1, " HeLLo  "), " HeLLo"),
+            arguments(op(RTRIM2, "aBcHeLLoaBc", "aBc"), "aBcHeLLo"),
             arguments(op(SUBSTR2, "HeLLo", 2), "LLo"),
             arguments(op(SUBSTR2, "HeLLo", 2.5), "Lo"),
             arguments(op(SUBSTR3, "HeLLo", 1, 3), "eL"),
@@ -659,6 +666,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(MID3, "Alice", 1, 3), "Ali"),
             arguments(op(MID3, "Alice", -1, 1), "e"),
             arguments(op(MID3, "Alice", -3, 2), "ic"),
+            arguments(op(MID3, "Alice", -3, 1.5), "ic"),
             arguments(op(REPEAT, NULL_STRING, 3), null),
             arguments(op(REPEAT, "Abc", -1), ""),
             arguments(op(REPEAT, "Abc", 3), "AbcAbcAbc"),
@@ -666,6 +674,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(REVERSE, NULL_STRING), null),
             arguments(op(REVERSE, "AbCdE"), "EdCbA"),
             arguments(op(REPLACE, "HeLLo", "eL", "El"), "HElLo"),
+            arguments(op(REPLACE, NULL, "a", "b"), null),
             arguments(op(LOCATE2, NULL_STRING, "a"), null),
             arguments(op(LOCATE2, "at", "Water"), 2),
             arguments(op(LOCATE2, "am", "Water"), 0),

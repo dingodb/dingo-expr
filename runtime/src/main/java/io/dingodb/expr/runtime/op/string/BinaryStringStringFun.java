@@ -16,28 +16,16 @@
 
 package io.dingodb.expr.runtime.op.string;
 
-import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
-abstract class ConcatFun extends BinaryStringStringFun {
-    public static final String NAME = "CONCAT";
-
-    private static final long serialVersionUID = 5454356467741754567L;
-
-    static String concat(String value0, String value1) {
-        if (value0 != null) {
-            if (value1 != null) {
-                return value0 + value1;
-            }
-            return value0;
-        }
-        return value1;
-    }
+abstract class BinaryStringStringFun extends BinaryOp {
+    private static final long serialVersionUID = -2967217897360283656L;
 
     @Override
-    public @NonNull String getName() {
-        return NAME;
+    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+        return (Types.STRING.isCompatible(type0) && Types.STRING.isCompatible(type1)) ? Types.STRING : null;
     }
-
 }

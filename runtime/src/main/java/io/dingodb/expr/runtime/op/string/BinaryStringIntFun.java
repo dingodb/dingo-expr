@@ -26,12 +26,12 @@ abstract class BinaryStringIntFun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (type0.equals(Types.STRING) && type1.equals(Types.INT)) ? Types.STRING : null;
+        return (Types.STRING.isCompatible(type0) && Types.INT.isCompatible(type1)) ? Types.STRING : null;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0].equals(Types.STRING)) {
+        if (Types.STRING.isCompatible(types[0])) {
             types[1] = Types.INT;
             return Types.STRING;
         }

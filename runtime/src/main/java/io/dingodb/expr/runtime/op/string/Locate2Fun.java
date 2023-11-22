@@ -17,13 +17,10 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.BinaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class Locate2Fun extends BinaryOp {
+abstract class Locate2Fun extends BinaryStringStringFun {
     public static final String NAME = "LOCATE";
 
     private static final long serialVersionUID = 8561981223213956521L;
@@ -35,13 +32,5 @@ abstract class Locate2Fun extends BinaryOp {
     @Override
     public @NonNull String getName() {
         return NAME;
-    }
-
-    @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (type0.equals(Types.STRING) && type1.equals(Types.STRING)) {
-            return Types.STRING;
-        }
-        return null;
     }
 }

@@ -26,7 +26,7 @@ abstract class TertiaryStringIntIntFun extends TertiaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (type0.equals(Types.STRING) && type1.equals(Types.INT) && type2.equals(Types.INT)) {
+        if (Types.STRING.isCompatible(type0) && Types.INT.isCompatible(type1) && Types.INT.isCompatible(type2)) {
             return Types.STRING;
         }
         return null;
@@ -34,7 +34,7 @@ abstract class TertiaryStringIntIntFun extends TertiaryOp {
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0].equals(Types.STRING)) {
+        if (Types.STRING.isCompatible(types[0])) {
             types[1] = Types.INT;
             types[2] = Types.INT;
             return Types.STRING;

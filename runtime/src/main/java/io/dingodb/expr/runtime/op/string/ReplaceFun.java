@@ -28,7 +28,7 @@ abstract class ReplaceFun extends TertiaryOp {
 
     private static final long serialVersionUID = 6362623217706254108L;
 
-    static String replace(@NonNull String value0, @NonNull String value1, @NonNull String value2) {
+    static @NonNull String replace(@NonNull String value0, @NonNull String value1, @NonNull String value2) {
         return value0.replace(value1, value2);
     }
 
@@ -39,7 +39,7 @@ abstract class ReplaceFun extends TertiaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (type0.equals(Types.STRING) && type1.equals(Types.STRING) && type2.equals(Types.STRING)) {
+        if (Types.STRING.isCompatible(type0) && Types.STRING.isCompatible(type1) && Types.STRING.isCompatible(type2)) {
             return Types.STRING;
         }
         return null;

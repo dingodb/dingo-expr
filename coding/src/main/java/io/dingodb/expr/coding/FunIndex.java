@@ -33,16 +33,16 @@ import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanhFunFactory;
 import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
-import io.dingodb.expr.runtime.op.string.LTrimFunFactory;
+import io.dingodb.expr.runtime.op.string.LTrim1FunFactory;
 import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
 import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
 import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
-import io.dingodb.expr.runtime.op.string.RTrimFunFactory;
+import io.dingodb.expr.runtime.op.string.RTrim1FunFactory;
 import io.dingodb.expr.runtime.op.string.RightFunFactory;
 import io.dingodb.expr.runtime.op.string.Substr2FunFactory;
 import io.dingodb.expr.runtime.op.string.Substr3FunFactory;
-import io.dingodb.expr.runtime.op.string.TrimFunFactory;
+import io.dingodb.expr.runtime.op.string.Trim1FunFactory;
 import io.dingodb.expr.runtime.op.string.UpperFunFactory;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -110,13 +110,13 @@ final class FunIndex {
             case UpperFunFactory.NAME:
                 funIndex = 0x23;
                 break;
-            case TrimFunFactory.NAME:
+            case Trim1FunFactory.NAME:
                 funIndex = 0x26;
                 break;
-            case LTrimFunFactory.NAME:
+            case LTrim1FunFactory.NAME:
                 funIndex = 0x28;
                 break;
-            case RTrimFunFactory.NAME:
+            case RTrim1FunFactory.NAME:
                 funIndex = 0x2A;
                 break;
             default:

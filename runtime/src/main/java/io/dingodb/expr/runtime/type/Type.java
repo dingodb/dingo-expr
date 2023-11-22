@@ -31,5 +31,10 @@ public interface Type {
         return numericPrecedence() != NOT_NUMERIC;
     }
 
+    default boolean isCompatible(@NonNull Type type) {
+        // Types.NULL can be converted to any type.
+        return type.equals(this) || type.equals(Types.NULL);
+    }
+
     <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj);
 }

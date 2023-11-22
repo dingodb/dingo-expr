@@ -17,18 +17,24 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
-import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class LTrimFun extends UnaryOp {
-    public static final String NAME = "LTRIM";
+abstract class RTrim2Fun extends BinaryStringStringFun {
+    public static final String NAME = "RTRIM";
 
-    private static final long serialVersionUID = -8557732786466948967L;
+    private static final long serialVersionUID = -8144773428005929181L;
 
-    static String ltrim(String value) {
-        return StringUtils.stripStart(value, null);
+    static @NonNull String rtrim(@NonNull String value0, @NonNull String value1) {
+        int result = -1;
+        int len = value0.length();
+        int len1 = value1.length();
+        int index = len - len1;
+        while ((value0.startsWith(value1, index)) && index >= 0) {
+            result = index;
+            index -= len1;
+        }
+        return result >= 0 ? value0.substring(0, result) : value0;
     }
 
     @Override

@@ -18,16 +18,17 @@ package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.UnaryOp;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class TrimFun extends UnaryOp {
-    public static final String NAME = "TRIM";
+abstract class LTrim1Fun extends UnaryOp {
+    public static final String NAME = "LTRIM";
 
-    private static final long serialVersionUID = 2251491105230358309L;
+    private static final long serialVersionUID = -8557732786466948967L;
 
-    static String trim(@NonNull String value) {
-        return value.trim();
+    static String ltrim(String value) {
+        return StringUtils.stripStart(value, null);
     }
 
     @Override

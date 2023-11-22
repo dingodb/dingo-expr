@@ -39,7 +39,7 @@ abstract class Locate3Fun extends TertiaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (type0.equals(Types.STRING) && type1.equals(Types.STRING) && type2.equals(Types.INT)) {
+        if (Types.STRING.isCompatible(type0) && Types.STRING.isCompatible(type1) && Types.INT.isCompatible(type2)) {
             return Types.STRING;
         }
         return null;
@@ -47,7 +47,7 @@ abstract class Locate3Fun extends TertiaryOp {
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0].equals(Types.STRING) && types[1].equals(Types.STRING)) {
+        if (Types.STRING.isCompatible(types[0]) && Types.STRING.isCompatible(types[1])) {
             types[2] = Types.INT;
             return Types.STRING;
         }

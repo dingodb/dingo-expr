@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class RTrimFun extends UnaryOp {
+abstract class RTrim1Fun extends UnaryOp {
     public static final String NAME = "RTRIM";
 
     private static final long serialVersionUID = -7445709112049015539L;
