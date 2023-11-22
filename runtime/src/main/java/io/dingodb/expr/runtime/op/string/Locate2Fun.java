@@ -29,7 +29,7 @@ abstract class Locate2Fun extends BinaryOp {
     private static final long serialVersionUID = 8561981223213956521L;
 
     static int locate(@NonNull String value0, @NonNull String value1) {
-        return value0.indexOf(value1) + 1;
+        return value1.indexOf(value0) + 1;
     }
 
     @Override
