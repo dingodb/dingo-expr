@@ -201,8 +201,8 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("repeat('Ac', 2)", "AcAc"),
             arguments("reverse('1234567')", "7654321"),
             arguments("replace('I love $name', '$name', 'Lucia')", "I love Lucia"),
-            arguments("locate('potatoes', 'o')", 2),
-            arguments("locate('potatoes', 'o', 3)", 6),
+            arguments("locate('o', 'potatoes')", 2),
+            arguments("locate('o', 'potatoes', 3)", 6),
 
             // Date & time
             arguments("date('1970-1-1')", new Date(0)),

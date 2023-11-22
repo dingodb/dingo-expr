@@ -29,7 +29,7 @@ abstract class Locate3Fun extends TertiaryOp {
     private static final long serialVersionUID = 1338666346403324549L;
 
     static int locate(@NonNull String value0, @NonNull String value1, int pos) {
-        return value0.indexOf(value1, pos - 1) + 1;
+        return value1.indexOf(value0, pos - 1) + 1;
     }
 
     @Override

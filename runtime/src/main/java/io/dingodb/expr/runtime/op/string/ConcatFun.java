@@ -45,6 +45,7 @@ abstract class ConcatFun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (type0.equals(Types.STRING) && type1.equals(Types.STRING)) ? Types.STRING : null;
+        return ((type0.equals(Types.STRING) || type0.equals(Types.NULL))
+            && (type1.equals(Types.STRING) || type1.equals(Types.NULL))) ? Types.STRING : null;
     }
 }
