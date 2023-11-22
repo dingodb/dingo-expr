@@ -44,7 +44,9 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         Object value2,
         ExprConfig config
     ) {
-        return (value0 != null && value1 != null) ? evalNonNullValue(value0, value1, value2, config) : null;
+        return (value0 != null && value1 != null && value2 != null)
+            ? evalNonNullValue(value0, value1, value2, config)
+            : null;
     }
 
     public Object eval(

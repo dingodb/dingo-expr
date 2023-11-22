@@ -631,7 +631,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(MID2, "Alice", 0), ""),
             arguments(op(MID2, "Alice", NULL_INT), null),
             arguments(op(MID2, "Alice", -2), "ce"),
-            arguments(op(MID3, NULL_STRING, 0, 0), ""),
+            arguments(op(MID3, NULL_STRING, 0, 0), null),
             arguments(op(MID3, "Alice", NULL_INT, 0), null),
             arguments(op(MID3, "Alice", 1, NULL_INT), null),
             arguments(op(MID3, "Alice", 0, 0), ""),
