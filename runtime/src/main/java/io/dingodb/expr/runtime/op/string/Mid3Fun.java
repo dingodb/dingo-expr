@@ -19,28 +19,26 @@ package io.dingodb.expr.runtime.op.string;
 import io.dingodb.expr.annotations.Operators;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
+@Operators
 abstract class Mid3Fun extends TertiaryStringIntIntFun {
     public static final String NAME = "MID";
 
     private static final long serialVersionUID = -1474048641131723710L;
 
-    static String mid(String value, Integer start, Integer count) {
-        if (start != null && count != null) {
-            if (value != null && start != 0 && count > 0) {
-                int len = value.length();
-                // `start` begins at 1.
-                if (start < 0) {
-                    start += len;
-                } else {
-                    start -= 1;
-                }
-                int end = start + count;
-                return end >= len ? value.substring(start) : value.substring(start, end);
+    static @NonNull String mid(@NonNull String value, int start, int count) {
+        if (count > 0) {
+            int len = value.length();
+            if (0 < start && start <= len) {
+                start -= 1;
+            } else if (-len <= start && start < 0) {
+                start += len;
+            } else {
+                return "";
             }
-            return "";
+            int end = start + count;
+            return end >= len ? value.substring(start) : value.substring(start, end);
         }
-        return null;
+        return "";
     }
 
     @Override
