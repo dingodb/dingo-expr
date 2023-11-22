@@ -86,6 +86,8 @@ import static io.dingodb.expr.runtime.expr.Exprs.REPEAT;
 import static io.dingodb.expr.runtime.expr.Exprs.REPLACE;
 import static io.dingodb.expr.runtime.expr.Exprs.REVERSE;
 import static io.dingodb.expr.runtime.expr.Exprs.RIGHT;
+import static io.dingodb.expr.runtime.expr.Exprs.ROUND1;
+import static io.dingodb.expr.runtime.expr.Exprs.ROUND2;
 import static io.dingodb.expr.runtime.expr.Exprs.RTRIM;
 import static io.dingodb.expr.runtime.expr.Exprs.SIN;
 import static io.dingodb.expr.runtime.expr.Exprs.SINH;
@@ -601,6 +603,18 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(POW, 3, 3), 27.0),
             arguments(op(POW, -3.1, 3), -29.791),
             arguments(op(POW, "10", -2), 0.01),
+            arguments(op(ROUND2, 123, -2), 100),
+            arguments(op(ROUND2, 12.677, 2), 12.68),
+            arguments(op(ROUND2, 195334.12, -4), 200000.0),
+            arguments(op(ROUND2, -155.586, -2), -200.0),
+            arguments(op(ROUND2, 101, -2), 100),
+            arguments(op(ROUND2, 101.0, -2), 100.0),
+            arguments(op(ROUND2, 105, -2), 100),
+            arguments(op(ROUND2, dec(105), -1), BigDecimal.valueOf(110)),
+            arguments(op(ROUND2, 105, "-2"), 100),
+            arguments(op(ROUND1, 10), 10),
+            arguments(op(ROUND2, 3.6, 0), 4.0),
+            arguments(op(ROUND1, 3.4), 3.0),
 
             // Strings
             arguments(op(CHAR_LENGTH, NULL_STRING), 0),

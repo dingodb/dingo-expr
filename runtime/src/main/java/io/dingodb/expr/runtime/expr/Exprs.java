@@ -68,6 +68,8 @@ import io.dingodb.expr.runtime.op.mathematical.MaxFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.MinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.ModFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.PowFunFactory;
+import io.dingodb.expr.runtime.op.mathematical.Round1FunFactory;
+import io.dingodb.expr.runtime.op.mathematical.Round2FunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
@@ -200,6 +202,8 @@ public final class Exprs {
     public static final CeilFunFactory CEIL = CeilFunFactory.INSTANCE;
     public static final FloorFunFactory FLOOR = FloorFunFactory.INSTANCE;
     public static final PowFunFactory POW = PowFunFactory.INSTANCE;
+    public static final Round1FunFactory ROUND1 = Round1FunFactory.INSTANCE;
+    public static final Round2FunFactory ROUND2 = Round2FunFactory.INSTANCE;
 
     // Strings
     public static final CharLengthFunFactory CHAR_LENGTH = CharLengthFunFactory.INSTANCE;
