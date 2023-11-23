@@ -40,7 +40,7 @@ abstract class NumberFormatFun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (Types.DECIMAL.isCompatible(type0) && Types.INT.isCompatible(type1)) {
+        if (Types.DECIMAL.matches(type0) && Types.INT.matches(type1)) {
             return type0;
         }
         return null;

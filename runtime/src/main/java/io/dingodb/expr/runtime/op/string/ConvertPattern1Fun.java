@@ -18,17 +18,17 @@ package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.runtime.utils.PatternUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class ConvertTimeFormatFun extends UnaryOp {
-    public static final String NAME = "$CTF";
+abstract class ConvertPattern1Fun extends UnaryOp {
+    public static final String NAME = "$CP";
 
-    private static final long serialVersionUID = 984375203027836654L;
+    private static final long serialVersionUID = -6535404891235746L;
 
-    static @NonNull String ctf(@NonNull String value) {
-        return DateTimeUtils.convertFormat(value);
+    static @NonNull String cp(@NonNull String value0) {
+        return PatternUtils.convertSqlToRegex(value0, '\\');
     }
 
     @Override

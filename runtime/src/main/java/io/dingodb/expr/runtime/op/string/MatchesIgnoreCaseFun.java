@@ -17,18 +17,19 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.regex.Pattern;
+
 @Operators
-abstract class ConvertTimeFormatFun extends UnaryOp {
-    public static final String NAME = "$CTF";
+public class MatchesIgnoreCaseFun extends BinaryStringStringFun {
+    public static final String NAME = "MATCHES_NC";
 
-    private static final long serialVersionUID = 984375203027836654L;
+    private static final long serialVersionUID = -6896129009907506751L;
 
-    static @NonNull String ctf(@NonNull String value) {
-        return DateTimeUtils.convertFormat(value);
+    static boolean matchesNc(@NonNull String value0, @NonNull String value1) {
+        Pattern pattern = Pattern.compile(value1, Pattern.CASE_INSENSITIVE);
+        return pattern.matcher(value0).matches();
     }
 
     @Override

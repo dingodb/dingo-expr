@@ -26,6 +26,6 @@ abstract class BinaryStringStringFun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (Types.STRING.isCompatible(type0) && Types.STRING.isCompatible(type1)) ? Types.STRING : null;
+        return (Types.STRING.matches(type0) && Types.STRING.matches(type1)) ? Types.STRING : null;
     }
 }

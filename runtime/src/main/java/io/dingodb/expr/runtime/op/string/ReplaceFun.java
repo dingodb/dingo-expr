@@ -39,7 +39,7 @@ abstract class ReplaceFun extends TertiaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.isCompatible(type0) && Types.STRING.isCompatible(type1) && Types.STRING.isCompatible(type2)) {
+        if (Types.STRING.matches(type0) && Types.STRING.matches(type1) && Types.STRING.matches(type2)) {
             return Types.STRING;
         }
         return null;

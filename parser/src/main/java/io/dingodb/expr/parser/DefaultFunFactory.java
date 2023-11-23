@@ -53,6 +53,9 @@ import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
 import io.dingodb.expr.runtime.op.string.CharLengthFunFactory;
 import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
+import io.dingodb.expr.runtime.op.string.ConvertPattern1FunFactory;
+import io.dingodb.expr.runtime.op.string.ConvertPattern2FunFactory;
+import io.dingodb.expr.runtime.op.string.ConvertTimeFormatFunFactory;
 import io.dingodb.expr.runtime.op.string.HexFunFactory;
 import io.dingodb.expr.runtime.op.string.LTrim1FunFactory;
 import io.dingodb.expr.runtime.op.string.LTrim2FunFactory;
@@ -60,6 +63,8 @@ import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.Locate2FunFactory;
 import io.dingodb.expr.runtime.op.string.Locate3FunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
+import io.dingodb.expr.runtime.op.string.MatchesFunFactory;
+import io.dingodb.expr.runtime.op.string.MatchesIgnoreCaseFunFactory;
 import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
 import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
 import io.dingodb.expr.runtime.op.string.NumberFormatFunFactory;
@@ -77,6 +82,7 @@ import io.dingodb.expr.runtime.op.string.UpperFunFactory;
 import io.dingodb.expr.runtime.op.time.CurrentDateFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimeFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimestampFun;
+import io.dingodb.expr.runtime.op.time.DateDiffFunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.FromUnixTimeFunFactory;
@@ -84,6 +90,8 @@ import io.dingodb.expr.runtime.op.time.TimeFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat2FunFactory;
+import io.dingodb.expr.runtime.op.time.UnixTimestamp0Fun;
+import io.dingodb.expr.runtime.op.time.UnixTimestamp1FunFactory;
 import io.dingodb.expr.runtime.type.BoolType;
 import io.dingodb.expr.runtime.type.BytesType;
 import io.dingodb.expr.runtime.type.DateType;
@@ -202,6 +210,11 @@ public class DefaultFunFactory implements FunFactory {
         registerTertiaryFun(Locate3FunFactory.NAME, Exprs.LOCATE3);
         registerUnaryFun(HexFunFactory.NAME, Exprs.HEX);
         registerBinaryFun(NumberFormatFunFactory.NAME, Exprs.FORMAT);
+        registerBinaryFun(MatchesFunFactory.NAME, Exprs.MATCHES);
+        registerBinaryFun(MatchesIgnoreCaseFunFactory.NAME, Exprs.MATCHES_NC);
+        registerUnaryFun(ConvertTimeFormatFunFactory.NAME, Exprs._CTF);
+        registerUnaryFun(ConvertPattern1FunFactory.NAME, Exprs._CP1);
+        registerBinaryFun(ConvertPattern2FunFactory.NAME, Exprs._CP2);
 
         // Time functions
         registerNullaryFun(CurrentDateFun.NAME, Exprs.CURRENT_DATE);
@@ -214,6 +227,9 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(TimestampFormat1FunFactory.NAME, Exprs.TIMESTAMP_FORMAT1);
         registerBinaryFun(TimestampFormat2FunFactory.NAME, Exprs.TIMESTAMP_FORMAT2);
         registerUnaryFun(FromUnixTimeFunFactory.NAME, Exprs.FROM_UNIXTIME);
+        registerUnaryFun(UnixTimestamp1FunFactory.NAME, Exprs.UNIX_TIMESTAMP1);
+        registerNullaryFun(UnixTimestamp0Fun.NAME, Exprs.UNIX_TIMESTAMP0);
+        registerBinaryFun(DateDiffFunFactory.NAME, Exprs.DATEDIFF);
 
         // Collection functions
         registerVariadicFun(ArrayConstructorOpFactory.NAME, Exprs.ARRAY);

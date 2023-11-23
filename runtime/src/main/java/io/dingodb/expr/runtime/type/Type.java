@@ -31,7 +31,7 @@ public interface Type {
         return numericPrecedence() != NOT_NUMERIC;
     }
 
-    default boolean isCompatible(@NonNull Type type) {
+    default boolean matches(@NonNull Type type) {
         // Types.NULL can be converted to any type.
         return type.equals(this) || type.equals(Types.NULL);
     }

@@ -46,6 +46,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.CHAR_LENGTH;
 import static io.dingodb.expr.runtime.expr.Exprs.CONCAT;
 import static io.dingodb.expr.runtime.expr.Exprs.COS;
 import static io.dingodb.expr.runtime.expr.Exprs.COSH;
+import static io.dingodb.expr.runtime.expr.Exprs.DATEDIFF;
 import static io.dingodb.expr.runtime.expr.Exprs.DIV;
 import static io.dingodb.expr.runtime.expr.Exprs.EQ;
 import static io.dingodb.expr.runtime.expr.Exprs.EXP;
@@ -70,6 +71,8 @@ import static io.dingodb.expr.runtime.expr.Exprs.LT;
 import static io.dingodb.expr.runtime.expr.Exprs.LTRIM1;
 import static io.dingodb.expr.runtime.expr.Exprs.LTRIM2;
 import static io.dingodb.expr.runtime.expr.Exprs.MAP;
+import static io.dingodb.expr.runtime.expr.Exprs.MATCHES;
+import static io.dingodb.expr.runtime.expr.Exprs.MATCHES_NC;
 import static io.dingodb.expr.runtime.expr.Exprs.MAX;
 import static io.dingodb.expr.runtime.expr.Exprs.MID2;
 import static io.dingodb.expr.runtime.expr.Exprs.MID3;
@@ -140,7 +143,10 @@ import static io.dingodb.expr.runtime.expr.Exprs.TO_TIME;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_TIMESTAMP;
 import static io.dingodb.expr.runtime.expr.Exprs.TRIM1;
 import static io.dingodb.expr.runtime.expr.Exprs.TRIM2;
+import static io.dingodb.expr.runtime.expr.Exprs.UNIX_TIMESTAMP1;
 import static io.dingodb.expr.runtime.expr.Exprs.UPPER;
+import static io.dingodb.expr.runtime.expr.Exprs._CP1;
+import static io.dingodb.expr.runtime.expr.Exprs._CP2;
 import static io.dingodb.expr.runtime.expr.Exprs._CTF;
 import static io.dingodb.expr.runtime.expr.Exprs.op;
 import static io.dingodb.expr.runtime.expr.Exprs.val;
@@ -684,21 +690,36 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(LOCATE3, "a", "Banana", 3), 4),
             arguments(op(LOCATE3, "a", "Banana", 7), 0),
             arguments(op(LOCATE3, "a", "Banana", 3.5), 4),
-            arguments(op(_CTF, "%Y"), "uuuu"),
-            arguments(op(_CTF, "%Y-%m-%d"), "uuuu'-'MM'-'dd"),
-            arguments(op(_CTF, "%A%B%C"), "'ABC'"),
-            arguments(op(_CTF, "Year: %Y, Month: %m"), "'Year: 'uuuu', Month: 'MM"),
             arguments(op(HEX, "414243"), "ABC".getBytes(StandardCharsets.UTF_8)),
             arguments(op(FORMAT, 100.21, 1), "100.2"),
             arguments(op(FORMAT, 99.00000, 2), "99.00"),
             arguments(op(FORMAT, 1220.532, 0), "1221"),
             arguments(op(FORMAT, 18, 2), "18.00"),
             arguments(op(FORMAT, 15354.6651, 1.6), "15354.67"),
+            arguments(op(MATCHES, "abc123", ".*c\\d{2}."), true),
+            arguments(op(MATCHES, "abc123", "c\\d{2}"), false),
+            arguments(op(MATCHES, "abc123", "Abc\\d{3}"), false),
+            arguments(op(MATCHES_NC, "abc123", "Abc\\d{3}"), true),
+            arguments(op(_CTF, "%Y"), "uuuu"),
+            arguments(op(_CTF, "%Y-%m-%d"), "uuuu'-'MM'-'dd"),
+            arguments(op(_CTF, "%A%B%C"), "'ABC'"),
+            arguments(op(_CTF, "Year: %Y, Month: %m"), "'Year: 'uuuu', Month: 'MM"),
+            arguments(op(_CP1, "%"), ".*"),
+            arguments(op(_CP1, "_"), "."),
+            arguments(op(_CP1, "a_b%c"), "a.b.*c"),
+            arguments(op(_CP1, "a\\_b\\%c"), "a_b%c"),
+            arguments(op(_CP1, "a\\nb\\%c"), "a\\nb%c"),
+            arguments(op(_CP2, "a\\_b\\%c", "|"), "a\\.b\\.*c"),
+            arguments(op(_CP2, "a|_b|%c", "|"), "a_b%c"),
 
             // Date & times
             arguments(op(FROM_UNIXTIME, 1), new Timestamp(sec(1L))),
             arguments(op(FROM_UNIXTIME, 1L), new Timestamp(sec(1L))),
             arguments(op(FROM_UNIXTIME, dec(1.23)), new Timestamp(sec(BigDecimal.valueOf(1.23)))),
+            arguments(op(UNIX_TIMESTAMP1, ts(1L)), 1L),
+            arguments(op(UNIX_TIMESTAMP1, 2L), 2L),
+            arguments(op(UNIX_TIMESTAMP1, 3.5), 4L),
+            arguments(op(DATEDIFF, 24L * 60L * 60L, 0L), 1L),
 
             // Collections
             arguments(op(ARRAY, 1, 2, 3), new int[]{1, 2, 3}),

@@ -85,6 +85,8 @@ import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
 import io.dingodb.expr.runtime.op.string.CharLengthFunFactory;
 import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
+import io.dingodb.expr.runtime.op.string.ConvertPattern1FunFactory;
+import io.dingodb.expr.runtime.op.string.ConvertPattern2FunFactory;
 import io.dingodb.expr.runtime.op.string.ConvertTimeFormatFunFactory;
 import io.dingodb.expr.runtime.op.string.HexFunFactory;
 import io.dingodb.expr.runtime.op.string.LTrim1FunFactory;
@@ -93,6 +95,8 @@ import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.Locate2FunFactory;
 import io.dingodb.expr.runtime.op.string.Locate3FunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
+import io.dingodb.expr.runtime.op.string.MatchesFunFactory;
+import io.dingodb.expr.runtime.op.string.MatchesIgnoreCaseFunFactory;
 import io.dingodb.expr.runtime.op.string.Mid2FunFactory;
 import io.dingodb.expr.runtime.op.string.Mid3FunFactory;
 import io.dingodb.expr.runtime.op.string.NumberFormatFunFactory;
@@ -110,6 +114,7 @@ import io.dingodb.expr.runtime.op.string.UpperFunFactory;
 import io.dingodb.expr.runtime.op.time.CurrentDateFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimeFun;
 import io.dingodb.expr.runtime.op.time.CurrentTimestampFun;
+import io.dingodb.expr.runtime.op.time.DateDiffFunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.DateFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.FromUnixTimeFunFactory;
@@ -117,6 +122,8 @@ import io.dingodb.expr.runtime.op.time.TimeFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimeFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat2FunFactory;
+import io.dingodb.expr.runtime.op.time.UnixTimestamp0Fun;
+import io.dingodb.expr.runtime.op.time.UnixTimestamp1FunFactory;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.BoolType;
@@ -230,9 +237,13 @@ public final class Exprs {
     public static final ReplaceFunFactory REPLACE = ReplaceFunFactory.INSTANCE;
     public static final Locate2FunFactory LOCATE2 = Locate2FunFactory.INSTANCE;
     public static final Locate3FunFactory LOCATE3 = Locate3FunFactory.INSTANCE;
-    public static final ConvertTimeFormatFunFactory _CTF = ConvertTimeFormatFunFactory.INSTANCE;
     public static final HexFunFactory HEX = HexFunFactory.INSTANCE;
     public static final NumberFormatFunFactory FORMAT = NumberFormatFunFactory.INSTANCE;
+    public static final MatchesFunFactory MATCHES = MatchesFunFactory.INSTANCE;
+    public static final MatchesIgnoreCaseFunFactory MATCHES_NC = MatchesIgnoreCaseFunFactory.INSTANCE;
+    public static final ConvertTimeFormatFunFactory _CTF = ConvertTimeFormatFunFactory.INSTANCE;
+    public static final ConvertPattern1FunFactory _CP1 = ConvertPattern1FunFactory.INSTANCE;
+    public static final ConvertPattern2FunFactory _CP2 = ConvertPattern2FunFactory.INSTANCE;
 
     // Index
     public static final IndexOpFactory INDEX = IndexOpFactory.INSTANCE;
@@ -248,6 +259,9 @@ public final class Exprs {
     public static final TimestampFormat1FunFactory TIMESTAMP_FORMAT1 = TimestampFormat1FunFactory.INSTANCE;
     public static final TimestampFormat2FunFactory TIMESTAMP_FORMAT2 = TimestampFormat2FunFactory.INSTANCE;
     public static final FromUnixTimeFunFactory FROM_UNIXTIME = FromUnixTimeFunFactory.INSTANCE;
+    public static final UnixTimestamp0Fun UNIX_TIMESTAMP0 = UnixTimestamp0Fun.INSTANCE;
+    public static final UnixTimestamp1FunFactory UNIX_TIMESTAMP1 = UnixTimestamp1FunFactory.INSTANCE;
+    public static final DateDiffFunFactory DATEDIFF = DateDiffFunFactory.INSTANCE;
 
     // Collections
     public static final ArrayConstructorOpFactory ARRAY = ArrayConstructorOpFactory.INSTANCE;
