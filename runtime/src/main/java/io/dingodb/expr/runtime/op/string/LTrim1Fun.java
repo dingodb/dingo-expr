@@ -27,7 +27,7 @@ abstract class LTrim1Fun extends UnaryOp {
 
     private static final long serialVersionUID = -8557732786466948967L;
 
-    static String ltrim(String value) {
+    static @NonNull String ltrim(@NonNull String value) {
         return StringUtils.stripStart(value, null);
     }
 

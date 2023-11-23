@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.arithmetic;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,24 +28,24 @@ import java.math.RoundingMode;
 abstract class DivOp extends ArithmeticOp {
     private static final long serialVersionUID = 5716662239372671267L;
 
-    static int div(int value0, int value1) {
-        return value0 / value1;
+    static @Nullable Integer div(int value0, int value1) {
+        return (value1 != 0) ? value0 / value1 : null;
     }
 
-    static long div(long value0, long value1) {
-        return value0 / value1;
+    static @Nullable Long div(long value0, long value1) {
+        return (value1 != 0L) ? value0 / value1 : null;
     }
 
-    static float div(float value0, float value1) {
-        return value0 / value1;
+    static @Nullable Float div(float value0, float value1) {
+        return (value1 != 0.0f) ? value0 / value1 : null;
     }
 
-    static double div(double value0, double value1) {
-        return value0 / value1;
+    static @Nullable Double div(double value0, double value1) {
+        return (value1 != 0.0) ? value0 / value1 : null;
     }
 
-    static @NonNull BigDecimal div(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
-        return value0.divide(value1, RoundingMode.HALF_UP);
+    static @Nullable BigDecimal div(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
+        return (value1.compareTo(BigDecimal.ZERO) != 0) ? value0.divide(value1, RoundingMode.HALF_UP) : null;
     }
 
     @Override

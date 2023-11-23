@@ -41,6 +41,7 @@ import static io.dingodb.expr.runtime.expr.Exprs.AND_FUN;
 import static io.dingodb.expr.runtime.expr.Exprs.ARRAY;
 import static io.dingodb.expr.runtime.expr.Exprs.ASIN;
 import static io.dingodb.expr.runtime.expr.Exprs.ATAN;
+import static io.dingodb.expr.runtime.expr.Exprs.CASE;
 import static io.dingodb.expr.runtime.expr.Exprs.CEIL;
 import static io.dingodb.expr.runtime.expr.Exprs.CHAR_LENGTH;
 import static io.dingodb.expr.runtime.expr.Exprs.CONCAT;
@@ -336,6 +337,10 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(DIV, 1L, 2.0f), 0.5f),
             arguments(op(DIV, 1.1f, 2.2), 0.5),
             arguments(op(DIV, 1.1, dec(2.2)), BigDecimal.valueOf(0.5)),
+            arguments(op(DIV, 1, 0), null),
+            arguments(op(DIV, 1.1f, 0.0f), null),
+            arguments(op(DIV, 1.2, 0.0), null),
+            arguments(op(DIV, dec(1.3), dec(0)), null),
 
             // Relations
             arguments(op(EQ, 1, 1), true),
@@ -511,6 +516,9 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(IS_FALSE, NULL_TIME), false),
             arguments(op(IS_FALSE, ts(0)), false),
             arguments(op(IS_FALSE, NULL_TIMESTAMP), false),
+            arguments(op(CASE, 100), 100),
+            arguments(op(CASE, true, 1, 100), 1),
+            arguments(op(CASE, false, 1, true, 2, 100), 2),
 
             // Mathematics
             arguments(op(ABS, -1), 1),
@@ -633,22 +641,22 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(ROUND1, 3.4), 3.0),
 
             // Strings
-            arguments(op(CHAR_LENGTH, NULL_STRING), 0),
+            arguments(op(CHAR_LENGTH, NULL_STRING), null),
             arguments(op(CHAR_LENGTH, ""), 0),
             arguments(op(CHAR_LENGTH, "Alice"), 5),
-            arguments(op(CONCAT, NULL_STRING, "Betty"), "Betty"),
-            arguments(op(CONCAT, "Alice", NULL_STRING), "Alice"),
+            arguments(op(CONCAT, NULL_STRING, "Betty"), null),
+            arguments(op(CONCAT, "Alice", NULL_STRING), null),
             arguments(op(CONCAT, "Alice", "Betty"), "AliceBetty"),
             arguments(op(LOWER, "HeLLo"), "hello"),
             arguments(op(UPPER, "HeLLo"), "HELLO"),
-            arguments(op(LEFT, NULL_STRING, 1), ""),
+            arguments(op(LEFT, NULL_STRING, 1), null),
             arguments(op(LEFT, "Alice", NULL_INT), null),
             arguments(op(LEFT, "Alice", 0), ""),
             arguments(op(LEFT, "Alice", -1), ""),
             arguments(op(LEFT, "Alice", 10), "Alice"),
             arguments(op(LEFT, "Alice", 3), "Ali"),
             arguments(op(LEFT, "Alice", 3.5), "Alic"),
-            arguments(op(RIGHT, NULL_STRING, 1), ""),
+            arguments(op(RIGHT, NULL_STRING, 1), null),
             arguments(op(RIGHT, "Alice", NULL_INT), null),
             arguments(op(RIGHT, "Alice", 0), ""),
             arguments(op(RIGHT, "Alice", -1), ""),

@@ -80,6 +80,7 @@ import io.dingodb.expr.runtime.op.relational.GtOpFactory;
 import io.dingodb.expr.runtime.op.relational.LeOpFactory;
 import io.dingodb.expr.runtime.op.relational.LtOpFactory;
 import io.dingodb.expr.runtime.op.relational.NeOpFactory;
+import io.dingodb.expr.runtime.op.special.CaseFun;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
@@ -191,6 +192,7 @@ public final class Exprs {
     public static final IsNullFunFactory IS_NULL = IsNullFunFactory.INSTANCE;
     public static final IsTrueFunFactory IS_TRUE = IsTrueFunFactory.INSTANCE;
     public static final IsFalseFunFactory IS_FALSE = IsFalseFunFactory.INSTANCE;
+    public static final CaseFun CASE = CaseFun.INSTANCE;
 
     // Mathematics
     public static final AbsFunFactory ABS = AbsFunFactory.INSTANCE;

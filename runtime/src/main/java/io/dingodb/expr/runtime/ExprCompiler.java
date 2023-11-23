@@ -55,7 +55,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
         if (type.isScalar()) {
             Object value = expr.getValue();
             Type valueType = Types.valueType(value);
-            if (valueType.equals(type) || value == null) {
+            if (type.matches(valueType)) {
                 return expr;
             }
             return CastingFactory.get(type, config).compile(Exprs.val(value), config);

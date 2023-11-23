@@ -27,7 +27,7 @@ abstract class RTrim1Fun extends UnaryOp {
 
     private static final long serialVersionUID = -7445709112049015539L;
 
-    static String rtrim(String value) {
+    static @NonNull String rtrim(@NonNull String value) {
         return StringUtils.stripEnd(value, null);
     }
 
