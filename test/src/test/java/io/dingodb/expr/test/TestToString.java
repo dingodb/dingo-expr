@@ -140,7 +140,7 @@ public class TestToString {
     @MethodSource("getParameters2")
     public void testCompiledAdvanced(String exprString, String result) throws ExprParseException {
         Expr expr = ExprParser.DEFAULT.parse(exprString);
-        Expr expr1 = ExprCompiler.FOR_SQL.visit(expr, context.getDataSchema());
+        Expr expr1 = ExprCompiler.ADVANCED.visit(expr, context.getDataSchema());
         Assertions.assertThat(expr1.toString()).isEqualTo(result);
     }
 }

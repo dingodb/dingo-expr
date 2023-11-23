@@ -65,7 +65,7 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
                 throw new OperatorTypeNotExist(this, type);
             }
         }
-        return config.isDoSimplification() ? result.simplify(config) : result;
+        return config.withSimplification() ? result.simplify(config) : result;
     }
 
     public @NonNull Expr simplify(@NonNull UnaryOpExpr expr, ExprConfig ignoredConfig) {

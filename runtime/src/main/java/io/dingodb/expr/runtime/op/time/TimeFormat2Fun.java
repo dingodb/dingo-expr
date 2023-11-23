@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
@@ -25,7 +26,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.sql.Time;
 
 @Operators
-abstract class TimeFormat2Fun extends BinaryFormatFun {
+abstract class TimeFormat2Fun extends BinaryOp {
     public static final String NAME = "TIME_FORMAT";
 
     private static final long serialVersionUID = 6159797220072404086L;
@@ -36,7 +37,7 @@ abstract class TimeFormat2Fun extends BinaryFormatFun {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (type0.equals(Types.TIME) && type1.equals(Types.STRING)) {
+        if (Types.TIME.matches(type0) && Types.STRING.matches(type1)) {
             return Types.TIME;
         }
         return null;
@@ -44,7 +45,7 @@ abstract class TimeFormat2Fun extends BinaryFormatFun {
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[1].equals(Types.STRING)) {
+        if (Types.STRING.matches(types[1])) {
             types[0] = Types.TIME;
             return Types.TIME;
         }

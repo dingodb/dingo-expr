@@ -17,64 +17,58 @@
 package io.dingodb.expr.runtime;
 
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class ExprConfig {
-    public static final ExprConfig TRIVIAL = new ExprConfig(
-        TimeZone.getDefault(),
-        DateTimeUtils.DEFAULT_IN_DATE_FORMATTERS,
-        DateTimeUtils.DEFAULT_IN_TIME_FORMATTERS,
-        DateTimeUtils.DEFAULT_IN_TIMESTAMP_FORMATTERS,
-        DateTimeUtils.DEFAULT_OUT_DATE_FORMATTER,
-        DateTimeUtils.DEFAULT_OUT_TIME_FORMATTER,
-        DateTimeUtils.DEFAULT_OUT_TIMESTAMP_FORMATTER,
-        false,
-        false,
-        TimeFormatStringStyle.JAVA
-    );
+public interface ExprConfig {
+    ExprConfig SIMPLE = new ExprConfig() {
+        @Override
+        public boolean withSimplification() {
+            return false;
+        }
+    };
 
-    public static final ExprConfig FOR_SQL = new ExprConfig(
-        TimeZone.getDefault(),
-        DateTimeUtils.DEFAULT_IN_DATE_FORMATTERS,
-        DateTimeUtils.DEFAULT_IN_TIME_FORMATTERS,
-        DateTimeUtils.DEFAULT_IN_TIMESTAMP_FORMATTERS,
-        DateTimeUtils.DEFAULT_OUT_DATE_FORMATTER,
-        DateTimeUtils.DEFAULT_OUT_TIME_FORMATTER,
-        DateTimeUtils.DEFAULT_OUT_TIMESTAMP_FORMATTER,
-        true,
-        true,
-        TimeFormatStringStyle.SQL
-    );
+    ExprConfig ADVANCED = new ExprConfig() {
+        @Override
+        public boolean withRangeCheck() {
+            return true;
+        }
+    };
 
-    @Getter
-    private final TimeZone timeZone;
-    @Getter
-    private final DateTimeFormatter[] inDateFormatters;
-    @Getter
-    private final DateTimeFormatter[] inTimeFormatters;
-    @Getter
-    private final DateTimeFormatter[] inTimestampFormatters;
-    @Getter
-    private final DateTimeFormatter outDateFormatter;
-    @Getter
-    private final DateTimeFormatter outTimeFormatter;
-    @Getter
-    private final DateTimeFormatter outTimestampFormatter;
-    @Getter
-    private final boolean doSimplification;
-    @Getter
-    private final boolean doRangeCheck;
-    @Getter
-    private final TimeFormatStringStyle timeFormatStringStyle;
+    default boolean withSimplification() {
+        return true;
+    }
 
-    public enum TimeFormatStringStyle {
-        JAVA,
-        SQL,
+    default boolean withRangeCheck() {
+        return false;
+    }
+
+    default TimeZone getTimeZone() {
+        return TimeZone.getDefault();
+    }
+
+    default DateTimeFormatter[] getInDateFormatters() {
+        return DateTimeUtils.DEFAULT_IN_DATE_FORMATTERS;
+    }
+
+    default DateTimeFormatter[] getInTimeFormatters() {
+        return DateTimeUtils.DEFAULT_IN_TIME_FORMATTERS;
+    }
+
+    default DateTimeFormatter[] getInTimestampFormatters() {
+        return DateTimeUtils.DEFAULT_IN_TIMESTAMP_FORMATTERS;
+    }
+
+    default DateTimeFormatter getOutDateFormatter() {
+        return DateTimeUtils.DEFAULT_OUT_DATE_FORMATTER;
+    }
+
+    default DateTimeFormatter getOutTimeFormatter() {
+        return DateTimeUtils.DEFAULT_OUT_TIME_FORMATTER;
+    }
+
+    default DateTimeFormatter getOutTimestampFormatter() {
+        return DateTimeUtils.DEFAULT_OUT_TIMESTAMP_FORMATTER;
     }
 }

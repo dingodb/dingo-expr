@@ -216,12 +216,12 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("date('1980-01-31') >= date('1980-02-01')", false),
             arguments("timestamp('1980-01-31 23:59:59') < timestamp('1980-02-01 00:00:00')", true),
             arguments("date_format(0)", "1970-01-01"),
-            arguments("date_format(0, '%Y:%m:%d')", "1970:01:01"),
+            arguments("date_format(0, $CTF('%Y:%m:%d'))", "1970:01:01"),
             arguments("time_format(0)", "00:00:00"),
-            arguments("time_format(0, '%H-%i-%s')", "00-00-00"),
+            arguments("time_format(0, $CTF('%H-%i-%s'))", "00-00-00"),
             arguments("TIMESTAMP_FORMAT(0)", DateTimeUtils.timestampFormat(new Timestamp(0))),
             arguments(
-                "TIMESTAMP_FORMAT(0, '%Y%m%d%H%i%s')",
+                "TIMESTAMP_FORMAT(0, $CTF('%Y%m%d%H%i%s'))",
                 DateTimeUtils.timestampFormat(new Timestamp(0), "uuuuMMddHHmmss")
             ),
 

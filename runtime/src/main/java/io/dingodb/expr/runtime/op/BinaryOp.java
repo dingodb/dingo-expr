@@ -65,7 +65,7 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
                 throw new OperatorTypeNotExist(this, type0, type1);
             }
         }
-        return config.isDoSimplification() ? result.simplify(config) : result;
+        return config.withSimplification() ? result.simplify(config) : result;
     }
 
     public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {

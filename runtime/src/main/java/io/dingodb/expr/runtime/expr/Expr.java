@@ -34,7 +34,7 @@ public interface Expr extends Serializable {
     Object eval(EvalContext context, ExprConfig config);
 
     default Object eval() {
-        return eval(null, ExprConfig.TRIVIAL);
+        return eval(null, ExprConfig.SIMPLE);
     }
 
     Type getType();
