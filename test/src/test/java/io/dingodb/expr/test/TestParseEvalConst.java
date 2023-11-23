@@ -41,7 +41,7 @@ public class TestParseEvalConst {
     @ArgumentsSource(ParseEvalConstProvider.class)
     public void test(String exprString, Object value) throws ExprParseException {
         Expr expr = ExprParser.DEFAULT.parse(exprString);
-        Expr expr1 = ExprCompiler.FOR_SQL.visit(expr);
+        Expr expr1 = ExprCompiler.ADVANCED.visit(expr);
         Object result = expr1.eval();
         Assert.value(result).isEqualTo(value);
     }

@@ -95,7 +95,7 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
                 throw new OperatorTypeNotExist(this, type0, type1, type2);
             }
         }
-        return config.isDoSimplification() ? result.simplify(config) : result;
+        return config.withSimplification() ? result.simplify(config) : result;
     }
 
     public @NonNull Expr simplify(@NonNull TertiaryOpExpr expr, ExprConfig ignoredConfig) {

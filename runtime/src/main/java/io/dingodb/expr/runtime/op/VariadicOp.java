@@ -72,7 +72,7 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
                 throw new OperatorTypeNotExist(this, types);
             }
         }
-        return config.isDoSimplification() ? result.simplify(config) : result;
+        return config.withSimplification() ? result.simplify(config) : result;
     }
 
     public @NonNull Expr simplify(@NonNull VariadicOpExpr expr, ExprConfig config) {

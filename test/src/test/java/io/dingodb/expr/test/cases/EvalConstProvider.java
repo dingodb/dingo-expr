@@ -47,6 +47,8 @@ import static io.dingodb.expr.runtime.expr.Exprs.CONCAT;
 import static io.dingodb.expr.runtime.expr.Exprs.COS;
 import static io.dingodb.expr.runtime.expr.Exprs.COSH;
 import static io.dingodb.expr.runtime.expr.Exprs.DATEDIFF;
+import static io.dingodb.expr.runtime.expr.Exprs.DATE_FORMAT1;
+import static io.dingodb.expr.runtime.expr.Exprs.DATE_FORMAT2;
 import static io.dingodb.expr.runtime.expr.Exprs.DIV;
 import static io.dingodb.expr.runtime.expr.Exprs.EQ;
 import static io.dingodb.expr.runtime.expr.Exprs.EXP;
@@ -102,6 +104,10 @@ import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR2;
 import static io.dingodb.expr.runtime.expr.Exprs.SUBSTR3;
 import static io.dingodb.expr.runtime.expr.Exprs.TAN;
 import static io.dingodb.expr.runtime.expr.Exprs.TANH;
+import static io.dingodb.expr.runtime.expr.Exprs.TIMESTAMP_FORMAT1;
+import static io.dingodb.expr.runtime.expr.Exprs.TIMESTAMP_FORMAT2;
+import static io.dingodb.expr.runtime.expr.Exprs.TIME_FORMAT1;
+import static io.dingodb.expr.runtime.expr.Exprs.TIME_FORMAT2;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_BOOL;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_BYTES;
 import static io.dingodb.expr.runtime.expr.Exprs.TO_ARRAY_DATE;
@@ -713,6 +719,21 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(_CP2, "a|_b|%c", "|"), "a_b%c"),
 
             // Date & times
+            arguments(op(DATE_FORMAT1, 0), "1970-01-01"),
+            arguments(op(DATE_FORMAT2, 0, "uuuu:MM:dd"), "1970:01:01"),
+            arguments(op(DATE_FORMAT2, 0, op(_CTF, "%Y:%m:%d")), "1970:01:01"),
+            arguments(op(TIME_FORMAT1, 0), "00:00:00"),
+            arguments(op(TIME_FORMAT2, 0, "HH-mm-ss"), "00-00-00"),
+            arguments(op(TIME_FORMAT2, 0, op(_CTF, "%H-%i-%s")), "00-00-00"),
+            arguments(op(TIMESTAMP_FORMAT1, 0), DateTimeUtils.timestampFormat(new Timestamp(0))),
+            arguments(
+                op(TIMESTAMP_FORMAT2, 0, "uuuuMMddHHmmss"),
+                DateTimeUtils.timestampFormat(new Timestamp(0), "uuuuMMddHHmmss")
+            ),
+            arguments(
+                op(TIMESTAMP_FORMAT2, 0, op(_CTF, "%Y%m%d%H%i%s")),
+                DateTimeUtils.timestampFormat(new Timestamp(0), "uuuuMMddHHmmss")
+            ),
             arguments(op(FROM_UNIXTIME, 1), new Timestamp(sec(1L))),
             arguments(op(FROM_UNIXTIME, 1L), new Timestamp(sec(1L))),
             arguments(op(FROM_UNIXTIME, dec(1.23)), new Timestamp(sec(BigDecimal.valueOf(1.23)))),

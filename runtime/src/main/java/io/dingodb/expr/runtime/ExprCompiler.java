@@ -43,8 +43,8 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
-    public static final ExprCompiler SIMPLE = new ExprCompiler(ExprConfig.TRIVIAL);
-    public static final ExprCompiler FOR_SQL = new ExprCompiler(ExprConfig.FOR_SQL);
+    public static final ExprCompiler SIMPLE = new ExprCompiler(ExprConfig.SIMPLE);
+    public static final ExprCompiler ADVANCED = new ExprCompiler(ExprConfig.ADVANCED);
 
     private final ExprConfig config;
 
@@ -83,7 +83,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
 
     @Override
     public Expr visitNullaryOpExpr(@NonNull NullaryOpExpr expr, CompileContext obj) {
-        return config.isDoSimplification() ? expr.simplify(config) : expr;
+        return config.withSimplification() ? expr.simplify(config) : expr;
     }
 
     @Override
