@@ -16,27 +16,31 @@
 
 package io.dingodb.expr.runtime.op.string;
 
-import io.dingodb.expr.runtime.op.TertiaryOp;
+import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.PatternUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-abstract class TertiaryStringIntIntFun extends TertiaryOp {
-    private static final long serialVersionUID = 8969966142892709405L;
+@Operators
+abstract class ConvertPattern2Fun extends BinaryOp {
+    public static final String NAME = "$CP";
 
-    @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.INT.matches(type1) && Types.INT.matches(type2)) {
-            return Types.STRING;
-        }
-        return null;
+    private static final long serialVersionUID = -6535404891235746L;
+
+    static @NonNull String cp(@NonNull String value0, @NonNull String value1) {
+        return PatternUtils.convertSqlToRegex(value0, value1.charAt(0));
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
-            types[1] = Types.INT;
-            types[2] = Types.INT;
+    public @NonNull String getName() {
+        return NAME;
+    }
+
+    @Override
+    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+        if (Types.STRING.matches(type0) && Types.STRING.matches(type1)) {
             return Types.STRING;
         }
         return null;

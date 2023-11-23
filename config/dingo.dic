@@ -2,6 +2,7 @@ acos
 asin
 atan
 cosh
+datediff
 dingodb
 expr
 exprs

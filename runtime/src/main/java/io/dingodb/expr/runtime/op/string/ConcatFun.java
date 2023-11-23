@@ -39,5 +39,4 @@ abstract class ConcatFun extends BinaryStringStringFun {
     public @NonNull String getName() {
         return NAME;
     }
-
 }

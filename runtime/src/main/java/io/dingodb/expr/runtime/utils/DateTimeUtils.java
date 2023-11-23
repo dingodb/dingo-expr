@@ -314,6 +314,14 @@ public final class DateTimeUtils {
         return new Timestamp(millis);
     }
 
+    private static LocalDate localDateOf(@NonNull Date value) {
+        return toUtcTime(value.getTime()).toLocalDate();
+    }
+
+    public static long dateDiff(@NonNull Date value0, @NonNull Date value1) {
+        return localDateOf(value0).toEpochDay() - localDateOf(value1).toEpochDay();
+    }
+
     public static @NonNull String convertFormat(@NonNull String format) {
         StringBuilder builder = new StringBuilder();
         CharacterIterator it = new StringCharacterIterator(format);

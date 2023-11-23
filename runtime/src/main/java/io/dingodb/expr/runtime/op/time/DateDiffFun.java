@@ -14,31 +14,44 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.string;
+package io.dingodb.expr.runtime.op.time;
 
-import io.dingodb.expr.runtime.op.TertiaryOp;
+import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-abstract class TertiaryStringIntIntFun extends TertiaryOp {
-    private static final long serialVersionUID = 8969966142892709405L;
+import java.sql.Date;
+import java.util.Arrays;
+
+@Operators
+abstract class DateDiffFun extends BinaryOp {
+    public static final String NAME = "DATEDIFF";
+
+    private static final long serialVersionUID = -8589287644033616224L;
+
+    static long dateDiff(@NonNull Date value0, @NonNull Date value1) {
+        return DateTimeUtils.dateDiff(value0, value1);
+    }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.INT.matches(type1) && Types.INT.matches(type2)) {
-            return Types.STRING;
+    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+        if (Types.DATE.matches(type0) && Types.DATE.matches(type1)) {
+            return Types.DATE;
         }
         return null;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
-            types[1] = Types.INT;
-            types[2] = Types.INT;
-            return Types.STRING;
-        }
-        return null;
+        Arrays.fill(types, Types.DATE);
+        return Types.DATE;
+    }
+
+    @Override
+    public @NonNull String getName() {
+        return NAME;
     }
 }

@@ -14,30 +14,41 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.string;
+package io.dingodb.expr.runtime.op.time;
 
-import io.dingodb.expr.runtime.op.TertiaryOp;
+import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-abstract class TertiaryStringIntIntFun extends TertiaryOp {
-    private static final long serialVersionUID = 8969966142892709405L;
+import java.sql.Timestamp;
+
+@Operators
+abstract class UnixTimestamp1Fun extends UnaryOp {
+    public static final String NAME = "UNIX_TIMESTAMP";
+
+    private static final long serialVersionUID = -5074752230142332838L;
+
+    static long unixTimestamp(@NonNull Timestamp value) {
+        return DateTimeUtils.toSecond(value.getTime(), 0).longValue();
+    }
+
+    static long unixTimestamp(long value) {
+        return value;
+    }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.INT.matches(type1) && Types.INT.matches(type2)) {
-            return Types.STRING;
-        }
-        return null;
+    public @NonNull String getName() {
+        return NAME;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
-            types[1] = Types.INT;
-            types[2] = Types.INT;
-            return Types.STRING;
+        if (types[0].isNumeric()) {
+            types[0] = Types.LONG;
+            return Types.LONG;
         }
         return null;
     }

@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.string;
+package io.dingodb.expr.runtime.op.time;
 
-import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.runtime.EvalContext;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.NullaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators
-abstract class ConvertTimeFormatFun extends UnaryOp {
-    public static final String NAME = "$CTF";
+public class UnixTimestamp0Fun extends NullaryOp {
+    public static final UnixTimestamp0Fun INSTANCE = new UnixTimestamp0Fun();
+    public static final String NAME = "UNIX_TIMESTAMP";
 
-    private static final long serialVersionUID = 984375203027836654L;
-
-    static @NonNull String ctf(@NonNull String value) {
-        return DateTimeUtils.convertFormat(value);
-    }
+    private static final long serialVersionUID = 2891254339801474600L;
 
     @Override
     public @NonNull String getName() {
         return NAME;
+    }
+
+    @Override
+    public Object eval(EvalContext context, ExprConfig config) {
+        return System.currentTimeMillis();
     }
 }
