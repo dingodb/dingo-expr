@@ -20,14 +20,14 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
+@Operators
 abstract class CharLengthFun extends UnaryOp {
     public static final String NAME = "CHAR_LENGTH";
 
     private static final long serialVersionUID = 5454356467741754567L;
 
-    static int charLength(String str) {
-        return str != null ? str.length() : 0;
+    static int charLength(@NonNull String str) {
+        return str.length();
     }
 
     @Override

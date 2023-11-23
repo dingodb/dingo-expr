@@ -43,11 +43,6 @@ public final class DecimalType extends ScalarType {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof DecimalType;
-    }
-
-    @Override
     public String toString() {
         return NAME;
     }

@@ -48,6 +48,7 @@ import io.dingodb.expr.runtime.op.mathematical.SinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanhFunFactory;
+import io.dingodb.expr.runtime.op.special.CaseFun;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
@@ -185,6 +186,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(IsNullFunFactory.NAME, Exprs.IS_NULL);
         registerUnaryFun(IsTrueFunFactory.NAME, Exprs.IS_TRUE);
         registerUnaryFun(IsFalseFunFactory.NAME, Exprs.IS_FALSE);
+        registerVariadicFun(CaseFun.NAME, Exprs.CASE);
 
         // String functions
         registerUnaryFun(CharLengthFunFactory.NAME, Exprs.CHAR_LENGTH);

@@ -28,6 +28,11 @@ public final class AnyType extends ScalarType {
     }
 
     @Override
+    public boolean matches(@NonNull Type type) {
+        return true;
+    }
+
+    @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
         return visitor.visitAnyType(this, obj);
     }
@@ -35,11 +40,6 @@ public final class AnyType extends ScalarType {
     @Override
     public int hashCode() {
         return CODE;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof AnyType;
     }
 
     @Override

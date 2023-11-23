@@ -38,11 +38,6 @@ public final class TimeType extends ScalarType {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof TimeType;
-    }
-
-    @Override
     public String toString() {
         return NAME;
     }

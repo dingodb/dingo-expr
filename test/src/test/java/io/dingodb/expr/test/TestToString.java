@@ -52,7 +52,10 @@ public class TestToString {
             arguments("from_unixtime(123)", "FROM_UNIXTIME(123)"),
             arguments("array(1, 2, 3)", "ARRAY(1, 2, 3)"),
             arguments("list(1, 2, 3)", "LIST(1, 2, 3)"),
-            arguments("slice(array(array(1), array(2)), 0)", "SLICE(ARRAY(ARRAY(1), ARRAY(2)), 0)")
+            arguments("slice(array(array(1), array(2)), 0)", "SLICE(ARRAY(ARRAY(1), ARRAY(2)), 0)"),
+            arguments("case(100)", "CASE(100)"),
+            arguments("case(true, 1, 100)", "CASE(true, 1, 100)"),
+            arguments("case(false, 1, true, 2, 100)", "CASE(false, 1, true, 2, 100)")
         );
     }
 
@@ -117,7 +120,10 @@ public class TestToString {
             arguments("or(false, null, false)", "BOOL(NULL)"),
             arguments("or(null, c, null)", "BOOL(NULL) || $[2]"),
             arguments("or(false, null, a, b, c)", "OR(BOOL(NULL), BOOL($[0]), BOOL($[1]), $[2])"),
-            arguments("bytes('abc')", "HEX('616263')")
+            arguments("bytes('abc')", "HEX('616263')"),
+            arguments("case(100)", "100"),
+            arguments("case(true, 1, 100)", "1"),
+            arguments("case(false, 1, true, 2, 100)", "2")
         );
     }
 

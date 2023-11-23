@@ -38,11 +38,6 @@ public final class DateType extends ScalarType {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof DateType;
-    }
-
-    @Override
     public String toString() {
         return NAME;
     }

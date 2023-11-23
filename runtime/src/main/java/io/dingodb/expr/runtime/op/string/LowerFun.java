@@ -26,7 +26,7 @@ abstract class LowerFun extends UnaryOp {
 
     private static final long serialVersionUID = 8809222988929575483L;
 
-    static String lower(@NonNull String value) {
+    static @NonNull String lower(@NonNull String value) {
         return value.toLowerCase();
     }
 

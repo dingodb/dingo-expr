@@ -43,11 +43,6 @@ public final class BoolType extends ScalarType {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof BoolType;
-    }
-
-    @Override
     public String toString() {
         return NAME;
     }

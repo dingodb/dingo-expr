@@ -19,20 +19,17 @@ package io.dingodb.expr.runtime.op.string;
 import io.dingodb.expr.annotations.Operators;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators(nullable = true)
+@Operators
 abstract class LeftFun extends BinaryStringIntFun {
     public static final String NAME = "LEFT";
 
     private static final long serialVersionUID = 7001019395517413765L;
 
-    static String left(String value, Integer count) {
-        if (count != null) {
-            if (value != null && count > 0) {
-                return count < value.length() ? value.substring(0, count) : value;
-            }
-            return "";
+    static @NonNull String left(@NonNull String value, int count) {
+        if (count > 0) {
+            return count < value.length() ? value.substring(0, count) : value;
         }
-        return null;
+        return "";
     }
 
     @Override
