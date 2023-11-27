@@ -26,7 +26,7 @@ import io.dingodb.expr.runtime.type.Types;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ListConstructorOp extends ListConstructorOpFactory {
@@ -43,7 +43,7 @@ public final class ListConstructorOp extends ListConstructorOpFactory {
     @Override
     public @NonNull Object eval(@NonNull Expr @NonNull [] exprs, EvalContext context, ExprConfig config) {
         int size = exprs.length;
-        List<Object> list = new LinkedList<>();
+        List<Object> list = new ArrayList<>(size);
         for (Expr expr : exprs) {
             Object value = expr.eval(context, config);
             if (value == null) {

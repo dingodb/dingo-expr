@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -65,28 +66,28 @@ abstract class StringCastOp extends CastOp {
         return new String(value, StandardCharsets.UTF_8);
     }
 
-    static @NonNull String stringCast(Date value, ExprConfig config) {
+    static @NonNull String stringCast(Date value, @NonNull ExprConfig config) {
         if (config.getInDateFormatters() != null) {
             return DateTimeUtils.dateFormat(value, config.getInDateFormatters()[0].toString());
         }
         return DateTimeUtils.dateFormat(value);
     }
 
-    static @NonNull String stringCast(Time value, ExprConfig config) {
+    static @NonNull String stringCast(Time value, @NonNull ExprConfig config) {
         if (config.getInTimeFormatters() != null) {
             return DateTimeUtils.timeFormat(value, config.getInTimeFormatters()[0].toString());
         }
         return DateTimeUtils.timeFormat(value);
     }
 
-    static @NonNull String stringCast(Timestamp value, ExprConfig config) {
+    static @NonNull String stringCast(Timestamp value, @NonNull ExprConfig config) {
         if (config.getInTimestampFormatters() != null) {
             return DateTimeUtils.timestampFormat(value, config.getInTimestampFormatters()[0].toString());
         }
         return DateTimeUtils.timestampFormat(value);
     }
 
-    static String stringCast(Void ignoredValue) {
+    static @Nullable String stringCast(Void ignoredValue) {
         return null;
     }
 

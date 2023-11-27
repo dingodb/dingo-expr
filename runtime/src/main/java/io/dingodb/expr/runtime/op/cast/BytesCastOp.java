@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.nio.charset.StandardCharsets;
 
@@ -35,7 +36,7 @@ abstract class BytesCastOp extends CastOp {
         return value;
     }
 
-    static byte[] bytesCast(Void ignoredValue) {
+    static byte @Nullable [] bytesCast(Void ignoredValue) {
         return null;
     }
 

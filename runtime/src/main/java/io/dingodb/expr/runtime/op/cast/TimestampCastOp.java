@@ -54,7 +54,7 @@ abstract class TimestampCastOp extends CastOp {
         return value;
     }
 
-    static Timestamp timestampCast(Void ignoredValue) {
+    static @Nullable Timestamp timestampCast(Void ignoredValue) {
         return null;
     }
 

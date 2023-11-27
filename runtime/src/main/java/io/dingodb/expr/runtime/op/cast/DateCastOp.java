@@ -49,7 +49,7 @@ abstract class DateCastOp extends CastOp {
         return value;
     }
 
-    static Date dateCast(Void ignoredValue) {
+    static @Nullable Date dateCast(Void ignoredValue) {
         return null;
     }
 

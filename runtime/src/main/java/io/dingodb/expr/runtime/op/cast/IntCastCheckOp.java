@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -75,8 +76,8 @@ abstract class IntCastCheckOp extends CastOp {
         return Integer.parseInt(value);
     }
 
-    static int intCast(Void ignoredValue) {
-        return 0;
+    static @Nullable Integer intCast(Void ignoredValue) {
+        return null;
     }
 
     @Override

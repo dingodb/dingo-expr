@@ -49,7 +49,7 @@ abstract class TimeCastOp extends CastOp {
         return value;
     }
 
-    static Time timeCast(Void ignoredValue) {
+    static @Nullable Time timeCast(Void ignoredValue) {
         return null;
     }
 

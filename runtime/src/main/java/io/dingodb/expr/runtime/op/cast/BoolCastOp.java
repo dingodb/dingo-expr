@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 
@@ -51,12 +52,8 @@ abstract class BoolCastOp extends CastOp {
         return value.compareTo(BigDecimal.ZERO) != 0;
     }
 
-    static boolean boolCast(@NonNull String ignoredValue) {
-        return false;
-    }
-
-    static boolean boolCast(Void ignoredValue) {
-        return false;
+    static @Nullable Boolean boolCast(Void ignoredValue) {
+        return null;
     }
 
     @Override
