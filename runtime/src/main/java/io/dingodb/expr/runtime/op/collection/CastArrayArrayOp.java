@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.cast.CastOp;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 
 import java.lang.reflect.Array;
 
@@ -33,7 +34,7 @@ public final class CastArrayArrayOp extends CastArrayOpFactory {
         int size = Array.getLength(value);
         Object array = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
         for (int i = 0; i < size; ++i) {
-            Object v = castOp.evalValue(Array.get(value, i), config);
+            Object v = ExceptionUtils.nonNullElement(castOp.evalValue(Array.get(value, i), config));
             Array.set(array, i, v);
         }
         return array;

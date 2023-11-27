@@ -55,7 +55,7 @@ public final class MapType implements Type {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
         return NAME + "<" + keyType + ", " + valueType + ">";
     }
 }

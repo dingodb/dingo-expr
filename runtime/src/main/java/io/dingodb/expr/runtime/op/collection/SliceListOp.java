@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -54,7 +55,7 @@ abstract class SliceListOp extends SliceOp {
         int size = list.size();
         List<Object> result = new ArrayList<>(size);
         for (Object element : list) {
-            result.add(getValueOf(element, index));
+            result.add(ExceptionUtils.nonNullElement(getValueOf(element, index)));
         }
         return result;
     }

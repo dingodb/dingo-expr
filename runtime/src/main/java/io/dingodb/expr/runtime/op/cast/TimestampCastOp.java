@@ -43,11 +43,8 @@ abstract class TimestampCastOp extends CastOp {
         return new Timestamp(DateTimeUtils.fromSecond(value));
     }
 
-    static @Nullable Timestamp timestampCast(String value, ExprConfig config) {
-        if (config != null && config.getInTimestampFormatters() != null) {
-            return DateTimeUtils.parseTimestamp(value, config.getInTimestampFormatters());
-        }
-        return DateTimeUtils.parseTimestamp(value);
+    static @Nullable Timestamp timestampCast(String value, @NonNull ExprConfig config) {
+        return DateTimeUtils.parseTimestamp(value, config.getParseTimestampFormatters());
     }
 
     static @NonNull Timestamp timestampCast(@NonNull Timestamp value) {

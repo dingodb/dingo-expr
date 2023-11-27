@@ -91,25 +91,25 @@ public final class DateTimeUtils {
         concatDateTimeFormatter(DATE_SEP_BY_DOT, TIME_SEP_BY_COLON, ' ');
     public static final DateTimeFormatter DATE_TIME_NO_SEP =
         concatDateTimeFormatter(DATE_NO_SEP, TIME_NO_SEP, null);
-    public static final DateTimeFormatter[] DEFAULT_IN_TIMESTAMP_FORMATTERS = new DateTimeFormatter[]{
+    public static final DateTimeFormatter[] DEFAULT_PARSE_TIMESTAMP_FORMATTERS = new DateTimeFormatter[]{
         DateTimeUtils.DATE_TIME_SEP_BY_HYPHEN_COLON,
         DateTimeUtils.DATE_TIME_SEP_BY_SLASH_COLON,
         DateTimeUtils.DATE_TIME_SEP_BY_DOT_COLON,
         DateTimeUtils.DATE_TIME_NO_SEP,
     };
-    public static final DateTimeFormatter[] DEFAULT_IN_DATE_FORMATTERS = new DateTimeFormatter[]{
+    public static final DateTimeFormatter[] DEFAULT_PARSE_DATE_FORMATTERS = new DateTimeFormatter[]{
         DateTimeUtils.DATE_SEP_BY_HYPHEN,
         DateTimeUtils.DATE_SEP_BY_SLASH,
         DateTimeUtils.DATE_SEP_BY_DOT,
         DateTimeUtils.DATE_NO_SEP,
     };
-    public static final DateTimeFormatter[] DEFAULT_IN_TIME_FORMATTERS = new DateTimeFormatter[]{
+    public static final DateTimeFormatter[] DEFAULT_PARSE_TIME_FORMATTERS = new DateTimeFormatter[]{
         DateTimeUtils.TIME_SEP_BY_COLON,
         DateTimeUtils.TIME_NO_SEP,
     };
-    public static final DateTimeFormatter DEFAULT_OUT_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
-    public static final DateTimeFormatter DEFAULT_OUT_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
-    public static final DateTimeFormatter DEFAULT_OUT_TIMESTAMP_FORMATTER =
+    public static final DateTimeFormatter DEFAULT_OUTPUT_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+    public static final DateTimeFormatter DEFAULT_OUTPUT_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
+    public static final DateTimeFormatter DEFAULT_OUTPUT_TIMESTAMP_FORMATTER =
         concatDateTimeFormatter(DateTimeFormatter.ISO_LOCAL_DATE, DateTimeFormatter.ISO_LOCAL_TIME, ' ');
 
     private static final long ONE_DAY_IN_MILLI = 24L * 60L * 60L * 1000L;
@@ -143,7 +143,7 @@ public final class DateTimeUtils {
     }
 
     public static @Nullable Date parseDate(@NonNull String value) {
-        return parseDate(value, DEFAULT_IN_DATE_FORMATTERS);
+        return parseDate(value, DEFAULT_PARSE_DATE_FORMATTERS);
     }
 
     /**
@@ -174,7 +174,7 @@ public final class DateTimeUtils {
     }
 
     public static @Nullable Time parseTime(@NonNull String value) {
-        return parseTime(value, DEFAULT_IN_TIME_FORMATTERS);
+        return parseTime(value, DEFAULT_PARSE_TIME_FORMATTERS);
     }
 
     /**
@@ -205,7 +205,7 @@ public final class DateTimeUtils {
     }
 
     public static Timestamp parseTimestamp(@NonNull String value) {
-        return parseTimestamp(value, DEFAULT_IN_TIMESTAMP_FORMATTERS);
+        return parseTimestamp(value, DEFAULT_PARSE_TIMESTAMP_FORMATTERS);
     }
 
     /**
@@ -261,34 +261,40 @@ public final class DateTimeUtils {
         return second * 1000L;
     }
 
-    public static @NonNull String dateFormat(@NonNull Date value) {
-        return toUtcTime(value.getTime()).format(DEFAULT_OUT_DATE_FORMATTER);
+    public static @NonNull String dateFormat(@NonNull Date value, @NonNull DateTimeFormatter formatter) {
+        return toUtcTime(value.getTime()).format(formatter);
     }
 
-    public static @NonNull String dateFormat(@NonNull Date value, String format) {
-        return toUtcTime(value.getTime()).format(
-            DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT)
-        );
+    public static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {
+        return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+    }
+
+    public static @NonNull String dateFormat(@NonNull Date value) {
+        return dateFormat(value, DEFAULT_OUTPUT_DATE_FORMATTER);
+    }
+
+    public static @NonNull String timeFormat(@NonNull Time value, @NonNull DateTimeFormatter formatter) {
+        return toUtcTime(value.getTime()).format(formatter);
+    }
+
+    public static @NonNull String timeFormat(@NonNull Time value, @NonNull String format) {
+        return timeFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
     }
 
     public static @NonNull String timeFormat(@NonNull Time value) {
-        return toUtcTime(value.getTime()).format(DEFAULT_OUT_TIME_FORMATTER);
+        return timeFormat(value, DEFAULT_OUTPUT_TIME_FORMATTER);
     }
 
-    public static @NonNull String timeFormat(@NonNull Time value, String format) {
-        return toUtcTime(value.getTime()).format(
-            DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT)
-        );
+    public static @NonNull String timestampFormat(@NonNull Timestamp value, @NonNull DateTimeFormatter formatter) {
+        return value.toLocalDateTime().format(formatter);
+    }
+
+    public static @NonNull String timestampFormat(@NonNull Timestamp value, @NonNull String format) {
+        return timestampFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
     }
 
     public static @NonNull String timestampFormat(@NonNull Timestamp value) {
-        return value.toLocalDateTime().format(DEFAULT_OUT_TIMESTAMP_FORMATTER);
-    }
-
-    public static @NonNull String timestampFormat(@NonNull Timestamp value, String format) {
-        return value.toLocalDateTime().format(
-            DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT)
-        );
+        return timestampFormat(value, DEFAULT_OUTPUT_TIMESTAMP_FORMATTER);
     }
 
     public static @NonNull Date currentDate(@NonNull TimeZone timeZone) {

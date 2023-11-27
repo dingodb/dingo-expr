@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.cast.CastOp;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Array;
@@ -36,7 +37,7 @@ public final class CastListArrayOp extends CastListOpFactory {
         int size = Array.getLength(value);
         List<Object> list = new ArrayList<>(size);
         for (int i = 0; i < size; ++i) {
-            Object v = castOp.evalValue(Array.get(value, i), config);
+            Object v = ExceptionUtils.nonNullElement(castOp.evalValue(Array.get(value, i), config));
             list.add(v);
         }
         return list;

@@ -23,13 +23,14 @@ import java.util.TimeZone;
 
 public interface ExprConfig {
     ExprConfig SIMPLE = new ExprConfig() {
-        @Override
-        public boolean withSimplification() {
-            return false;
-        }
     };
 
     ExprConfig ADVANCED = new ExprConfig() {
+        @Override
+        public boolean withSimplification() {
+            return true;
+        }
+
         @Override
         public boolean withRangeCheck() {
             return true;
@@ -37,7 +38,7 @@ public interface ExprConfig {
     };
 
     default boolean withSimplification() {
-        return true;
+        return false;
     }
 
     default boolean withRangeCheck() {
@@ -48,27 +49,27 @@ public interface ExprConfig {
         return TimeZone.getDefault();
     }
 
-    default DateTimeFormatter[] getInDateFormatters() {
-        return DateTimeUtils.DEFAULT_IN_DATE_FORMATTERS;
+    default DateTimeFormatter[] getParseDateFormatters() {
+        return DateTimeUtils.DEFAULT_PARSE_DATE_FORMATTERS;
     }
 
-    default DateTimeFormatter[] getInTimeFormatters() {
-        return DateTimeUtils.DEFAULT_IN_TIME_FORMATTERS;
+    default DateTimeFormatter[] getParseTimeFormatters() {
+        return DateTimeUtils.DEFAULT_PARSE_TIME_FORMATTERS;
     }
 
-    default DateTimeFormatter[] getInTimestampFormatters() {
-        return DateTimeUtils.DEFAULT_IN_TIMESTAMP_FORMATTERS;
+    default DateTimeFormatter[] getParseTimestampFormatters() {
+        return DateTimeUtils.DEFAULT_PARSE_TIMESTAMP_FORMATTERS;
     }
 
-    default DateTimeFormatter getOutDateFormatter() {
-        return DateTimeUtils.DEFAULT_OUT_DATE_FORMATTER;
+    default DateTimeFormatter getOutputDateFormatter() {
+        return DateTimeUtils.DEFAULT_OUTPUT_DATE_FORMATTER;
     }
 
-    default DateTimeFormatter getOutTimeFormatter() {
-        return DateTimeUtils.DEFAULT_OUT_TIME_FORMATTER;
+    default DateTimeFormatter getOutputTimeFormatter() {
+        return DateTimeUtils.DEFAULT_OUTPUT_TIME_FORMATTER;
     }
 
-    default DateTimeFormatter getOutTimestampFormatter() {
-        return DateTimeUtils.DEFAULT_OUT_TIMESTAMP_FORMATTER;
+    default DateTimeFormatter getOutputTimestampFormatter() {
+        return DateTimeUtils.DEFAULT_OUTPUT_TIMESTAMP_FORMATTER;
     }
 }

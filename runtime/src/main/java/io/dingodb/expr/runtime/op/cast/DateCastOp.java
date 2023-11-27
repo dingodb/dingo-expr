@@ -38,11 +38,8 @@ abstract class DateCastOp extends CastOp {
         return new Date(DateTimeUtils.fromSecond(value));
     }
 
-    static @Nullable Date dateCast(String value, ExprConfig config) {
-        if (config != null && config.getInDateFormatters() != null) {
-            return DateTimeUtils.parseDate(value, config.getInDateFormatters());
-        }
-        return DateTimeUtils.parseDate(value);
+    static @Nullable Date dateCast(String value, @NonNull ExprConfig config) {
+        return DateTimeUtils.parseDate(value, config.getParseDateFormatters());
     }
 
     static @NonNull Date dateCast(@NonNull Date value) {

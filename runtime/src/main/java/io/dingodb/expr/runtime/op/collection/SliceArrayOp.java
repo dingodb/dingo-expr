@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -52,7 +53,7 @@ abstract class SliceArrayOp extends SliceOp {
         int size = Array.getLength(value0);
         Object result = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
         for (int i = 0; i < size; ++i) {
-            Array.set(result, i, getValueOf(Array.get(value0, i), index));
+            Array.set(result, i, ExceptionUtils.nonNullElement(getValueOf(Array.get(value0, i), index)));
         }
         return result;
     }

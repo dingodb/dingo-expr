@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -31,8 +32,8 @@ abstract class DateFormat1Fun extends UnaryOp {
 
     private static final long serialVersionUID = -4619878639287876160L;
 
-    static @NonNull String dateFormat(Date value) {
-        return DateTimeUtils.dateFormat(value);
+    static @NonNull String dateFormat(@NonNull Date value, @NonNull ExprConfig config) {
+        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter());
     }
 
     @Override
