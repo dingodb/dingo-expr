@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 
@@ -55,8 +56,8 @@ abstract class DoubleCastOp extends CastOp {
         return Double.parseDouble(value);
     }
 
-    static double doubleCast(Void ignoredValue) {
-        return 0.0;
+    static @Nullable Double doubleCast(Void ignoredValue) {
+        return null;
     }
 
     @Override

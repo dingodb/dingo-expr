@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 
@@ -55,8 +56,8 @@ abstract class FloatCastOp extends CastOp {
         return Float.parseFloat(value);
     }
 
-    static float floatCast(Void ignoredValue) {
-        return 0.0f;
+    static @Nullable Float floatCast(Void ignoredValue) {
+        return null;
     }
 
     @Override
