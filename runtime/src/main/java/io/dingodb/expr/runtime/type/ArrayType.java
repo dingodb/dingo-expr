@@ -44,7 +44,7 @@ public final class ArrayType extends CollectionType {
     }
 
     @Override
-    public String toString() {
+    public @NonNull String toString() {
         return NAME + "<" + elementType + ">";
     }
 }

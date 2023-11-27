@@ -31,7 +31,7 @@ abstract class TimestampFormat2Fun extends BinaryOp {
 
     private static final long serialVersionUID = -8350213966080878814L;
 
-    static @NonNull String timestampFormat(Timestamp value, String format) {
+    static @NonNull String timestampFormat(@NonNull Timestamp value, @NonNull String format) {
         return DateTimeUtils.timestampFormat(value, format);
     }
 

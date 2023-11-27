@@ -67,24 +67,15 @@ abstract class StringCastOp extends CastOp {
     }
 
     static @NonNull String stringCast(Date value, @NonNull ExprConfig config) {
-        if (config.getInDateFormatters() != null) {
-            return DateTimeUtils.dateFormat(value, config.getInDateFormatters()[0].toString());
-        }
-        return DateTimeUtils.dateFormat(value);
+        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter());
     }
 
     static @NonNull String stringCast(Time value, @NonNull ExprConfig config) {
-        if (config.getInTimeFormatters() != null) {
-            return DateTimeUtils.timeFormat(value, config.getInTimeFormatters()[0].toString());
-        }
-        return DateTimeUtils.timeFormat(value);
+        return DateTimeUtils.timeFormat(value, config.getOutputTimeFormatter());
     }
 
     static @NonNull String stringCast(Timestamp value, @NonNull ExprConfig config) {
-        if (config.getInTimestampFormatters() != null) {
-            return DateTimeUtils.timestampFormat(value, config.getInTimestampFormatters()[0].toString());
-        }
-        return DateTimeUtils.timestampFormat(value);
+        return DateTimeUtils.timestampFormat(value, config.getOutputTimestampFormatter());
     }
 
     static @Nullable String stringCast(Void ignoredValue) {

@@ -31,7 +31,7 @@ abstract class DateFormat2Fun extends BinaryOp {
 
     private static final long serialVersionUID = -5201676038056246158L;
 
-    static @NonNull String dateFormat(Date value, String format) {
+    static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {
         return DateTimeUtils.dateFormat(value, format);
     }
 

@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.utils;
 
+import io.dingodb.expr.runtime.exception.NullElementsNotAllowed;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class ExceptionUtils {
@@ -34,5 +35,12 @@ public final class ExceptionUtils {
             "Value exceeds limits of LONG, which is from "
                 + Long.MIN_VALUE + " to " + Long.MAX_VALUE + "."
         );
+    }
+
+    public static @NonNull Object nonNullElement(Object value) {
+        if (value != null) {
+            return value;
+        }
+        throw new NullElementsNotAllowed();
     }
 }

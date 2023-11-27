@@ -18,11 +18,11 @@ package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.exception.NullElementsNotAllowed;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -44,10 +44,7 @@ public final class ArrayConstructorOp extends ArrayConstructorOpFactory {
         int size = exprs.length;
         Object array = ArrayBuilder.INSTANCE.visit(type.getElementType(), size);
         for (int i = 0; i < size; ++i) {
-            Object value = exprs[i].eval(context, config);
-            if (value == null) {
-                throw new NullElementsNotAllowed();
-            }
+            Object value = ExceptionUtils.nonNullElement(exprs[i].eval(context, config));
             Array.set(array, i, value);
         }
         return array;

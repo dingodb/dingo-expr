@@ -733,7 +733,10 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TIME_FORMAT1, 0), "00:00:00"),
             arguments(op(TIME_FORMAT2, 0, "HH-mm-ss"), "00-00-00"),
             arguments(op(TIME_FORMAT2, 0, op(_CTF, "%H-%i-%s")), "00-00-00"),
-            arguments(op(TIMESTAMP_FORMAT1, 0), DateTimeUtils.timestampFormat(new Timestamp(0))),
+            arguments(
+                op(TIMESTAMP_FORMAT1, 0),
+                DateTimeUtils.timestampFormat(new Timestamp(0), DateTimeUtils.DEFAULT_OUTPUT_TIMESTAMP_FORMATTER)
+            ),
             arguments(
                 op(TIMESTAMP_FORMAT2, 0, "uuuuMMddHHmmss"),
                 DateTimeUtils.timestampFormat(new Timestamp(0), "uuuuMMddHHmmss")

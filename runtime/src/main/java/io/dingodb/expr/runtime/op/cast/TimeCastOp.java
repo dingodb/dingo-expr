@@ -38,11 +38,8 @@ abstract class TimeCastOp extends CastOp {
         return new Time(DateTimeUtils.fromSecond(value));
     }
 
-    static @Nullable Time timeCast(String value, ExprConfig config) {
-        if (config != null && config.getInTimeFormatters() != null) {
-            return DateTimeUtils.parseTime(value, config.getInTimeFormatters());
-        }
-        return DateTimeUtils.parseTime(value);
+    static @Nullable Time timeCast(String value, @NonNull ExprConfig config) {
+        return DateTimeUtils.parseTime(value, config.getParseTimeFormatters());
     }
 
     static @NonNull Time timeCast(@NonNull Time value) {

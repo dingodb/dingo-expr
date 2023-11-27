@@ -18,11 +18,11 @@ package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.exception.NullElementsNotAllowed;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -45,10 +45,7 @@ public final class ListConstructorOp extends ListConstructorOpFactory {
         int size = exprs.length;
         List<Object> list = new ArrayList<>(size);
         for (Expr expr : exprs) {
-            Object value = expr.eval(context, config);
-            if (value == null) {
-                throw new NullElementsNotAllowed();
-            }
+            Object value = ExceptionUtils.nonNullElement(expr.eval(context, config));
             list.add(value);
         }
         return list;
