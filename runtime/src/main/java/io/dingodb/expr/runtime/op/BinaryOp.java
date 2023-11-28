@@ -61,6 +61,8 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
             BinaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
                 result = Exprs.op(op1, doCast(operand0, types[0], config), doCast(operand1, types[1], config));
+            } else if (config.withGeneralOp()) {
+                result = Exprs.op(new BinaryGeneralOp(this), operand0, operand1);
             } else {
                 throw new OperatorTypeNotExist(this, type0, type1);
             }

@@ -45,6 +45,10 @@ public interface ExprConfig {
         return false;
     }
 
+    default boolean withGeneralOp() {
+        return true;
+    }
+
     default TimeZone getTimeZone() {
         return TimeZone.getDefault();
     }

@@ -46,8 +46,6 @@ public class IndexOpFactory extends BinaryOp {
                 return IndexMapOp.of((MapType) key);
             } else if (key instanceof TupleType) {
                 return IndexTupleOp.of((TupleType) key);
-            } else {
-                return IndexAnyOp.INSTANCE;
             }
         }
         return null;
@@ -64,8 +62,6 @@ public class IndexOpFactory extends BinaryOp {
             return type0;
         } else if (type0 instanceof MapType && type1 == ((MapType) type0).getKeyType()) {
             return type0;
-        } else if (type0.equals(Types.ANY)) {
-            return type0;
         }
         return null;
     }
@@ -77,8 +73,6 @@ public class IndexOpFactory extends BinaryOp {
             return types[0];
         } else if (types[0] instanceof MapType) {
             types[1] = ((MapType) types[0]).getKeyType();
-            return types[0];
-        } else if (types[0].equals(Types.ANY)) {
             return types[0];
         }
         return null;

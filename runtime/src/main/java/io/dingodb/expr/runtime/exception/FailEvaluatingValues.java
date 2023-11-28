@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.index;
+package io.dingodb.expr.runtime.exception;
 
-import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.expr.Exprs;
+import io.dingodb.expr.runtime.op.Op;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public final class IndexAnyOp extends IndexOpFactory {
-    public static final IndexAnyOp INSTANCE = new IndexAnyOp();
+import java.util.Arrays;
 
-    private static final long serialVersionUID = 4289810283787607380L;
+public class FailEvaluatingValues extends ExprCompileException {
+    private static final long serialVersionUID = 7745327076087595622L;
 
-    @Override
-    protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
-        return ExprCompiler.SIMPLE.visit(Exprs.op(Exprs.INDEX, value0, value1)).eval(null, config);
+    public FailEvaluatingValues(@NonNull Op op, Class<?>... classes) {
+        super("Cannot evaluating " + op.getName() + " of " + Arrays.toString(classes) + ".");
     }
 }
