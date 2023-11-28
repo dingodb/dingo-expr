@@ -91,6 +91,8 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
                     doCast(operand1, types[1], config),
                     doCast(operand2, types[2], config)
                 );
+            } else if (config.withGeneralOp()) {
+                result = Exprs.op(new TertiaryGeneralOp(this), operand0, operand1, operand2);
             } else {
                 throw new OperatorTypeNotExist(this, type0, type1, type2);
             }

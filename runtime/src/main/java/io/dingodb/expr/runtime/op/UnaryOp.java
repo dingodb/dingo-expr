@@ -61,6 +61,8 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
             UnaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
                 result = Exprs.op(op1, doCast(operand, types[0], config));
+            } else if (config.withGeneralOp()) {
+                result = Exprs.op(new UnaryGeneralOp(this), operand);
             } else {
                 throw new OperatorTypeNotExist(this, type);
             }

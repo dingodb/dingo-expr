@@ -852,7 +852,15 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(INDEX, Arrays.asList(1, 2, 3), 0), 1),
             arguments(op(INDEX, Arrays.asList(1, 2, 3), 2), 3),
             arguments(op(INDEX, ImmutableMap.of("a", 10, "b", 20), "a"), 10),
-            arguments(op(INDEX, ImmutableMap.of("a", 10, "b", 20), "b"), 20)
+            arguments(op(INDEX, ImmutableMap.of("a", 10, "b", 20), "b"), 20),
+
+            // General op
+            arguments(op(ADD, val(1, Types.ANY), val(1, Types.ANY)), 2),
+            arguments(op(ABS, val(-12, Types.ANY)), 12),
+            arguments(op(INDEX, val(new int[]{1, 2, 3}, Types.ANY), 1), 2),
+            arguments(op(INDEX, val(ImmutableMap.of("a", 1, "b", 2), Types.ANY), "b"), 2),
+            arguments(op(REPLACE, val("abc", Types.ANY), "b", "d"), "adc"),
+            arguments(op(AND_FUN, val(1, Types.ANY), true, true), true)
         );
     }
 }

@@ -68,6 +68,8 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
                     .mapToObj(i -> doCast(operands[i], types[i], config))
                     .toArray(Expr[]::new)
                 );
+            } else if (config.withGeneralOp()) {
+                result = Exprs.op(new VariadicGeneralOp(this), (Object[]) operands);
             } else {
                 throw new OperatorTypeNotExist(this, types);
             }
