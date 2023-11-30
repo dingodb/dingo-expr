@@ -48,11 +48,11 @@ public class TestParseEvalConst {
 
     @Test
     public void testTemp() throws ExprParseException {
-        String exprString = "+null";
+        String exprString = "round(1, '2')";
         Expr expr = ExprParser.DEFAULT.parse(exprString);
         Expr expr1 = ExprCompiler.ADVANCED.visit(expr);
         Object result = expr1.eval();
-        Assert.value(result).isEqualTo(null);
+        Assert.value(result).isEqualTo(1);
     }
 
     @Test
