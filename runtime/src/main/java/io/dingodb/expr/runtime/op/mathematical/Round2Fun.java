@@ -65,7 +65,7 @@ abstract class Round2Fun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return type0;
+        return Types.INT.matches(type1) ? type0 : null;
     }
 
     @Override
