@@ -18,16 +18,14 @@ package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.exception.ExprEvaluatingException;
-import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import io.dingodb.expr.runtime.utils.ExceptionUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 
 @Operators
-abstract class AbsCheckFun extends UnaryOp {
+abstract class AbsCheckFun extends UnaryNumericOp {
     public static final String NAME = "ABS";
 
     private static final long serialVersionUID = 6834907753646404442L;
@@ -56,11 +54,6 @@ abstract class AbsCheckFun extends UnaryOp {
 
     static @NonNull BigDecimal abs(@NonNull BigDecimal num) {
         return num.abs();
-    }
-
-    @Override
-    public Object keyOf(@NonNull Type type) {
-        return !type.equals(Types.NULL) ? type : Types.INT;
     }
 
     @Override
