@@ -47,6 +47,15 @@ public class TestParseEvalConst {
     }
 
     @Test
+    public void testTemp() throws ExprParseException {
+        String exprString = "+null";
+        Expr expr = ExprParser.DEFAULT.parse(exprString);
+        Expr expr1 = ExprCompiler.ADVANCED.visit(expr);
+        Object result = expr1.eval();
+        Assert.value(result).isEqualTo(null);
+    }
+
+    @Test
     public void testCurrentDate() throws ExprParseException {
         Expr expr = ExprParser.DEFAULT.parse("current_date()");
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);

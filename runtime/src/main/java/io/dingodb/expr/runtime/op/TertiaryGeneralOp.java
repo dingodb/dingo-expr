@@ -41,8 +41,8 @@ public class TertiaryGeneralOp extends TertiaryOp {
     @Override
     public Object evalValue(Object value0, Object value1, Object value2, ExprConfig config) {
         Expr expr = ExprCompiler.SIMPLE.visit(Exprs.op(op, value0, value1, value2));
-        if (expr instanceof TertiaryOpExpr && ((TertiaryOpExpr) expr).getOp() instanceof TertiaryGeneralOp) {
-            throw new FailEvaluatingValues(this, value0.getClass(), value1.getClass(), value2.getClass());
+        if (expr instanceof TertiaryOpExpr && ((TertiaryOpExpr) expr).getOp().getKey() == null) {
+            throw new FailEvaluatingValues(this, value0, value1, value2);
         }
         return expr.eval(null, config);
     }

@@ -17,11 +17,10 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class Trim1Fun extends UnaryOp {
+abstract class Trim1Fun extends UnaryStringFun {
     public static final String NAME = "TRIM";
 
     private static final long serialVersionUID = 2251491105230358309L;

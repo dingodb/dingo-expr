@@ -17,18 +17,17 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.PatternUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class ConvertPattern1Fun extends UnaryOp {
+abstract class ConvertPattern1Fun extends UnaryStringFun {
     public static final String NAME = "$CP";
 
     private static final long serialVersionUID = -6535404891235746L;
 
-    static @NonNull String cp(@NonNull String value0) {
-        return PatternUtils.convertSqlToRegex(value0, '\\');
+    static @NonNull String cp(@NonNull String value) {
+        return PatternUtils.convertSqlToRegex(value, '\\');
     }
 
     @Override

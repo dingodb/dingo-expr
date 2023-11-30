@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.arithmetic;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryNumericOp;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,7 +26,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Operators
-abstract class DivOp extends ArithmeticOp {
+abstract class DivOp extends BinaryNumericOp {
     private static final long serialVersionUID = 5716662239372671267L;
 
     static @Nullable Integer div(int value0, int value1) {

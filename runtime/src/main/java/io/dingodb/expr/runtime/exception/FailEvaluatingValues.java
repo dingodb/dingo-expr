@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.exception;
 
 import io.dingodb.expr.runtime.op.Op;
+import io.dingodb.expr.runtime.type.NullType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
@@ -24,7 +25,11 @@ import java.util.Arrays;
 public class FailEvaluatingValues extends ExprCompileException {
     private static final long serialVersionUID = 7745327076087595622L;
 
-    public FailEvaluatingValues(@NonNull Op op, Class<?>... classes) {
-        super("Cannot evaluating " + op.getName() + " of " + Arrays.toString(classes) + ".");
+    public FailEvaluatingValues(@NonNull Op op, Object... values) {
+        super("Cannot evaluating " + op.getName() + " of " + Arrays.toString(
+            Arrays.stream(values)
+                .map(v -> v != null ? v.getClass().getName() : NullType.NAME)
+                .toArray(String[]::new)
+        ) + ".");
     }
 }

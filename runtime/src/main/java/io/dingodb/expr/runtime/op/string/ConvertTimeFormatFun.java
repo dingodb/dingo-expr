@@ -17,12 +17,11 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class ConvertTimeFormatFun extends UnaryOp {
+abstract class ConvertTimeFormatFun extends UnaryStringFun {
     public static final String NAME = "$CTF";
 
     private static final long serialVersionUID = 984375203027836654L;

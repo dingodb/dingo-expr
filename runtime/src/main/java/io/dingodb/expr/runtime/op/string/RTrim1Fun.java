@@ -17,12 +17,11 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class RTrim1Fun extends UnaryOp {
+abstract class RTrim1Fun extends UnaryStringFun {
     public static final String NAME = "RTRIM";
 
     private static final long serialVersionUID = -7445709112049015539L;

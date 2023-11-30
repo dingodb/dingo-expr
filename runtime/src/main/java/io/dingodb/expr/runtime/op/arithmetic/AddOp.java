@@ -17,13 +17,14 @@
 package io.dingodb.expr.runtime.op.arithmetic;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.BinaryNumericOp;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 
 @Operators
-abstract class AddOp extends ArithmeticOp {
+abstract class AddOp extends BinaryNumericOp {
     private static final long serialVersionUID = 7159909541314089027L;
 
     static int add(int value0, int value1) {
