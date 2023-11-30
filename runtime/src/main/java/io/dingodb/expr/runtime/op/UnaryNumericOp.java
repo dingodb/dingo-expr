@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.runtime.op.arithmetic;
+package io.dingodb.expr.runtime.op;
 
-import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.BinaryNumericOp;
+import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.runtime.type.Types;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators
-abstract class ArithmeticOp extends BinaryNumericOp {
-    private static final long serialVersionUID = 150057962825578226L;
+import java.util.Arrays;
+
+public abstract class UnaryNumericOp extends UnaryOp {
+    private static final long serialVersionUID = -336042269536007913L;
+
+    @Override
+    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+        Type best = Types.bestType(types[0]);
+        if (best != null) {
+            Arrays.fill(types, best);
+        }
+        return best;
+    }
 }

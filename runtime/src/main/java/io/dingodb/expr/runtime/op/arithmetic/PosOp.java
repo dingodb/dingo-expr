@@ -18,13 +18,13 @@ package io.dingodb.expr.runtime.op.arithmetic;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.OpType;
-import io.dingodb.expr.runtime.op.UnaryOp;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 
 @Operators
-abstract class PosOp extends UnaryOp {
+abstract class PosOp extends UnaryNumericOp {
     private static final long serialVersionUID = -6665715127982088591L;
 
     static int pos(int value) {

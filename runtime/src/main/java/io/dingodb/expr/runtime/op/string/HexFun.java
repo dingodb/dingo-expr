@@ -17,14 +17,13 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class HexFun extends UnaryOp {
+abstract class HexFun extends UnaryStringFun {
     public static final String NAME = "HEX";
 
     private static final long serialVersionUID = 7550168473179742157L;

@@ -35,8 +35,8 @@ public class UnaryGeneralOp extends UnaryOp {
     @Override
     public Object evalValue(Object value, ExprConfig config) {
         Expr expr = ExprCompiler.SIMPLE.visit(Exprs.op(op, value));
-        if (expr instanceof UnaryOpExpr && ((UnaryOpExpr) expr).getOp() instanceof UnaryGeneralOp) {
-            throw new FailEvaluatingValues(this, value.getClass());
+        if (expr instanceof UnaryOpExpr && ((UnaryOpExpr) expr).getOp().getKey() == null) {
+            throw new FailEvaluatingValues(this, value);
         }
         return expr.eval(null, config);
     }

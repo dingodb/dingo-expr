@@ -41,8 +41,8 @@ public class BinaryGeneralOp extends BinaryOp {
     @Override
     public Object evalValue(Object value0, Object value1, ExprConfig config) {
         Expr expr = ExprCompiler.SIMPLE.visit(Exprs.op(op, value0, value1));
-        if (expr instanceof BinaryOpExpr && ((BinaryOpExpr) expr).getOp() instanceof BinaryGeneralOp) {
-            throw new FailEvaluatingValues(this, value0.getClass(), value1.getClass());
+        if (expr instanceof BinaryOpExpr && ((BinaryOpExpr) expr).getOp().getKey() == null) {
+            throw new FailEvaluatingValues(this, value0, value1);
         }
         return expr.eval(null, config);
     }

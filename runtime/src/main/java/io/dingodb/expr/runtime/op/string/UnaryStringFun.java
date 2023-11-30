@@ -16,22 +16,19 @@
 
 package io.dingodb.expr.runtime.op.string;
 
-import io.dingodb.expr.annotations.Operators;
-import org.apache.commons.lang3.StringUtils;
+import io.dingodb.expr.runtime.op.UnaryOp;
+import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@Operators
-abstract class LTrim1Fun extends UnaryStringFun {
-    public static final String NAME = "LTRIM";
-
-    private static final long serialVersionUID = -8557732786466948967L;
-
-    static @NonNull String ltrim(@NonNull String value) {
-        return StringUtils.stripStart(value, null);
-    }
+abstract class UnaryStringFun extends UnaryOp {
+    private static final long serialVersionUID = 5761679834072680839L;
 
     @Override
-    public @NonNull String getName() {
-        return NAME;
+    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+        if (Types.STRING.matches(types[0])) {
+            return Types.STRING;
+        }
+        return null;
     }
 }

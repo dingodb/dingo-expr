@@ -17,11 +17,10 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-public class ReverseFun extends UnaryOp {
+public class ReverseFun extends UnaryStringFun {
     public static final String NAME = "REVERSE";
 
     private static final long serialVersionUID = 2691982562867909922L;

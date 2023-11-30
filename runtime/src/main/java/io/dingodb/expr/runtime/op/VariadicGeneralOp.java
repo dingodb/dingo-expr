@@ -27,8 +27,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.Arrays;
-
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class VariadicGeneralOp extends VariadicOp {
     private static final long serialVersionUID = -1023165365948123356L;
@@ -43,8 +41,8 @@ public class VariadicGeneralOp extends VariadicOp {
     @Override
     public Object evalValue(Object @NonNull [] values, ExprConfig config) {
         Expr expr = ExprCompiler.SIMPLE.visit(Exprs.op(op, values));
-        if (expr instanceof VariadicOpExpr && ((VariadicOpExpr) expr).getOp() instanceof VariadicGeneralOp) {
-            throw new FailEvaluatingValues(this, Arrays.stream(values).map(Object::getClass).toArray(Class<?>[]::new));
+        if (expr instanceof VariadicOpExpr && ((VariadicOpExpr) expr).getOp().getKey() == null) {
+            throw new FailEvaluatingValues(this, values);
         }
         return expr.eval(null, config);
     }
