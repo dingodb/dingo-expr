@@ -184,6 +184,8 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("floor(float(12.3))", 12.0),
             arguments("floor(double(12.3))", 12.0),
             arguments("floor(12.3)", BigDecimal.valueOf(12)),
+            arguments("round(null)", null),
+            arguments("round(3.2)", BigDecimal.valueOf(3)),
 
             // Strings
             arguments("\"Alice\" + 'Bob'", "AliceBob"),
@@ -223,6 +225,9 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("time('10:10:00') < time('11:00:02')", true),
             arguments("date('1980-01-31') >= date('1980-02-01')", false),
             arguments("timestamp('1980-01-31 23:59:59') < timestamp('1980-02-01 00:00:00')", true),
+            arguments("from_unixtime(null)", null),
+            arguments("from_unixtime(0)", new Timestamp(0)),
+            arguments("from_unixtime(1)", new Timestamp(1000)),
             arguments("date_format(0)", "1970-01-01"),
             arguments("date_format(0, $CTF('%Y:%m:%d'))", "1970:01:01"),
             arguments("time_format(0)", "00:00:00"),

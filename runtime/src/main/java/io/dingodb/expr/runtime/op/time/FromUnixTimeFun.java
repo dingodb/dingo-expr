@@ -17,7 +17,7 @@
 package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
@@ -27,8 +27,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Operators
-abstract class FromUnixTimeFun extends UnaryOp {
+abstract class FromUnixTimeFun extends UnaryNumericOp {
     public static final String NAME = "FROM_UNIXTIME";
+
     private static final long serialVersionUID = 1441707237891012175L;
 
     static @NonNull Timestamp fromUnixTime(int value) {

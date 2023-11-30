@@ -17,14 +17,14 @@
 package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.UnaryOp;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Operators
-abstract class Round1Fun extends UnaryOp {
+abstract class Round1Fun extends UnaryNumericOp {
     public static final String NAME = "ROUND";
 
     private static final long serialVersionUID = -3008249205987880893L;

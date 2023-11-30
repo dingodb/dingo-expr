@@ -65,12 +65,14 @@ abstract class Round2Fun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return type0.isNumeric() && type1.equals(Types.INT) ? type0 : null;
+        return type0;
     }
 
     @Override
     public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0].isNumeric()) {
+        Type best = Types.bestType(types[0]);
+        if (best != null && best.isNumeric()) {
+            types[0] = best;
             types[1] = Types.INT;
             return types[0];
         }
