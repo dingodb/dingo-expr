@@ -107,6 +107,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("1 <= 2 && 3 > 2", true),
             arguments("1 > 0.1 && 2 - 2 = 0", true),
             arguments("! (0.0 * 2 < 0 || 1 * 4 > 3 && 6 / 6 == 1)", false),
+            arguments("! null", null),
 
             // Mathematics
             arguments("abs(-1)", 1),

@@ -28,7 +28,7 @@ abstract class LogicalFun extends VariadicOp {
 
     @Override
     public Object keyOf(@NonNull Type @NonNull ... types) {
-        return Arrays.stream(types).allMatch(t -> t.equals(Types.BOOL)) ? Types.BOOL : null;
+        return Arrays.stream(types).allMatch(Types.BOOL::matches) ? Types.BOOL : null;
     }
 
     @Override

@@ -28,7 +28,7 @@ abstract class LogicalOp extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return type0.equals(Types.BOOL) && type1.equals(Types.BOOL) ? Types.BOOL : null;
+        return Types.BOOL.matches(type0) && Types.BOOL.matches(type1) ? Types.BOOL : null;
     }
 
     @Override
