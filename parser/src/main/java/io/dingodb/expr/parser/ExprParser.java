@@ -20,6 +20,7 @@ import io.dingodb.expr.parser.antlr.DingoExprErrorListener;
 import io.dingodb.expr.parser.antlr.DingoExprParserVisitorImpl;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.parser.exception.ExprSyntaxError;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -30,7 +31,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.List;
 
 public final class ExprParser {
-    public static final ExprParser DEFAULT = new ExprParser(new DefaultFunFactory());
+    public static final ExprParser DEFAULT = new ExprParser(new DefaultFunFactory(ExprConfig.SIMPLE));
 
     private final DingoExprParserVisitorImpl visitor;
 

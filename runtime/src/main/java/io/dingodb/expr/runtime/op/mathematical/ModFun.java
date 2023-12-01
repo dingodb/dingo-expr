@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.mathematical;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.BinaryNumericOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 
@@ -28,15 +29,15 @@ abstract class ModFun extends BinaryNumericOp {
 
     private static final long serialVersionUID = -1273869618861708383L;
 
-    static Integer mod(int value0, int value1) {
+    static @Nullable Integer mod(int value0, int value1) {
         return value1 != 0 ? value0 % value1 : null;
     }
 
-    static Long mod(long value0, long value1) {
+    static @Nullable Long mod(long value0, long value1) {
         return value1 != 0 ? value0 % value1 : null;
     }
 
-    static BigDecimal mod(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
+    static @Nullable BigDecimal mod(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
         return value1.compareTo(BigDecimal.ZERO) != 0 ? value0.remainder(value1) : null;
     }
 

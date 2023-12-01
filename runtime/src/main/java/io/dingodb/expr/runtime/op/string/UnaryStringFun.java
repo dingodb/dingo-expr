@@ -25,8 +25,8 @@ abstract class UnaryStringFun extends UnaryOp {
     private static final long serialVersionUID = 5761679834072680839L;
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
+    public Object keyOf(@NonNull Type type) {
+        if (Types.STRING.matches(type)) {
             return Types.STRING;
         }
         return null;

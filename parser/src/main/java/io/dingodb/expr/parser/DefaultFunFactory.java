@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.parser;
 
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.NullaryOp;
@@ -116,7 +117,7 @@ public class DefaultFunFactory implements FunFactory {
     protected final Map<String, TertiaryOp> tertiaryFunMap;
     protected final Map<String, VariadicOp> variadicFunMap;
 
-    public DefaultFunFactory() {
+    public DefaultFunFactory(@NonNull ExprConfig config) {
         nullaryFunMap = new TreeMap<>(String::compareToIgnoreCase);
         unaryFunMap = new TreeMap<>(String::compareToIgnoreCase);
         binaryFunMap = new TreeMap<>(String::compareToIgnoreCase);
@@ -124,8 +125,8 @@ public class DefaultFunFactory implements FunFactory {
         variadicFunMap = new TreeMap<>(String::compareToIgnoreCase);
 
         // Castings
-        registerUnaryFun(IntType.NAME, Exprs.TO_INT);
-        registerUnaryFun(LongType.NAME, Exprs.TO_LONG);
+        registerUnaryFun(IntType.NAME, config.withRangeCheck() ? Exprs.TO_INT_C : Exprs.TO_INT);
+        registerUnaryFun(LongType.NAME, config.withRangeCheck() ? Exprs.TO_LONG_C:Exprs.TO_LONG);
         registerUnaryFun(FloatType.NAME, Exprs.TO_FLOAT);
         registerUnaryFun(DoubleType.NAME, Exprs.TO_DOUBLE);
         registerUnaryFun(BoolType.NAME, Exprs.TO_BOOL);
@@ -159,7 +160,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimestampType.NAME, Exprs.TO_LIST_TIMESTAMP);
 
         // Mathematical
-        registerUnaryFun(AbsFunFactory.NAME, Exprs.ABS);
+        registerUnaryFun(AbsFunFactory.NAME, config.withRangeCheck() ? Exprs.ABS_C :Exprs.ABS);
         registerBinaryFun(ModFunFactory.NAME, Exprs.MOD);
         registerBinaryFun(MinFunFactory.NAME, Exprs.MIN);
         registerBinaryFun(MaxFunFactory.NAME, Exprs.MAX);
