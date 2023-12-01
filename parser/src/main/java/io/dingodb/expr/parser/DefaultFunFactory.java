@@ -126,7 +126,7 @@ public class DefaultFunFactory implements FunFactory {
 
         // Castings
         registerUnaryFun(IntType.NAME, config.withRangeCheck() ? Exprs.TO_INT_C : Exprs.TO_INT);
-        registerUnaryFun(LongType.NAME, config.withRangeCheck() ? Exprs.TO_LONG_C:Exprs.TO_LONG);
+        registerUnaryFun(LongType.NAME, config.withRangeCheck() ? Exprs.TO_LONG_C : Exprs.TO_LONG);
         registerUnaryFun(FloatType.NAME, Exprs.TO_FLOAT);
         registerUnaryFun(DoubleType.NAME, Exprs.TO_DOUBLE);
         registerUnaryFun(BoolType.NAME, Exprs.TO_BOOL);
@@ -160,7 +160,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimestampType.NAME, Exprs.TO_LIST_TIMESTAMP);
 
         // Mathematical
-        registerUnaryFun(AbsFunFactory.NAME, config.withRangeCheck() ? Exprs.ABS_C :Exprs.ABS);
+        registerUnaryFun(AbsFunFactory.NAME, config.withRangeCheck() ? Exprs.ABS_C : Exprs.ABS);
         registerBinaryFun(ModFunFactory.NAME, Exprs.MOD);
         registerBinaryFun(MinFunFactory.NAME, Exprs.MIN);
         registerBinaryFun(MaxFunFactory.NAME, Exprs.MAX);
