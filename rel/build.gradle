@@ -17,16 +17,18 @@
 plugins {
     id 'java-conventions'
     id 'java-library'
+    id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
+    id 'maven-publish'
 }
 
 dependencies {
-    implementation group: 'org.assertj', name: 'assertj-core', version: 'assertj'.v()
-    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: 'junit5'.v()
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: 'mapstruct'.v()
+    api project(':dingo-expr-runtime')
+    implementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
+    implementation group: 'commons-io', name: 'commons-io', version: 'commons-io'.v()
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: 'mapstruct'.v()
     implementation project(':dingo-expr-json')
-    implementation project(':dingo-expr-rel')
-    implementation project(':dingo-expr-runtime')
+    implementation project(':dingo-expr-parser')
     testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
-    testImplementation project(':dingo-expr-coding')
-    testImplementation project(':dingo-expr-jni')
-    testImplementation project(':dingo-expr-parser')
+    testImplementation project(':dingo-expr-test')
 }

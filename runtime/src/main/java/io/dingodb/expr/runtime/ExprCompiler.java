@@ -36,6 +36,7 @@ import io.dingodb.expr.runtime.expr.VariadicOpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -46,6 +47,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     public static final ExprCompiler SIMPLE = new ExprCompiler(ExprConfig.SIMPLE);
     public static final ExprCompiler ADVANCED = new ExprCompiler(ExprConfig.ADVANCED);
 
+    @Getter
     private final ExprConfig config;
 
     @Override

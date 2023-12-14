@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op", "operand0", "operand1"})
+@EqualsAndHashCode(of = {"op", "operand0", "operand1", "operand2"})
 public class TertiaryOpExpr implements OpExpr {
     private static final long serialVersionUID = -1597326280376061590L;
 

@@ -19,6 +19,7 @@ package io.dingodb.expr.json.runtime;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -33,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Iterator;
 
 public class Parser implements Serializable {
     public static final Parser JSON = new Parser(DataFormat.APPLICATION_JSON);
@@ -115,7 +115,7 @@ public class Parser implements Serializable {
         mapper.writeValue(os, obj);
     }
 
-    public <T> Iterator<T> readValues(InputStream is, Class<T> clazz) throws IOException {
+    public <T> MappingIterator<T> readValues(InputStream is, Class<T> clazz) throws IOException {
         return mapper.readerFor(clazz).readValues(is);
     }
 }
