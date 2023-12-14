@@ -110,8 +110,51 @@ public final class Types {
         return new MapType(keyType, valueType);
     }
 
-    public static @NonNull TupleType tuple(@NonNull Type[] types) {
+    public static @NonNull TupleType tuple(@NonNull Type @NonNull ... types) {
         return new TupleType(types);
+    }
+
+    public static @NonNull TupleType tuple(@NonNull String @NonNull ... typeStrings) {
+        return new TupleType(Arrays.stream(typeStrings).map(Types::fromString).toArray(Type[]::new));
+    }
+
+    public static Type fromString(@NonNull String name) {
+        switch (name) {
+            case IntType.NAME:
+                return INT;
+            case LongType.NAME:
+                return LONG;
+            case FloatType.NAME:
+                return FLOAT;
+            case DoubleType.NAME:
+                return DOUBLE;
+            case BoolType.NAME:
+                return BOOL;
+            case DecimalType.NAME:
+                return DECIMAL;
+            case StringType.NAME:
+                return STRING;
+            case BytesType.NAME:
+                return BYTES;
+            case DateType.NAME:
+                return DATE;
+            case TimeType.NAME:
+                return TIME;
+            case TimestampType.NAME:
+                return TIMESTAMP;
+            case NullType.NAME:
+                return NULL;
+            case ArrayType.NAME:
+                return ARRAY_ANY;
+            case ListType.NAME:
+                return LIST_ANY;
+            case MapType.NAME:
+                return MAP_ANY_ANY;
+            default:
+                break;
+        }
+        // TODO: Composite types are now not supported.
+        throw new IllegalArgumentException("Unsupported type name \"" + name + "\".");
     }
 
     /**

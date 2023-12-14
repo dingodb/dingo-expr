@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.json.runtime;
-
-import io.dingodb.expr.runtime.EvalContext;
+package io.dingodb.expr.runtime;
 
 public class TupleEvalContext implements EvalContext {
     private static final long serialVersionUID = -1735756800219588237L;
