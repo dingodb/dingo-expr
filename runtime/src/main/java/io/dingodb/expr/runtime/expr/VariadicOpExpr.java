@@ -65,11 +65,6 @@ public final class VariadicOpExpr implements OpExpr {
     }
 
     @Override
-    public @NonNull OpType getOpType() {
-        return op.getOpType();
-    }
-
-    @Override
     public @NonNull String toString() {
         OpType opType = op.getOpType();
         assert opType.getSymbol().equals(OpSymbol.FUN);

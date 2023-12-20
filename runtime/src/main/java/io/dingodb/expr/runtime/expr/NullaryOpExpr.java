@@ -57,11 +57,6 @@ public class NullaryOpExpr implements OpExpr {
     }
 
     @Override
-    public @NonNull OpType getOpType() {
-        return op.getOpType();
-    }
-
-    @Override
     public String toString() {
         OpType opType = op.getOpType();
         if (opType.getSymbol().equals(OpSymbol.FUN)) {

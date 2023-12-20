@@ -36,14 +36,7 @@ import io.dingodb.expr.runtime.op.mathematical.ModFunFactory;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.StringType;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -52,17 +45,14 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull OutputStream> {
+public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream> {
     public static final ExprCoder INSTANCE = new ExprCoder();
-    public static final CodingFlag OK = new CodingFlag();
 
-    private static final byte NULL = (byte) 0x00;
-    private static final byte CONST = (byte) 0x10;
-    private static final byte CONST_N = (byte) 0x20;
     private static final byte VAR_I = (byte) 0x30;
+    private static final byte VAR_S = (byte) 0x40;
 
     private static final byte POS = (byte) 0x81;
     private static final byte NEG = (byte) 0x82;
@@ -95,6 +85,9 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
 
     private static final byte FUN = (byte) 0xF1;
 
+    private static final byte ARRAY_EXPR = (byte) 0x6F;
+    private static final byte EOE = (byte) 0x00;
+
     private static boolean writeOpWithType(OutputStream obj, byte opByte, Type type) throws IOException {
         Byte typeByte;
         typeByte = TypeCoder.INSTANCE.visit(type);
@@ -116,11 +109,11 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     }
 
     private boolean cascadingBinaryLogical(OutputStream os, byte opByte, Expr @NonNull [] operands) throws IOException {
-        if (visit(operands[0], os) != OK) {
+        if (visit(operands[0], os) != CodingFlag.OK) {
             return false;
         }
         for (int i = 1; i < operands.length; ++i) {
-            if (visit(operands[i], os) != OK) {
+            if (visit(operands[i], os) != CodingFlag.OK) {
                 return false;
             }
             os.write(opByte);
@@ -143,7 +136,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                 if (typeByte != null) {
                     obj.write(VAR_I | TypeCoder.INSTANCE.visit(expr.getType()));
                     CodecUtils.encodeVarInt(obj, (Integer) id);
-                    return OK;
+                    return CodingFlag.OK;
                 }
             }
             // TODO: SQL parameters are not supported currently.
@@ -159,7 +152,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     @SneakyThrows
     @Override
     public CodingFlag visitUnaryOpExpr(@NonNull UnaryOpExpr expr, OutputStream obj) {
-        if (visit(expr.getOperand(), obj) == OK) {
+        if (visit(expr.getOperand(), obj) == CodingFlag.OK) {
             boolean success = false;
             switch (expr.getOpType()) {
                 case POS:
@@ -204,7 +197,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                     break;
             }
             if (success) {
-                return OK;
+                return CodingFlag.OK;
             }
         }
         return null;
@@ -213,7 +206,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     @SneakyThrows
     @Override
     public CodingFlag visitBinaryOpExpr(@NonNull BinaryOpExpr expr, OutputStream obj) {
-        if (visit(expr.getOperand0(), obj) == OK && visit(expr.getOperand1(), obj) == OK) {
+        if (visit(expr.getOperand0(), obj) == CodingFlag.OK && visit(expr.getOperand1(), obj) == CodingFlag.OK) {
             boolean success = false;
             switch (expr.getOpType()) {
                 case ADD:
@@ -274,7 +267,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                     break;
             }
             if (success) {
-                return OK;
+                return CodingFlag.OK;
             }
         }
         return null;
@@ -283,16 +276,16 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
     @SneakyThrows
     @Override
     public CodingFlag visitTertiaryOpExpr(@NonNull TertiaryOpExpr expr, @NonNull OutputStream obj) {
-        if (visit(expr.getOperand0(), obj) == OK
-            && visit(expr.getOperand1(), obj) == OK
-            && visit(expr.getOperand2(), obj) == OK
+        if (visit(expr.getOperand0(), obj) == CodingFlag.OK
+            && visit(expr.getOperand1(), obj) == CodingFlag.OK
+            && visit(expr.getOperand2(), obj) == CodingFlag.OK
         ) {
             boolean success = false;
             if (expr.getOpType() == OpType.FUN) {
                 success = writeFun(obj, FunIndex.getTertiary(expr.getOp()));
             }
             if (success) {
-                return OK;
+                return CodingFlag.OK;
             }
         }
         return null;
@@ -314,7 +307,7 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
                     break;
             }
             if (success) {
-                return OK;
+                return CodingFlag.OK;
             }
         }
         return null;
@@ -325,102 +318,28 @@ public class ExprCoder extends ExprVisitorBase<ExprCoder.CodingFlag, @NonNull Ou
         return null;
     }
 
-    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
-        private final Val val;
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitIntType(@NonNull IntType type, OutputStream obj) {
-            Integer value = (Integer) val.getValue();
-            if (value != null) {
-                if (value >= 0) {
-                    obj.write(CONST | TypeCoder.TYPE_INT32);
-                    CodecUtils.encodeVarInt(obj, value);
-                } else {
-                    obj.write(CONST_N | TypeCoder.TYPE_INT32);
-                    CodecUtils.encodeVarInt(obj, -(long) value); // value may overflow for `Integer.MIN_VALUE`.
-                }
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_INT32);
+    @SneakyThrows
+    public CodingFlag visitExprs(Expr @NonNull [] exprs, @NonNull OutputStream obj) {
+        obj.write(ARRAY_EXPR);
+        CodecUtils.encodeVarInt(obj, exprs.length);
+        for (Expr expr : exprs) {
+            if (visitWithEoe(expr, obj) != CodingFlag.OK) {
+                return null;
             }
-            return OK;
         }
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitLongType(@NonNull LongType type, OutputStream obj) {
-            Long value = (Long) val.getValue();
-            if (value != null) {
-                if (value >= 0 || value == Long.MIN_VALUE) {
-                    obj.write(CONST | TypeCoder.TYPE_INT64);
-                    CodecUtils.encodeVarInt(obj, value);
-                } else {
-                    obj.write(CONST_N | TypeCoder.TYPE_INT64);
-                    CodecUtils.encodeVarInt(obj, -value);
-                }
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_INT64);
-            }
-            return OK;
-        }
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitFloatType(@NonNull FloatType type, OutputStream obj) {
-            Float value = (Float) val.getValue();
-            if (value != null) {
-                obj.write(CONST | TypeCoder.TYPE_FLOAT);
-                CodecUtils.encodeFloat(obj, value);
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_FLOAT);
-            }
-            return OK;
-        }
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitDoubleType(@NonNull DoubleType type, OutputStream obj) {
-            Double value = (Double) val.getValue();
-            if (value != null) {
-                obj.write(CONST | TypeCoder.TYPE_DOUBLE);
-                CodecUtils.encodeDouble(obj, value);
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_DOUBLE);
-            }
-            return OK;
-        }
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitBoolType(@NonNull BoolType type, OutputStream obj) {
-            Boolean value = (Boolean) val.getValue();
-            if (value != null) {
-                obj.write(value ? CONST | TypeCoder.TYPE_BOOL : CONST_N | TypeCoder.TYPE_BOOL);
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_BOOL);
-            }
-            return OK;
-        }
-
-        @SneakyThrows
-        @Override
-        public CodingFlag visitStringType(@NonNull StringType type, OutputStream obj) {
-            String value = (String) val.getValue();
-            if (value != null) {
-                obj.write(CONST | TypeCoder.TYPE_STRING);
-                byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
-                CodecUtils.encodeVarInt(obj, bytes.length);
-                obj.write(bytes);
-            } else {
-                obj.write(NULL | TypeCoder.TYPE_STRING);
-            }
-            return OK;
-        }
+        return CodingFlag.OK;
     }
 
-    public static final class CodingFlag {
-        private CodingFlag() {
+    public CodingFlag visitExprs(@NonNull List<Expr> exprs, @NonNull OutputStream obj) {
+        return visitExprs(exprs.toArray(new Expr[0]), obj);
+    }
+
+    @SneakyThrows
+    public CodingFlag visitWithEoe(@NonNull Expr expr, @NonNull OutputStream obj) {
+        if (visit(expr, obj) == CodingFlag.OK) {
+            obj.write(EOE);
+            return CodingFlag.OK;
         }
+        return null;
     }
 }

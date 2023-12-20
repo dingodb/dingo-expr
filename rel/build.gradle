@@ -23,12 +23,33 @@ plugins {
 
 dependencies {
     annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: 'mapstruct'.v()
+    api project(':dingo-expr-parser')
     api project(':dingo-expr-runtime')
     implementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     implementation group: 'commons-io', name: 'commons-io', version: 'commons-io'.v()
     implementation group: 'org.mapstruct', name: 'mapstruct', version: 'mapstruct'.v()
     implementation project(':dingo-expr-json')
-    implementation project(':dingo-expr-parser')
     testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     testImplementation project(':dingo-expr-test')
+}
+
+publishing {
+    publications {
+        rel(MavenPublication) {
+            artifactId = 'dingo-expr-rel'
+            from components.java
+            pom {
+                name = 'dingo-expr-rel'
+                description = 'Relational expression library of Dingo Expression.'
+            }
+            gradle.setPom(it)
+        }
+    }
+    repositories {
+        gradle.setOssrhRepo(it, project)
+    }
+}
+
+signing {
+    sign publishing.publications.rel
 }

@@ -16,11 +16,16 @@
 
 package io.dingodb.expr.runtime.expr;
 
+import io.dingodb.expr.runtime.op.Op;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public interface OpExpr extends Expr {
-    @NonNull OpType getOpType();
+    @NonNull Op getOp();
+
+    default @NonNull OpType getOpType() {
+        return getOp().getOpType();
+    }
 
     default String oprandToString(Expr operand) {
         if (operand instanceof OpExpr) {

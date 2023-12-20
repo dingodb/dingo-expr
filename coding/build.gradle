@@ -26,7 +26,7 @@ gitProperties {
 }
 
 dependencies {
-    api project(':dingo-expr-runtime')
+    api project(':dingo-expr-rel')
 }
 
 publishing {
