@@ -39,4 +39,8 @@ public abstract class NullaryOp extends AbstractOp<NullaryOp> {
     public NullaryOp getOp(Object key) {
         return this;
     }
+
+    public NullaryOpExpr createExpr() {
+        return new NullaryOpExpr(this);
+    }
 }

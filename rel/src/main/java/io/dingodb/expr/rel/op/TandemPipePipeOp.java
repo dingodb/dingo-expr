@@ -17,20 +17,18 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.PipeOp;
-import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TandemOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
-public final class TandemSourceOp extends TandemOp implements SourceOp {
-    public TandemSourceOp(SourceOp input, PipeOp output) {
+public final class TandemPipePipeOp extends TandemOp implements PipeOp {
+    public TandemPipePipeOp(PipeOp input, PipeOp output) {
         super(input, output);
     }
 
     @Override
-    public @NonNull Stream<Object[]> get() {
-        return ((SourceOp) input).get().map(((PipeOp) output)::put).filter(Objects::nonNull);
+    public Object @Nullable [] put(Object @NonNull [] tuple) {
+        Object[] inter = ((PipeOp) input).put(tuple);
+        return inter != null ? ((PipeOp) output).put(inter) : null;
     }
 }

@@ -17,11 +17,9 @@
 package io.dingodb.expr.rel.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@JsonTypeName("project")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProjectOpDto extends RelDto {

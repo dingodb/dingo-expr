@@ -34,4 +34,8 @@ public interface ExprVisitor<R, T> {
     R visitVariadicOpExpr(@NonNull VariadicOpExpr expr, T obj);
 
     R visitIndexOpExpr(@NonNull IndexOpExpr expr, T obj);
+
+    R visitNullaryAggExpr(@NonNull NullaryAggExpr expr, T obj);
+
+    R visitUnaryAggExpr(@NonNull UnaryAggExpr expr, T obj);
 }

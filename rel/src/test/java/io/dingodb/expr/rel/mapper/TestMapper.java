@@ -18,7 +18,6 @@ package io.dingodb.expr.rel.mapper;
 
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOp;
-import io.dingodb.expr.rel.RelOpBuilder;
 import io.dingodb.expr.rel.TandemOp;
 import io.dingodb.expr.rel.dto.FilterOpDto;
 import io.dingodb.expr.rel.dto.ProjectOpDto;
@@ -26,6 +25,7 @@ import io.dingodb.expr.rel.dto.RelDto;
 import io.dingodb.expr.rel.dto.TandemOpDto;
 import io.dingodb.expr.rel.op.FilterOp;
 import io.dingodb.expr.rel.op.ProjectOp;
+import io.dingodb.expr.rel.op.RelOpBuilder;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestMapper {
     @Test
     public void testFilterOpToFilterOpDto() {
-        RelOp op = RelOpBuilder.builder(RelConfig.DEFAULT)
+        RelOp op = RelOpBuilder.builder()
             .filter(Exprs.op(Exprs.ADD, Exprs.val(1), Exprs.var(0)))
             .build();
         RelDto dto = RelOpMapper.MAPPER.toDto(op);
@@ -55,7 +55,7 @@ public class TestMapper {
 
     @Test
     public void testProjectOpToProjectOpDto() {
-        RelOp op = RelOpBuilder.builder(RelConfig.DEFAULT)
+        RelOp op = RelOpBuilder.builder()
             .project(Exprs.var(0), Exprs.var(1))
             .build();
         RelDto dto = RelOpMapper.MAPPER.toDto(op);
@@ -78,7 +78,7 @@ public class TestMapper {
 
     @Test
     public void testTandemOpToTandemOpDto() {
-        RelOp op = RelOpBuilder.builder(RelConfig.DEFAULT)
+        RelOp op = RelOpBuilder.builder()
             .filter(Exprs.op(Exprs.ADD, Exprs.val(1), Exprs.var(0)))
             .project(Exprs.var(0), Exprs.var(1))
             .build();

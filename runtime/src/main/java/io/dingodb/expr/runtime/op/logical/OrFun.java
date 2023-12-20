@@ -83,14 +83,13 @@ public final class OrFun extends LogicalFun {
             case 1:
                 return newOperands.get(0);
             case 2:
-                return Exprs.op(
-                    Exprs.OR.getOp(Exprs.OR.keyOf(Types.BOOL, Types.BOOL)),
+                return Exprs.OR.getOp(Exprs.OR.keyOf(Types.BOOL, Types.BOOL)).createExpr(
                     newOperands.get(0),
                     newOperands.get(1)
                 ).simplify(config);
             default:
                 break;
         }
-        return Exprs.op(this, newOperands.toArray());
+        return createExpr(newOperands.toArray(new Expr[0]));
     }
 }

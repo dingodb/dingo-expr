@@ -19,40 +19,33 @@ package io.dingodb.expr.runtime.op;
 import lombok.Getter;
 
 public enum OpType {
-    INDEX("[]", Category.BINARY, 0),
-    FUN("()", Category.UNARY, 0),
-    CAST("()", Category.UNARY, 0),
-    POS("+", Category.UNARY, 1),
-    NEG("-", Category.UNARY, 1),
-    ADD(" + ", Category.BINARY, 3),
-    SUB(" - ", Category.BINARY, 3),
-    MUL("*", Category.BINARY, 2),
-    DIV("/", Category.BINARY, 2),
-    LT(" < ", Category.BINARY, 4),
-    LE(" <= ", Category.BINARY, 4),
-    EQ(" == ", Category.BINARY, 4),
-    GT(" > ", Category.BINARY, 4),
-    GE(" >= ", Category.BINARY, 4),
-    NE(" != ", Category.BINARY, 4),
-    NOT("!", Category.UNARY, 6),
-    AND(" && ", Category.BINARY, 7),
-    OR(" || ", Category.BINARY, 8);
+    INDEX(OpSymbol.ARRAY, 0),
+    FUN(OpSymbol.FUN, 0),
+    AGG(OpSymbol.FUN, 0),
+    CAST(OpSymbol.FUN, 0),
+    POS(OpSymbol.POS, 1),
+    NEG(OpSymbol.NEG, 1),
+    ADD(OpSymbol.ADD, 3),
+    SUB(OpSymbol.SUB, 3),
+    MUL(OpSymbol.MUL, 2),
+    DIV(OpSymbol.DIV, 2),
+    LT(OpSymbol.LT, 4),
+    LE(OpSymbol.LE, 4),
+    EQ(OpSymbol.EQ, 4),
+    GT(OpSymbol.GT, 4),
+    GE(OpSymbol.GE, 4),
+    NE(OpSymbol.NE, 4),
+    NOT(OpSymbol.NOT, 6),
+    AND(OpSymbol.AND, 7),
+    OR(OpSymbol.OR, 8);
 
     @Getter
     private final String symbol;
     @Getter
-    private final Category category;
-    @Getter
     private final int precedence;
 
-    OpType(String symbol, Category category, int precedence) {
+    OpType(String symbol, int precedence) {
         this.symbol = symbol;
-        this.category = category;
         this.precedence = precedence;
-    }
-
-    public enum Category {
-        UNARY,
-        BINARY
     }
 }

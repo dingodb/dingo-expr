@@ -18,10 +18,15 @@ package io.dingodb.expr.runtime.expr;
 
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.NullaryOp;
-import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.VariadicOp;
+import io.dingodb.expr.runtime.op.aggregation.CountAgg;
+import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
+import io.dingodb.expr.runtime.op.aggregation.MaxAgg;
+import io.dingodb.expr.runtime.op.aggregation.MinAgg;
+import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
+import io.dingodb.expr.runtime.op.aggregation.SumAgg;
 import io.dingodb.expr.runtime.op.arithmetic.AddOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.DivOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.MulOpFactory;
@@ -297,6 +302,14 @@ public final class Exprs {
     public static final CastListOpFactory TO_LIST_TIMESTAMP = new CastListOpFactory(TO_TIMESTAMP);
     public static final SliceOpFactory SLICE = SliceOpFactory.INSTANCE;
 
+    // Aggregations
+    public static final CountAgg COUNT_AGG = CountAgg.INSTANCE;
+    public static final CountAllAgg COUNT_ALL_AGG = CountAllAgg.INSTANCE;
+    public static final MaxAgg MAX_AGG = MaxAgg.INSTANCE;
+    public static final MinAgg MIN_AGG = MinAgg.INSTANCE;
+    public static final SumAgg SUM_AGG = SumAgg.INSTANCE;
+    public static final Sum0Agg SUM0_AGG = Sum0Agg.INSTANCE;
+
     private Exprs() {
     }
 
@@ -326,7 +339,7 @@ public final class Exprs {
     public static @NonNull NullaryOpExpr op(
         @NonNull NullaryOp op
     ) {
-        return new NullaryOpExpr(op);
+        return op.createExpr();
     }
 
     public static @NonNull UnaryOpExpr op(
@@ -334,7 +347,7 @@ public final class Exprs {
         @NonNull Object operand
     ) {
         Expr expr = transOperand(operand);
-        return new UnaryOpExpr(op, expr);
+        return op.createExpr(expr);
     }
 
     public static @NonNull BinaryOpExpr op(
@@ -344,11 +357,7 @@ public final class Exprs {
     ) {
         Expr expr0 = transOperand(operand0);
         Expr expr1 = transOperand(operand1);
-        if (op.getOpType() == OpType.INDEX) {
-            return new IndexOpExpr((IndexOpFactory) op, expr0, expr1);
-        } else {
-            return new BinaryOpExpr(op, expr0, expr1);
-        }
+        return op.createExpr(expr0, expr1);
     }
 
     public static @NonNull TertiaryOpExpr op(
@@ -360,7 +369,7 @@ public final class Exprs {
         Expr expr0 = transOperand(operand0);
         Expr expr1 = transOperand(operand1);
         Expr expr2 = transOperand(operand2);
-        return new TertiaryOpExpr(op, expr0, expr1, expr2);
+        return op.createExpr(expr0, expr1, expr2);
     }
 
     public static @NonNull VariadicOpExpr op(
@@ -368,7 +377,7 @@ public final class Exprs {
         Object @NonNull ... operands
     ) {
         Expr[] exprs = transOperands(operands);
-        return new VariadicOpExpr(op, exprs);
+        return op.createExpr(exprs);
     }
 
     private static @NonNull Expr transOperand(Object operand) {

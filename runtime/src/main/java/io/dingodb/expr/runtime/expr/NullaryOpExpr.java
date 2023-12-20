@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.expr;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.NullaryOp;
+import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
@@ -33,7 +34,7 @@ public class NullaryOpExpr implements OpExpr {
     private static final long serialVersionUID = 3647341413168339783L;
 
     @Getter
-    private final NullaryOp op;
+    protected final NullaryOp op;
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -63,7 +64,7 @@ public class NullaryOpExpr implements OpExpr {
     @Override
     public String toString() {
         OpType opType = op.getOpType();
-        if (opType == OpType.FUN) {
+        if (opType.getSymbol().equals(OpSymbol.FUN)) {
             return op.getName() + "()";
         }
         return opType.getSymbol();

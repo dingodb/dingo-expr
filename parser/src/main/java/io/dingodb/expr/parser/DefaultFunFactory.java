@@ -23,6 +23,12 @@ import io.dingodb.expr.runtime.op.NullaryOp;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.VariadicOp;
+import io.dingodb.expr.runtime.op.aggregation.CountAgg;
+import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
+import io.dingodb.expr.runtime.op.aggregation.MaxAgg;
+import io.dingodb.expr.runtime.op.aggregation.MinAgg;
+import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
+import io.dingodb.expr.runtime.op.aggregation.SumAgg;
 import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.MapConstructorOpFactory;
@@ -239,6 +245,14 @@ public class DefaultFunFactory implements FunFactory {
         registerVariadicFun(ListConstructorOpFactory.NAME, Exprs.LIST);
         registerVariadicFun(MapConstructorOpFactory.NAME, Exprs.MAP);
         registerBinaryFun(SliceOpFactory.NAME, Exprs.SLICE);
+
+        // Aggregation functions
+        registerUnaryFun(CountAgg.NAME, Exprs.COUNT_AGG);
+        registerNullaryFun(CountAllAgg.NAME, Exprs.COUNT_ALL_AGG);
+        registerUnaryFun(MinAgg.NAME, Exprs.MIN_AGG);
+        registerUnaryFun(MaxAgg.NAME, Exprs.MAX_AGG);
+        registerUnaryFun(SumAgg.NAME, Exprs.SUM_AGG);
+        registerUnaryFun(Sum0Agg.NAME, Exprs.SUM0_AGG);
     }
 
     @Override

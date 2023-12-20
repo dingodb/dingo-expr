@@ -16,19 +16,28 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.CacheOp;
 import io.dingodb.expr.rel.PipeOp;
 import io.dingodb.expr.rel.TandemOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
-public final class TandemPipeOp extends TandemOp implements PipeOp {
-    public TandemPipeOp(PipeOp input, PipeOp output) {
+import java.util.stream.Stream;
+
+public final class TandemPipeCacheOp extends TandemOp implements CacheOp {
+    public TandemPipeCacheOp(PipeOp input, CacheOp output) {
         super(input, output);
     }
 
     @Override
-    public Object @Nullable [] put(Object @NonNull [] tuple) {
+    public void put(Object @NonNull [] tuple) {
         Object[] inter = ((PipeOp) input).put(tuple);
-        return inter != null ? ((PipeOp) output).put(inter) : null;
+        if (inter != null) {
+            ((CacheOp) output).put(inter);
+        }
+    }
+
+    @Override
+    public @NonNull Stream<Object[]> get() {
+        return ((CacheOp) output).get();
     }
 }

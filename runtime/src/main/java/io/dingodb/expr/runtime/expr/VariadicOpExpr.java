@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.expr;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
@@ -70,6 +71,8 @@ public final class VariadicOpExpr implements OpExpr {
 
     @Override
     public @NonNull String toString() {
+        OpType opType = op.getOpType();
+        assert opType.getSymbol().equals(OpSymbol.FUN);
         return op.getName() + "(" + Arrays.stream(operands)
             .map(Expr::toString)
             .collect(Collectors.joining(", ")) + ")";

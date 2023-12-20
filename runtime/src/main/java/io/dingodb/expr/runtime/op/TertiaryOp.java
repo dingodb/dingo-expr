@@ -21,7 +21,6 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.TertiaryOpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -80,19 +79,18 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         Type type2 = operand2.getType();
         TertiaryOp op = getOp(keyOf(type0, type1, type2));
         if (op != null) {
-            result = Exprs.op(op, operand0, operand1, operand2);
+            result = op.createExpr(operand0, operand1, operand2);
         } else {
             Type[] types = new Type[]{type0, type1, type2};
             TertiaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
-                result = Exprs.op(
-                    op1,
+                result = op1.createExpr(
                     doCast(operand0, types[0], config),
                     doCast(operand1, types[1], config),
                     doCast(operand2, types[2], config)
                 );
             } else if (config.withGeneralOp()) {
-                result = Exprs.op(new TertiaryGeneralOp(this), operand0, operand1, operand2);
+                result = new TertiaryGeneralOp(this).createExpr(operand0, operand1, operand2);
             } else {
                 throw new OperatorTypeNotExist(this, type0, type1, type2);
             }
@@ -108,5 +106,13 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
     @Override
     public TertiaryOp getOp(Object key) {
         return this;
+    }
+
+    public TertiaryOpExpr createExpr(
+        @NonNull Expr operand0,
+        @NonNull Expr operand1,
+        @NonNull Expr operand2
+    ) {
+        return new TertiaryOpExpr(this, operand0, operand1, operand2);
     }
 }

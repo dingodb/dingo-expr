@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.expr;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.type.Type;
@@ -29,17 +30,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode(of = {"op", "operand0", "operand1", "operand2"})
-public class TertiaryOpExpr implements OpExpr {
+public final class TertiaryOpExpr implements OpExpr {
     private static final long serialVersionUID = -1597326280376061590L;
 
     @Getter
-    protected final TertiaryOp op;
+    private final TertiaryOp op;
     @Getter
-    protected final Expr operand0;
+    private final Expr operand0;
     @Getter
-    protected final Expr operand1;
+    private final Expr operand1;
     @Getter
-    protected final Expr operand2;
+    private final Expr operand2;
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -72,7 +73,7 @@ public class TertiaryOpExpr implements OpExpr {
     @Override
     public String toString() {
         OpType opType = op.getOpType();
-        assert opType == OpType.FUN;
+        assert opType.getSymbol().equals(OpSymbol.FUN);
         return op.getName() + "(" + operand0 + ", " + operand1 + ", " + operand2 + ")";
     }
 }

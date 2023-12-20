@@ -39,4 +39,14 @@ public abstract class TandemOp implements RelOp {
     public TupleType getType() {
         return output.getType();
     }
+
+    @Override
+    public <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj) {
+        return visitor.visitTandemOp(this, obj);
+    }
+
+    @Override
+    public String toString() {
+        return input + ", " + output;
+    }
 }
