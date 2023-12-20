@@ -20,7 +20,6 @@ import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.op.OpType;
 import lombok.AccessLevel;
@@ -67,7 +66,7 @@ public final class OrOp extends LogicalOp {
                     return operand1;
                 }
             } else {
-                return Exprs.op(this, Val.NULL_BOOL, operand1);
+                return createExpr(Val.NULL_BOOL, operand1);
             }
         }
         if (operand1 instanceof Val) {
@@ -79,7 +78,7 @@ public final class OrOp extends LogicalOp {
                     return operand0;
                 }
             } else {
-                return Exprs.op(this, operand0, Val.NULL_BOOL);
+                return createExpr(operand0, Val.NULL_BOOL);
             }
         }
         return expr;

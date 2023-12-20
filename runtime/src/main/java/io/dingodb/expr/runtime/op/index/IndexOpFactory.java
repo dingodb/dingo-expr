@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime.op.index;
 
+import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.IndexOpExpr;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.ArrayType;
@@ -49,6 +51,11 @@ public class IndexOpFactory extends BinaryOp {
             }
         }
         return null;
+    }
+
+    @Override
+    public IndexOpExpr createExpr(@NonNull Expr operand0, @NonNull Expr operand1) {
+        return new IndexOpExpr(this, operand0, operand1);
     }
 
     @Override

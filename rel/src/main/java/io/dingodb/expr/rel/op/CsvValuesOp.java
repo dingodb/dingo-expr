@@ -58,17 +58,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public final class CsvValuesOp implements SourceOp {
+final class CsvValuesOp implements SourceOp {
+    public static final String NAME = "CSV";
+
     private final InputStream csvFile;
+
     @Getter
     private TupleType type;
+
     private transient ExprConfig exprConfig;
 
-    public CsvValuesOp(InputStream csvFile) {
+    CsvValuesOp(InputStream csvFile) {
         this.csvFile = csvFile;
     }
 
-    public CsvValuesOp(String... csvLines) {
+    CsvValuesOp(String... csvLines) {
         this.csvFile = IOUtils.toInputStream(String.join("\n", csvLines), StandardCharsets.UTF_8);
     }
 
@@ -88,6 +92,11 @@ public final class CsvValuesOp implements SourceOp {
     public void init(TupleType type, @NonNull RelConfig config) {
         this.type = type;
         exprConfig = config.getExprCompiler().getConfig();
+    }
+
+    @Override
+    public String toString() {
+        return NAME;
     }
 
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

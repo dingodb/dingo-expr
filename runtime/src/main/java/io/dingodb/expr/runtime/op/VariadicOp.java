@@ -21,7 +21,6 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -60,16 +59,17 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
         Type[] types = Arrays.stream(operands).map(Expr::getType).toArray(Type[]::new);
         VariadicOp op = getOp(keyOf(types));
         if (op != null) {
-            result = Exprs.op(op, (Object[]) operands);
+            result = op.createExpr(operands);
         } else {
             VariadicOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
-                result = Exprs.op(op1, (Object[]) IntStream.range(0, operands.length)
-                    .mapToObj(i -> doCast(operands[i], types[i], config))
-                    .toArray(Expr[]::new)
+                result = op1.createExpr(
+                    IntStream.range(0, operands.length)
+                        .mapToObj(i -> doCast(operands[i], types[i], config))
+                        .toArray(Expr[]::new)
                 );
             } else if (config.withGeneralOp()) {
-                result = Exprs.op(new VariadicGeneralOp(this), (Object[]) operands);
+                result = new VariadicGeneralOp(this).createExpr(operands);
             } else {
                 throw new OperatorTypeNotExist(this, types);
             }
@@ -85,5 +85,9 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
     @Override
     public VariadicOp getOp(Object key) {
         return this;
+    }
+
+    public VariadicOpExpr createExpr(@NonNull Expr @NonNull [] operands) {
+        return new VariadicOpExpr(this, operands);
     }
 }

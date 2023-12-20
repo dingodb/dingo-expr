@@ -22,4 +22,9 @@ import java.util.stream.Stream;
 
 public interface SourceOp extends RelOp {
     @NonNull Stream<Object[]> get();
+
+    @Override
+    default <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj) {
+        return visitor.visitSourceOp(this, obj);
+    }
 }

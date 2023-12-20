@@ -21,7 +21,6 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.UnaryOpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -55,14 +54,14 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
         Type type = operand.getType();
         UnaryOp op = getOp(keyOf(type));
         if (op != null) {
-            result = Exprs.op(op, operand);
+            result = op.createExpr(operand);
         } else {
             Type[] types = new Type[]{type};
             UnaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
-                result = Exprs.op(op1, doCast(operand, types[0], config));
+                result = op1.createExpr(doCast(operand, types[0], config));
             } else if (config.withGeneralOp()) {
-                result = Exprs.op(new UnaryGeneralOp(this), operand);
+                result = new UnaryGeneralOp(this).createExpr(operand);
             } else {
                 throw new OperatorTypeNotExist(this, type);
             }
@@ -78,5 +77,9 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
     @Override
     public UnaryOp getOp(Object key) {
         return this;
+    }
+
+    public UnaryOpExpr createExpr(@NonNull Expr operand) {
+        return new UnaryOpExpr(this, operand);
     }
 }

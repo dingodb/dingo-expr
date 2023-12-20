@@ -17,10 +17,20 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.PipeOp;
+import io.dingodb.expr.rel.RelConfig;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.TupleType;
 import lombok.Getter;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 abstract class TypedPipeOp implements PipeOp {
     @Getter
     protected TupleType type;
+
+    protected transient ExprConfig exprConfig;
+
+    @Override
+    public void init(TupleType type, @NonNull RelConfig config) {
+        exprConfig = config.getExprCompiler().getConfig();
+    }
 }

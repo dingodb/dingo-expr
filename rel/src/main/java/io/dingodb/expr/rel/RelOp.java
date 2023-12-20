@@ -23,4 +23,6 @@ public interface RelOp {
     void init(TupleType type, @NonNull RelConfig config);
 
     TupleType getType();
+
+    <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj);
 }

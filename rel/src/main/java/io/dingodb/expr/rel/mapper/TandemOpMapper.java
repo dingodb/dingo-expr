@@ -16,15 +16,17 @@
 
 package io.dingodb.expr.rel.mapper;
 
+import io.dingodb.expr.rel.CacheOp;
 import io.dingodb.expr.rel.PipeOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOp;
-import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TandemOp;
 import io.dingodb.expr.rel.dto.RelDto;
 import io.dingodb.expr.rel.dto.TandemOpDto;
-import io.dingodb.expr.rel.op.TandemPipeOp;
-import io.dingodb.expr.rel.op.TandemSourceOp;
+import io.dingodb.expr.rel.op.TandemCacheCacheOp;
+import io.dingodb.expr.rel.op.TandemCachePipeOp;
+import io.dingodb.expr.rel.op.TandemPipeCacheOp;
+import io.dingodb.expr.rel.op.TandemPipePipeOp;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
@@ -40,11 +42,19 @@ public abstract class TandemOpMapper {
         }
         RelOp input = RelOpMapper.MAPPER.fromDto(dto.getInput(), config);
         RelOp output = RelOpMapper.MAPPER.fromDto(dto.getOutput(), config);
-        if (input instanceof PipeOp && output instanceof PipeOp) {
-            return new TandemPipeOp((PipeOp) input, (PipeOp) output);
-        } else if (input instanceof SourceOp && output instanceof PipeOp) {
-            return new TandemSourceOp((SourceOp) input, (PipeOp) output);
-        }
+        if (input instanceof PipeOp) {
+            if (output instanceof PipeOp) {
+                return new TandemPipePipeOp((PipeOp) input, (PipeOp) output);
+            } else if (output instanceof CacheOp) {
+                return new TandemPipeCacheOp((PipeOp) input, (CacheOp) output);
+            }
+        } else if (input instanceof CacheOp) {
+            if (output instanceof PipeOp) {
+                return new TandemCachePipeOp((CacheOp) input, (PipeOp) output);
+            } else if (output instanceof CacheOp) {
+                return new TandemCacheCacheOp((CacheOp) input, (CacheOp) output);
+            }
+        } // TODO: SourceOp cannot be transferred.
         throw new IllegalArgumentException(
             "Illegal input/output op type \""
                 + input.getClass().getCanonicalName()

@@ -66,4 +66,14 @@ public abstract class ExprVisitorBase<R, T> implements ExprVisitor<R, T> {
     public R visitIndexOpExpr(@NonNull IndexOpExpr expr, T obj) {
         return visitBinaryOpExpr(expr, obj);
     }
+
+    @Override
+    public R visitNullaryAggExpr(@NonNull NullaryAggExpr expr, T obj) {
+        return visitNullaryOpExpr(expr, obj);
+    }
+
+    @Override
+    public R visitUnaryAggExpr(@NonNull UnaryAggExpr expr, T obj) {
+        return visitUnaryOpExpr(expr, obj);
+    }
 }

@@ -22,7 +22,6 @@ import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -55,14 +54,14 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
         Type type1 = operand1.getType();
         BinaryOp op = getOp(keyOf(type0, type1));
         if (op != null) {
-            result = Exprs.op(op, operand0, operand1);
+            result = op.createExpr(operand0, operand1);
         } else {
             Type[] types = new Type[]{type0, type1};
             BinaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
-                result = Exprs.op(op1, doCast(operand0, types[0], config), doCast(operand1, types[1], config));
+                result = op1.createExpr(doCast(operand0, types[0], config), doCast(operand1, types[1], config));
             } else if (config.withGeneralOp()) {
-                result = Exprs.op(new BinaryGeneralOp(this), operand0, operand1);
+                result = new BinaryGeneralOp(this).createExpr(operand0, operand1);
             } else {
                 throw new OperatorTypeNotExist(this, type0, type1);
             }
@@ -78,5 +77,9 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
     @Override
     public BinaryOp getOp(Object key) {
         return this;
+    }
+
+    public BinaryOpExpr createExpr(@NonNull Expr operand0, @NonNull Expr operand1) {
+        return new BinaryOpExpr(this, operand0, operand1);
     }
 }

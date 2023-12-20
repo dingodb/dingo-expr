@@ -19,7 +19,7 @@ package io.dingodb.expr.runtime.expr;
 import io.dingodb.expr.runtime.op.index.IndexOpFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class IndexOpExpr extends BinaryOpExpr {
+public final class IndexOpExpr extends BinaryOpExpr {
     private static final long serialVersionUID = 3632232029198213923L;
 
     public IndexOpExpr(IndexOpFactory op, Expr operand0, Expr operand1) {

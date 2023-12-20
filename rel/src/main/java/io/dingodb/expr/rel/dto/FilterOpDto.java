@@ -17,11 +17,9 @@
 package io.dingodb.expr.rel.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@JsonTypeName("filter")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class FilterOpDto extends RelDto {

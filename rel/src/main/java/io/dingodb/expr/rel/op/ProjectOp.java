@@ -17,9 +17,9 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.RelConfig;
+import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
@@ -31,16 +31,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Arrays;
 
 public final class ProjectOp extends TypedPipeOp {
+    public static final String NAME = "PROJECT";
+
     @Getter
     private Expr[] projects;
-    private transient ExprConfig exprConfig;
 
     public ProjectOp(Expr[] projects) {
         this.projects = projects;
     }
 
     @Override
-    public Object[] put(Object @NonNull [] tuple) {
+    public Object @NonNull [] put(Object @NonNull [] tuple) {
         final TupleEvalContext context = new TupleEvalContext(tuple);
         return Arrays.stream(projects)
             .map(p -> p.eval(context, exprConfig))
@@ -49,14 +50,24 @@ public final class ProjectOp extends TypedPipeOp {
 
     @Override
     public void init(TupleType type, @NonNull RelConfig config) {
+        super.init(type, config);
         final TupleCompileContext context = new TupleCompileContext(type);
         ExprCompiler compiler = config.getExprCompiler();
         projects = Arrays.stream(projects)
             .map(p -> compiler.visit(p, context))
             .toArray(Expr[]::new);
-        exprConfig = compiler.getConfig();
         this.type = Types.tuple(Arrays.stream(projects)
             .map(Expr::getType)
             .toArray(Type[]::new));
+    }
+
+    @Override
+    public <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj) {
+        return visitor.visitProjectOp(this, obj);
+    }
+
+    @Override
+    public @NonNull String toString() {
+        return NAME + ": " + Arrays.toString(projects);
     }
 }

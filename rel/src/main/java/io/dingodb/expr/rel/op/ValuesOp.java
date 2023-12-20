@@ -25,12 +25,15 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class ValuesOp implements SourceOp {
+final class ValuesOp implements SourceOp {
+    public static final String NAME = "VALUE";
+
     private final List<Object @NonNull []> values;
+
     @Getter
     private TupleType type;
 
-    public ValuesOp(List<Object @NonNull []> values) {
+    ValuesOp(List<Object @NonNull []> values) {
         this.values = values;
     }
 
@@ -42,5 +45,10 @@ public class ValuesOp implements SourceOp {
     @Override
     public void init(TupleType type, @NonNull RelConfig config) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return NAME;
     }
 }

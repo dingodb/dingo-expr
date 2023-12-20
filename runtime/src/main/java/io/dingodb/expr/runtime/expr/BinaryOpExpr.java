@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.expr;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
@@ -70,7 +71,7 @@ public class BinaryOpExpr implements OpExpr {
     @Override
     public String toString() {
         OpType opType = op.getOpType();
-        if (opType == OpType.FUN) {
+        if (opType.getSymbol().equals(OpSymbol.FUN)) {
             return op.getName() + "(" + operand0 + ", " + operand1 + ")";
         }
         return oprandToString(operand0) + opType.getSymbol() + oprandToString(operand1);

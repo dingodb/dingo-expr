@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.expr;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
@@ -33,9 +34,9 @@ public class UnaryOpExpr implements OpExpr {
     private static final long serialVersionUID = 7964987353969166202L;
 
     @Getter
-    private final UnaryOp op;
+    protected final UnaryOp op;
     @Getter
-    private final Expr operand;
+    protected final Expr operand;
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -68,7 +69,7 @@ public class UnaryOpExpr implements OpExpr {
     @Override
     public String toString() {
         OpType opType = op.getOpType();
-        if (opType == OpType.FUN || opType == OpType.CAST) {
+        if (opType.getSymbol().equals(OpSymbol.FUN)) {
             return op.getName() + "(" + operand + ")";
         }
         return opType.getSymbol() + oprandToString(operand);
