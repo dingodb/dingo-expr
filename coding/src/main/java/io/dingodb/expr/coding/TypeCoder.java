@@ -29,9 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class TypeCoder extends TypeVisitorBase<Byte, Void> {
-    public static final TypeCoder INSTANCE = new TypeCoder();
-
+class TypeCoder extends TypeVisitorBase<Byte, Void> {
     public static final byte TYPE_INT32 = (byte) 0x01;
     public static final byte TYPE_INT64 = (byte) 0x02;
     public static final byte TYPE_BOOL = (byte) 0x03;
@@ -39,6 +37,7 @@ public class TypeCoder extends TypeVisitorBase<Byte, Void> {
     public static final byte TYPE_DOUBLE = (byte) 0x05;
     public static final byte TYPE_DECIMAL = (byte) 0x06;
     public static final byte TYPE_STRING = (byte) 0x07;
+    static final TypeCoder INSTANCE = new TypeCoder();
 
     @Override
     public Byte visitIntType(@NonNull IntType type, Void obj) {

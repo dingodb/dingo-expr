@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.test;
 
+import io.dingodb.expr.coding.CodingFlag;
 import io.dingodb.expr.coding.ExprCoder;
 import io.dingodb.expr.jni.LibExprJni;
 import io.dingodb.expr.runtime.ExprCompiler;
@@ -44,7 +45,7 @@ public class TestEvalConstJni {
     public void testSimpleCompiler(@NonNull Expr expr, Object expected) {
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        assumeThat(ExprCoder.INSTANCE.visit(expr1, os)).isEqualTo(ExprCoder.OK);
+        assumeThat(ExprCoder.INSTANCE.visit(expr1, os)).isEqualTo(CodingFlag.OK);
         Object handle = LibExprJni.INSTANCE.decode(os.toByteArray());
         Assert.value(LibExprJni.INSTANCE.run(handle)).isEqualTo(expected);
         LibExprJni.INSTANCE.release(handle);
