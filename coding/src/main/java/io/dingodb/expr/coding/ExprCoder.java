@@ -20,13 +20,21 @@ import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.ExprVisitorBase;
 import io.dingodb.expr.runtime.expr.IndexOpExpr;
+import io.dingodb.expr.runtime.expr.NullaryAggExpr;
 import io.dingodb.expr.runtime.expr.NullaryOpExpr;
 import io.dingodb.expr.runtime.expr.TertiaryOpExpr;
+import io.dingodb.expr.runtime.expr.UnaryAggExpr;
 import io.dingodb.expr.runtime.expr.UnaryOpExpr;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.Var;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
 import io.dingodb.expr.runtime.op.OpType;
+import io.dingodb.expr.runtime.op.aggregation.CountAgg;
+import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
+import io.dingodb.expr.runtime.op.aggregation.MaxAgg;
+import io.dingodb.expr.runtime.op.aggregation.MinAgg;
+import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
+import io.dingodb.expr.runtime.op.aggregation.SumAgg;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.OrFun;
 import io.dingodb.expr.runtime.op.mathematical.AbsFunFactory;
@@ -45,13 +53,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream> {
     public static final ExprCoder INSTANCE = new ExprCoder();
 
-    private static final byte VAR_I = (byte) 0x30;
+    private static final byte VAR = (byte) 0x30;
     private static final byte VAR_S = (byte) 0x40;
 
     private static final byte POS = (byte) 0x81;
@@ -85,8 +92,13 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
 
     private static final byte FUN = (byte) 0xF1;
 
-    private static final byte ARRAY_EXPR = (byte) 0x6F;
-    private static final byte EOE = (byte) 0x00;
+    // Aggregations
+    private static final byte AGG_COUNT_ALL = (byte) 0x10;
+    private static final byte AGG_COUNT = (byte) 0x10;
+    private static final byte AGG_SUM = (byte) 0x20;
+    private static final byte AGG_SUM0 = (byte) 0x30;
+    private static final byte AGG_MAX = (byte) 0x40;
+    private static final byte AGG_MIN = (byte) 0x50;
 
     private static boolean writeOpWithType(OutputStream obj, byte opByte, Type type) throws IOException {
         Byte typeByte;
@@ -134,7 +146,7 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
             if ((Integer) id >= 0) {
                 Byte typeByte = TypeCoder.INSTANCE.visit(expr.getType());
                 if (typeByte != null) {
-                    obj.write(VAR_I | TypeCoder.INSTANCE.visit(expr.getType()));
+                    obj.write(VAR | TypeCoder.INSTANCE.visit(expr.getType()));
                     CodecUtils.encodeVarInt(obj, (Integer) id);
                     return CodingFlag.OK;
                 }
@@ -319,26 +331,45 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
     }
 
     @SneakyThrows
-    public CodingFlag visitExprs(Expr @NonNull [] exprs, @NonNull OutputStream obj) {
-        obj.write(ARRAY_EXPR);
-        CodecUtils.encodeVarInt(obj, exprs.length);
-        for (Expr expr : exprs) {
-            if (visitWithEoe(expr, obj) != CodingFlag.OK) {
-                return null;
-            }
+    @Override
+    public CodingFlag visitNullaryAggExpr(@NonNull NullaryAggExpr expr, @NonNull OutputStream obj) {
+        if (expr.getOp().getName().equals(CountAllAgg.NAME)) {
+            obj.write(AGG_COUNT_ALL);
+            return CodingFlag.OK;
         }
-        return CodingFlag.OK;
-    }
-
-    public CodingFlag visitExprs(@NonNull List<Expr> exprs, @NonNull OutputStream obj) {
-        return visitExprs(exprs.toArray(new Expr[0]), obj);
+        return null;
     }
 
     @SneakyThrows
-    public CodingFlag visitWithEoe(@NonNull Expr expr, @NonNull OutputStream obj) {
-        if (visit(expr, obj) == CodingFlag.OK) {
-            obj.write(EOE);
-            return CodingFlag.OK;
+    @Override
+    public CodingFlag visitUnaryAggExpr(@NonNull UnaryAggExpr expr, @NonNull OutputStream obj) {
+        Expr operand = expr.getOperand();
+        if (operand instanceof Var) {
+            Object index = ((Var) operand).getId();
+            Byte typeCode = TypeCoder.INSTANCE.visit(operand.getType());
+            if (index instanceof Integer) {
+                switch (expr.getOp().getName()) {
+                    case CountAgg.NAME:
+                        obj.write(AGG_COUNT | typeCode);
+                        break;
+                    case SumAgg.NAME:
+                        obj.write(AGG_SUM | typeCode);
+                        break;
+                    case Sum0Agg.NAME:
+                        obj.write(AGG_SUM0 | typeCode);
+                        break;
+                    case MaxAgg.NAME:
+                        obj.write(AGG_MAX | typeCode);
+                        break;
+                    case MinAgg.NAME:
+                        obj.write(AGG_MIN | typeCode);
+                        break;
+                    default:
+                        return null;
+                }
+                CodecUtils.encodeVarInt(obj, (Integer) index);
+                return CodingFlag.OK;
+            }
         }
         return null;
     }
