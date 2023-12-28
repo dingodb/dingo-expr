@@ -25,12 +25,12 @@ import io.dingodb.expr.rel.op.ProjectOp;
 import io.dingodb.expr.rel.op.UngroupedAggregateOp;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
-import io.dingodb.expr.runtime.expr.OpExpr;
-import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
+import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -45,7 +45,20 @@ public class RelOpCoder extends RelOpVisitorBase<CodingFlag, @NonNull OutputStre
     private static final byte PROJECT = (byte) 0x72;
     private static final byte GROUPED_AGGREGATE = (byte) 0x73;
     private static final byte UNGROUPED_AGGREGATE = (byte) 0x74;
-    private static final byte COUNT_ONLY = (byte) 0x75;
+
+    // End of expression
+    private static final byte EOE = (byte) 0x00;
+
+    @SneakyThrows
+    private static @Nullable CodingFlag visitAggList(@NonNull List<Expr> aggList, @NonNull OutputStream obj) {
+        CodecUtils.encodeVarInt(obj, aggList.size());
+        for (Expr expr : aggList) {
+            if (EXPR_CODER.visit(expr, obj) != CodingFlag.OK) {
+                return null;
+            }
+        }
+        return CodingFlag.OK;
+    }
 
     @Override
     public CodingFlag visitSourceOp(SourceOp op, @NonNull OutputStream obj) {
@@ -56,14 +69,24 @@ public class RelOpCoder extends RelOpVisitorBase<CodingFlag, @NonNull OutputStre
     @Override
     public CodingFlag visitFilterOp(@NonNull FilterOp op, @NonNull OutputStream obj) {
         obj.write(FILTER);
-        return EXPR_CODER.visitWithEoe(op.getFilter(), obj);
+        if (EXPR_CODER.visit(op.getFilter(), obj) == CodingFlag.OK) {
+            obj.write(EOE);
+            return CodingFlag.OK;
+        }
+        return null;
     }
 
     @SneakyThrows
     @Override
     public CodingFlag visitProjectOp(@NonNull ProjectOp op, @NonNull OutputStream obj) {
         obj.write(PROJECT);
-        return EXPR_CODER.visitExprs(op.getProjects(), obj);
+        for (Expr expr : op.getProjects()) {
+            if (EXPR_CODER.visit(expr, obj) != CodingFlag.OK) {
+                return null;
+            }
+        }
+        obj.write(EOE);
+        return CodingFlag.OK;
     }
 
     @Override
@@ -77,13 +100,8 @@ public class RelOpCoder extends RelOpVisitorBase<CodingFlag, @NonNull OutputStre
     @SneakyThrows
     @Override
     public CodingFlag visitUngroupedAggregateOp(@NonNull UngroupedAggregateOp op, @NonNull OutputStream obj) {
-        List<Expr> aggList = op.getAggList();
-        if (aggList.size() == 1 && ((OpExpr) aggList.get(0)).getOp() instanceof CountAllAgg) {
-            obj.write(COUNT_ONLY);
-            return CodingFlag.OK;
-        }
         obj.write(UNGROUPED_AGGREGATE);
-        return EXPR_CODER.visitExprs(op.getAggList(), obj);
+        return visitAggList(op.getAggList(), obj);
     }
 
     @SneakyThrows
@@ -91,6 +109,6 @@ public class RelOpCoder extends RelOpVisitorBase<CodingFlag, @NonNull OutputStre
     public CodingFlag visitGroupedAggregateOp(@NonNull GroupedAggregateOp op, @NonNull OutputStream obj) {
         obj.write(GROUPED_AGGREGATE);
         ExprCoder.INSTANCE.visit(Exprs.val(op.getGroupIndices()));
-        return EXPR_CODER.visitExprs(op.getAggList(), obj);
+        return visitAggList(op.getAggList(), obj);
     }
 }

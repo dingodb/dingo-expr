@@ -14,67 +14,40 @@
 
 #include "libexpr_jni.h"
 
-#include <any>
 #include <jni.h>
 
 #include "expr/runner.h"
 
 using namespace dingodb::expr;
 
-static jobject NewInteger(JNIEnv *jenv, const Wrap<int32_t> &v)
+const struct JavaClassInfo {
+    const char *name;
+    const char *initSigature;
+} JAVA_CLASS[] = {
+    [TYPE_NULL] = {              nullptr, nullptr},
+    [TYPE_INT32] = {"Ljava/lang/Integer;",  "(I)V"},
+    [TYPE_INT64] = {   "Ljava/lang/Long;",  "(J)V"},
+    [TYPE_BOOL] = {"Ljava/lang/Boolean;",  "(Z)V"},
+    [TYPE_FLOAT] = {  "Ljava/lang/Float;",  "(F)V"},
+    [TYPE_DOUBLE] = { "Ljava/lang/Double;",  "(D)V"},
+    [TYPE_DECIMAL] = {              nullptr, nullptr},
+    [TYPE_STRING] = {              nullptr, nullptr},
+};
+
+template <Byte T> jobject JavaObject(JNIEnv *jenv, const Operand &v)
 {
-    if (v.has_value()) {
-        jclass resClass = jenv->FindClass("Ljava/lang/Integer;");
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", "(I)V");
-        return jenv->NewObject(resClass, ctor, v.value());
+    if (NotNull<TypeOf<T>>(v)) {
+        jclass resClass = jenv->FindClass(JAVA_CLASS[T].name);
+        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", JAVA_CLASS[T].initSigature);
+        return jenv->NewObject(resClass, ctor, GetValue<TypeOf<T>>(v));
     }
     return nullptr;
 }
 
-static jobject NewLong(JNIEnv *jenv, const Wrap<int64_t> &v)
+template <> jobject JavaObject<TYPE_STRING>(JNIEnv *jenv, const Operand &v)
 {
-    if (v.has_value()) {
-        jclass resClass = jenv->FindClass("Ljava/lang/Long;");
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", "(J)V");
-        return jenv->NewObject(resClass, ctor, v.value());
-    }
-    return nullptr;
-}
-
-static jobject NewBoolean(JNIEnv *jenv, const Wrap<bool> &v)
-{
-    if (v.has_value()) {
-        jclass resClass = jenv->FindClass("Ljava/lang/Boolean;");
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", "(Z)V");
-        return jenv->NewObject(resClass, ctor, v.value());
-    }
-    return nullptr;
-}
-
-static jobject NewFloat(JNIEnv *jenv, const Wrap<float> &v)
-{
-    if (v.has_value()) {
-        jclass resClass = jenv->FindClass("Ljava/lang/Float;");
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", "(F)V");
-        return jenv->NewObject(resClass, ctor, v.value());
-    }
-    return nullptr;
-}
-
-static jobject NewDouble(JNIEnv *jenv, const Wrap<double> &v)
-{
-    if (v.has_value()) {
-        jclass resClass = jenv->FindClass("Ljava/lang/Double;");
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", "(D)V");
-        return jenv->NewObject(resClass, ctor, v.value());
-    }
-    return nullptr;
-}
-
-static jobject NewString(JNIEnv *jenv, const Wrap<String> &v)
-{
-    if (v.has_value()) {
-        return jenv->NewStringUTF(v.value()->c_str());
+    if (NotNull<String>(v)) {
+        return jenv->NewStringUTF(GetValue<String>(v)->c_str());
     }
     return nullptr;
 }
@@ -103,19 +76,20 @@ JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_run(JNIEnv *jenv, 
     auto runner = (Runner *)jenv->GetDirectBufferAddress(handle);
     runner->Run();
     auto type = runner->GetType();
+    Operand v = runner->Get();
     switch (type) {
     case TYPE_INT32:
-        return NewInteger(jenv, runner->GetResult<int32_t>());
+        return JavaObject<TYPE_INT32>(jenv, v);
     case TYPE_INT64:
-        return NewLong(jenv, runner->GetResult<int64_t>());
+        return JavaObject<TYPE_INT64>(jenv, v);
     case TYPE_BOOL:
-        return NewBoolean(jenv, runner->GetResult<bool>());
+        return JavaObject<TYPE_BOOL>(jenv, v);
     case TYPE_FLOAT:
-        return NewFloat(jenv, runner->GetResult<float>());
+        return JavaObject<TYPE_FLOAT>(jenv, v);
     case TYPE_DOUBLE:
-        return NewDouble(jenv, runner->GetResult<double>());
+        return JavaObject<TYPE_DOUBLE>(jenv, v);
     case TYPE_STRING:
-        return NewString(jenv, runner->GetResult<String>());
+        return JavaObject<TYPE_STRING>(jenv, v);
     }
     return nullptr;
 }

@@ -49,7 +49,7 @@ public class TestRelOpCoder {
                     .project("$[0]", "$[1]", "$[2] / 10")
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
-                "726F0331000037010034021441200000860400"
+                "723100370134021441200000860400"
             ),
             arguments(
                 RelOpStringBuilder.builder(RelConfig.DEFAULT)
@@ -57,7 +57,14 @@ public class TestRelOpCoder {
                     .project("$[0]", "$[1]", "$[2] / 10")
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
-                "7134021442480000930400726F0331000037010034021441200000860400"
+                "7134021442480000930400723100370134021441200000860400"
+            ),
+            arguments(
+                RelOpStringBuilder.builder(RelConfig.DEFAULT)
+                    .agg("COUNT()", "COUNT($[1])", "SUM($[2])")
+                    .build(),
+                Types.tuple("INT", "STRING", "FLOAT"),
+                "74031017012402"
             )
         );
     }
