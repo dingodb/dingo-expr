@@ -65,6 +65,13 @@ public class TestRelOpCoder {
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
                 "74031017012402"
+            ),
+            arguments(
+                RelOpStringBuilder.builder(RelConfig.DEFAULT)
+                    .agg(new int[]{1}, "COUNT()", "SUM($[2])")
+                    .build(),
+                Types.tuple("INT", "STRING", "FLOAT"),
+                "7361010102102402"
             )
         );
     }

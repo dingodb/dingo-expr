@@ -29,8 +29,9 @@ public abstract class UnaryAgg extends UnaryOp implements Agg {
     /**
      * Add a new value to aggregating context.
      *
-     * @param var   the current value from the aggregating context, {@code null} means empty
-     * @param value the new value
+     * @param var    the current value from the aggregating context, {@code null} means empty
+     * @param value  the new value
+     * @param config the {@link ExprConfig}
      * @return the result value
      */
     public abstract Object add(@Nullable Object var, @Nullable Object value, ExprConfig config);

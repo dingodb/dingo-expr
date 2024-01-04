@@ -96,9 +96,8 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
     private static final byte AGG_COUNT_ALL = (byte) 0x10;
     private static final byte AGG_COUNT = (byte) 0x10;
     private static final byte AGG_SUM = (byte) 0x20;
-    private static final byte AGG_SUM0 = (byte) 0x30;
-    private static final byte AGG_MAX = (byte) 0x40;
-    private static final byte AGG_MIN = (byte) 0x50;
+    private static final byte AGG_MAX = (byte) 0x30;
+    private static final byte AGG_MIN = (byte) 0x40;
 
     private static boolean writeOpWithType(OutputStream obj, byte opByte, Type type) throws IOException {
         Byte typeByte;
@@ -353,10 +352,8 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                         obj.write(AGG_COUNT | typeCode);
                         break;
                     case SumAgg.NAME:
-                        obj.write(AGG_SUM | typeCode);
-                        break;
                     case Sum0Agg.NAME:
-                        obj.write(AGG_SUM0 | typeCode);
+                        obj.write(AGG_SUM | typeCode);
                         break;
                     case MaxAgg.NAME:
                         obj.write(AGG_MAX | typeCode);

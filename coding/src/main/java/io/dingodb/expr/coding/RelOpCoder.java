@@ -108,7 +108,7 @@ public class RelOpCoder extends RelOpVisitorBase<CodingFlag, @NonNull OutputStre
     @Override
     public CodingFlag visitGroupedAggregateOp(@NonNull GroupedAggregateOp op, @NonNull OutputStream obj) {
         obj.write(GROUPED_AGGREGATE);
-        ExprCoder.INSTANCE.visit(Exprs.val(op.getGroupIndices()));
+        ExprCoder.INSTANCE.visit(Exprs.val(op.getGroupIndices()), obj);
         return visitAggList(op.getAggList(), obj);
     }
 }

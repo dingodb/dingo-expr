@@ -23,8 +23,9 @@ public interface Agg {
     /**
      * Merge two aggregating context.
      *
-     * @param var1 the value from the 1st aggregating context
-     * @param var2 the value from the 2nd aggregating context
+     * @param var1   the value from the 1st aggregating context
+     * @param var2   the value from the 2nd aggregating context
+     * @param config the {@link ExprConfig}
      * @return the merged aggregating context
      */
     Object merge(@NonNull Object var1, @NonNull Object var2, ExprConfig config);
