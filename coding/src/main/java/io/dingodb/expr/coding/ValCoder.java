@@ -133,6 +133,6 @@ class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
 
     @Override
     public CodingFlag visitArrayType(@NonNull ArrayType type, OutputStream obj) {
-        return new ArrayCoder(val.getValue()).visit(type.getElementType());
+        return new ArrayCoder(val.getValue()).visit(type.getElementType(), obj);
     }
 }
