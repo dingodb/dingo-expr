@@ -36,18 +36,18 @@ const struct JavaClassInfo {
 
 template <Byte T> jobject JavaObject(JNIEnv *jenv, const Operand &v)
 {
-    if (NotNull<TypeOf<T>>(v)) {
+    if (v != nullptr) {
         jclass resClass = jenv->FindClass(JAVA_CLASS[T].name);
         jmethodID ctor = jenv->GetMethodID(resClass, "<init>", JAVA_CLASS[T].initSigature);
-        return jenv->NewObject(resClass, ctor, GetValue<TypeOf<T>>(v));
+        return jenv->NewObject(resClass, ctor, v.GetValue<TypeOf<T>>());
     }
     return nullptr;
 }
 
 template <> jobject JavaObject<TYPE_STRING>(JNIEnv *jenv, const Operand &v)
 {
-    if (NotNull<String>(v)) {
-        return jenv->NewStringUTF(GetValue<String>(v)->c_str());
+    if (v != nullptr) {
+        return jenv->NewStringUTF(v.GetValue<String>()->c_str());
     }
     return nullptr;
 }
