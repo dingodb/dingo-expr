@@ -25,11 +25,13 @@ import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
 
+@EqualsAndHashCode(callSuper = true, of = {"projects"})
 public final class ProjectOp extends TypedPipeOp {
     public static final String NAME = "PROJECT";
 

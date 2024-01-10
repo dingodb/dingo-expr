@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.rel.dto;
+package io.dingodb.expr.rel.json;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.DEDUCTION
-)
-@JsonSubTypes({
-    @JsonSubTypes.Type(FilterOpDto.class),
-    @JsonSubTypes.Type(ProjectOpDto.class),
-    @JsonSubTypes.Type(TandemOpDto.class),
-    @JsonSubTypes.Type(GroupedAggregateOpDto.class),
-    @JsonSubTypes.Type(UngroupedAggregateOpDto.class),
-})
-public class RelDto {
+public enum RelOpSerdesAttributes {
+    REL_CONFIG,
 }

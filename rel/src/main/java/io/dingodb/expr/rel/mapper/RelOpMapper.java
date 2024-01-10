@@ -20,11 +20,15 @@ import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOp;
 import io.dingodb.expr.rel.TandemOp;
 import io.dingodb.expr.rel.dto.FilterOpDto;
+import io.dingodb.expr.rel.dto.GroupedAggregateOpDto;
 import io.dingodb.expr.rel.dto.ProjectOpDto;
 import io.dingodb.expr.rel.dto.RelDto;
 import io.dingodb.expr.rel.dto.TandemOpDto;
+import io.dingodb.expr.rel.dto.UngroupedAggregateOpDto;
 import io.dingodb.expr.rel.op.FilterOp;
+import io.dingodb.expr.rel.op.GroupedAggregateOp;
 import io.dingodb.expr.rel.op.ProjectOp;
+import io.dingodb.expr.rel.op.UngroupedAggregateOp;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.SubclassExhaustiveStrategy;
@@ -33,6 +37,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(
     uses = {
+        ExprMapper.class,
         FilterOpMapper.class,
         ProjectOpMapper.class,
         TandemOpMapper.class,
@@ -45,10 +50,14 @@ public interface RelOpMapper {
     @SubclassMapping(target = FilterOp.class, source = FilterOpDto.class)
     @SubclassMapping(target = ProjectOp.class, source = ProjectOpDto.class)
     @SubclassMapping(target = TandemOp.class, source = TandemOpDto.class)
+    @SubclassMapping(target = GroupedAggregateOp.class, source = GroupedAggregateOpDto.class)
+    @SubclassMapping(target = UngroupedAggregateOp.class, source = UngroupedAggregateOpDto.class)
     RelOp fromDto(RelDto dto, @Context RelConfig config);
 
     @SubclassMapping(target = FilterOpDto.class, source = FilterOp.class)
     @SubclassMapping(target = ProjectOpDto.class, source = ProjectOp.class)
     @SubclassMapping(target = TandemOpDto.class, source = TandemOp.class)
+    @SubclassMapping(target = GroupedAggregateOpDto.class, source = GroupedAggregateOp.class)
+    @SubclassMapping(target = UngroupedAggregateOpDto.class, source = UngroupedAggregateOp.class)
     RelDto toDto(RelOp op);
 }

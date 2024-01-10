@@ -23,10 +23,12 @@ import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@EqualsAndHashCode(callSuper = true, of = {"filter"})
 public final class FilterOp extends TypedPipeOp {
     public static final String NAME = "FILTER";
 

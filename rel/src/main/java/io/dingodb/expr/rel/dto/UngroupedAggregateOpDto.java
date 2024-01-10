@@ -16,18 +16,15 @@
 
 package io.dingodb.expr.rel.dto;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.DEDUCTION
-)
-@JsonSubTypes({
-    @JsonSubTypes.Type(FilterOpDto.class),
-    @JsonSubTypes.Type(ProjectOpDto.class),
-    @JsonSubTypes.Type(TandemOpDto.class),
-    @JsonSubTypes.Type(GroupedAggregateOpDto.class),
-    @JsonSubTypes.Type(UngroupedAggregateOpDto.class),
-})
-public class RelDto {
+import java.util.List;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class UngroupedAggregateOpDto extends RelDto {
+    @JsonProperty("aggList")
+    private List<String> aggList;
 }

@@ -20,20 +20,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.ContextAttributes;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.Map;
 
 public class Parser implements Serializable {
     public static final Parser JSON = new Parser(DataFormat.APPLICATION_JSON);
@@ -42,6 +46,7 @@ public class Parser implements Serializable {
 
     private static final long serialVersionUID = -4801322278537134701L;
 
+    @Getter
     protected final ObjectMapper mapper;
 
     protected Parser(@NonNull DataFormat format) {
@@ -65,6 +70,10 @@ public class Parser implements Serializable {
                 throw new IllegalArgumentException("Invalid DataFormat value \"" + format
                     + "\" for ParserFactory.");
         }
+    }
+
+    protected Parser(@NonNull ObjectMapper mapper) {
+        this.mapper = mapper;
     }
 
     private static JsonMapper.@NonNull Builder setJsonFeature(JsonMapper.@NonNull Builder builder) {
@@ -99,8 +108,19 @@ public class Parser implements Serializable {
         }
     }
 
+    public Parser with(Module module) {
+        ObjectMapper newMapper = mapper.copy();
+        newMapper.registerModule(module);
+        return new Parser(newMapper);
+    }
+
     public <T> T parse(String json, Class<T> clazz) throws JsonProcessingException {
         return mapper.readValue(json, clazz);
+    }
+
+    public <T> T parse(String json, Class<T> clazz, Map<?, ?> attrs) throws IOException {
+        return mapper.reader(ContextAttributes.getEmpty().withSharedAttributes(attrs))
+            .readValue(json, clazz);
     }
 
     public <T> T parse(InputStream is, Class<T> clazz) throws IOException {

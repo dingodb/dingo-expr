@@ -20,9 +20,11 @@ import io.dingodb.expr.rel.PipeOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.type.TupleType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+@EqualsAndHashCode(of = "type")
 abstract class TypedPipeOp implements PipeOp {
     @Getter
     protected TupleType type;

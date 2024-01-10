@@ -18,11 +18,13 @@ package io.dingodb.expr.rel;
 
 import io.dingodb.expr.runtime.type.TupleType;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"input", "output"})
 public abstract class TandemOp implements RelOp {
     @Getter
     protected final RelOp input;

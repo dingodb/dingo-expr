@@ -25,11 +25,13 @@ dependencies {
     annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: 'mapstruct'.v()
     api project(':dingo-expr-parser')
     api project(':dingo-expr-runtime')
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: 'jackson'.v()
     implementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     implementation group: 'commons-io', name: 'commons-io', version: 'commons-io'.v()
     implementation group: 'org.mapstruct', name: 'mapstruct', version: 'mapstruct'.v()
     implementation project(':dingo-expr-json')
     testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
+    testImplementation project(':dingo-expr-json')
     testImplementation project(':dingo-expr-test')
 }
 
