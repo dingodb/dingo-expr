@@ -24,6 +24,7 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -31,6 +32,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"aggList", "type"})
 abstract class AggregateOp implements CacheOp {
     @Getter
     protected final List<Expr> aggList;

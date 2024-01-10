@@ -16,27 +16,26 @@
 
 package io.dingodb.expr.rel.mapper;
 
-import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.rel.RelConfig;
-import io.dingodb.expr.runtime.expr.Expr;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import io.dingodb.expr.rel.dto.UngroupedAggregateOpDto;
+import io.dingodb.expr.rel.op.UngroupedAggregateOp;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
-import java.util.List;
+@Mapper(uses = {ExprMapper.class})
+public interface UngroupedAggregateOpMapper {
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "aggList", source = "aggList"),
+    })
+    UngroupedAggregateOp fromDto(UngroupedAggregateOpDto dto, @Context RelConfig config);
 
-@SuppressWarnings("MethodMayBeStatic")
-@Mapper
-public abstract class ExprMapper {
-    public String toString(@NonNull Expr expr) {
-        return expr.toString();
-    }
-
-    public Expr fromString(String expr, @Context @NonNull RelConfig config) throws ExprParseException {
-        return config.getExprParser().parse(expr);
-    }
-
-    public abstract List<String> toStringList(List<Expr> exprList);
-
-    public abstract List<Expr> fromStringList(List<String> stringList, @Context RelConfig config);
+    @BeanMapping(ignoreByDefault = true)
+    @Mappings({
+        @Mapping(target = "aggList", source = "aggList"),
+    })
+    UngroupedAggregateOpDto toDto(UngroupedAggregateOp op);
 }

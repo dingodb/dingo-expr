@@ -12,6 +12,7 @@ libexpr
 ltrim
 nullary
 rtrim
+serdes
 sinh
 substr
 tanh

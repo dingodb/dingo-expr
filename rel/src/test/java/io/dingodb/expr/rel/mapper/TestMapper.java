@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.rel.mapper;
 
+import com.google.common.collect.ImmutableList;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOp;
 import io.dingodb.expr.rel.TandemOp;
@@ -23,6 +24,7 @@ import io.dingodb.expr.rel.dto.FilterOpDto;
 import io.dingodb.expr.rel.dto.ProjectOpDto;
 import io.dingodb.expr.rel.dto.RelDto;
 import io.dingodb.expr.rel.dto.TandemOpDto;
+import io.dingodb.expr.rel.dto.UngroupedAggregateOpDto;
 import io.dingodb.expr.rel.op.FilterOp;
 import io.dingodb.expr.rel.op.ProjectOp;
 import io.dingodb.expr.rel.op.RelOpBuilder;
@@ -34,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestMapper {
     @Test
-    public void testFilterOpToFilterOpDto() {
+    public void testFilterOpToDto() {
         RelOp op = RelOpBuilder.builder()
             .filter(Exprs.op(Exprs.ADD, Exprs.val(1), Exprs.var(0)))
             .build();
@@ -45,7 +47,7 @@ public class TestMapper {
     }
 
     @Test
-    public void testFilterOpDtoToFilterOp() {
+    public void testFilterOpDtoToOp() {
         FilterOpDto dto = new FilterOpDto();
         dto.setFilter("1 + $[0]");
         FilterOp op = (FilterOp) RelOpMapper.MAPPER.fromDto(dto, RelConfig.DEFAULT);
@@ -54,7 +56,7 @@ public class TestMapper {
     }
 
     @Test
-    public void testProjectOpToProjectOpDto() {
+    public void testProjectOpToDto() {
         RelOp op = RelOpBuilder.builder()
             .project(Exprs.var(0), Exprs.var(1))
             .build();
@@ -65,7 +67,7 @@ public class TestMapper {
     }
 
     @Test
-    public void testProjectOpDtoToProjectOp() {
+    public void testProjectOpDtoToOp() {
         ProjectOpDto dto = new ProjectOpDto();
         dto.setProjects(new String[]{"$[0]", "$[1]"});
         ProjectOp op = (ProjectOp) RelOpMapper.MAPPER.fromDto(dto, RelConfig.DEFAULT);
@@ -77,7 +79,7 @@ public class TestMapper {
     }
 
     @Test
-    public void testTandemOpToTandemOpDto() {
+    public void testTandemOpToDto() {
         RelOp op = RelOpBuilder.builder()
             .filter(Exprs.op(Exprs.ADD, Exprs.val(1), Exprs.var(0)))
             .project(Exprs.var(0), Exprs.var(1))
@@ -93,7 +95,7 @@ public class TestMapper {
     }
 
     @Test
-    public void testTandemOpDtoToTandemOp() {
+    public void testTandemOpDtoToOp() {
         FilterOpDto dto0 = new FilterOpDto();
         dto0.setFilter("1 + $[0]");
         ProjectOpDto dto1 = new ProjectOpDto();
@@ -113,5 +115,19 @@ public class TestMapper {
                 Exprs.op(Exprs.INDEX, Exprs.var("$"), Exprs.val(0)),
                 Exprs.op(Exprs.INDEX, Exprs.var("$"), Exprs.val(1))
             });
+    }
+
+    @Test
+    public void testUngroupedAggregateOpToDto() {
+        RelOp op = RelOpBuilder.builder()
+            .agg(
+                Exprs.op(Exprs.COUNT_ALL_AGG),
+                Exprs.op(Exprs.SUM_AGG, Exprs.op(Exprs.INDEX, Exprs.var("$"), Exprs.val(1)))
+            )
+            .build();
+        RelDto dto = RelOpMapper.MAPPER.toDto(op);
+        assertThat(dto).isInstanceOf(UngroupedAggregateOpDto.class);
+        assertThat(((UngroupedAggregateOpDto) dto).getAggList())
+            .containsExactlyElementsOf(ImmutableList.of("COUNT()", "SUM($[1])"));
     }
 }
