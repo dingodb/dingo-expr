@@ -36,6 +36,19 @@ public final class RelOpBuilder {
         return new InitBuilder();
     }
 
+    public static @NonNull Builder<?, ?> builder(RelOp op) {
+        if (op == null) {
+            return builder();
+        } else if (op instanceof PipeOp) {
+            return new PipeBuilder((PipeOp) op);
+        } else if (op instanceof CacheOp) {
+            return new CacheBuilder((CacheOp) op);
+        } else if (op instanceof SourceOp) {
+            return new SourceBuilder((SourceOp) op);
+        }
+        throw new IllegalArgumentException("Unsupported rel op class \"" + op.getClass().getCanonicalName() + "\".");
+    }
+
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     public abstract static class Builder<P extends RelOp, B extends Builder<P, B>> {
         protected transient P relOp;
