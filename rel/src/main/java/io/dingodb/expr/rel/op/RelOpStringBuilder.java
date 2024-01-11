@@ -42,6 +42,10 @@ public class RelOpStringBuilder {
         return new InitBuilder(config.getExprParser());
     }
 
+    public static @NonNull RelOpStringBuilder builder(@NonNull RelConfig config, RelOp op) {
+        return new RelOpStringBuilder(config.getExprParser(), RelOpBuilder.builder(op));
+    }
+
     public RelOp build() {
         return realBuilder.build();
     }
