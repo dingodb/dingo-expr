@@ -16,45 +16,8 @@
 
 package io.dingodb.expr.runtime;
 
-public class TupleEvalContext implements EvalContext {
-    private static final long serialVersionUID = -1735756800219588237L;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-    private final Object[] tuple;
-
-    /**
-     * Create a {@link TupleEvalContext} with a tuple.
-     *
-     * @param tuple the tuple
-     */
-    public TupleEvalContext(Object[] tuple) {
-        this.tuple = tuple;
-    }
-
-    @Override
-    public String toString() {
-        if (tuple.length == 0) {
-            return "(empty)";
-        }
-        if (tuple.length == 1) {
-            return tuple[0].toString();
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < tuple.length; i++) {
-            sb.append(String.format("%03d", i));
-            sb.append(": ");
-            sb.append(tuple[i]);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public Object get(Object id) {
-        return tuple[(int) id];
-    }
-
-    @Override
-    public void set(Object id, Object value) {
-        tuple[(int) id] = value;
-    }
+public interface TupleEvalContext extends EvalContext {
+    void setTuple(Object @NonNull [] tuple);
 }

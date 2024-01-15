@@ -19,8 +19,10 @@ package io.dingodb.expr.rel;
 import io.dingodb.expr.runtime.type.TupleType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface RelOp {
-    void init(TupleType type, @NonNull RelConfig config);
+import java.io.Serializable;
+
+public interface RelOp extends Serializable {
+    void compile(TupleCompileContext context, @NonNull RelConfig config);
 
     TupleType getType();
 

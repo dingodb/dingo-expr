@@ -26,15 +26,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = {"input", "output"})
 public abstract class TandemOp implements RelOp {
+    private static final long serialVersionUID = -2035098988502010221L;
+
     @Getter
     protected final RelOp input;
     @Getter
     protected final RelOp output;
 
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        input.init(type, config);
-        output.init(input.getType(), config);
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        input.compile(context, config);
+        output.compile(context.withType(input.getType()), config);
     }
 
     @Override

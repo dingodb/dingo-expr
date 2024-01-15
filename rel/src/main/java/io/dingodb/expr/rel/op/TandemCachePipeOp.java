@@ -25,6 +25,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public final class TandemCachePipeOp extends TandemOp implements CacheOp {
+    private static final long serialVersionUID = -8235113367272336827L;
+
     public TandemCachePipeOp(CacheOp input, PipeOp output) {
         super(input, output);
     }

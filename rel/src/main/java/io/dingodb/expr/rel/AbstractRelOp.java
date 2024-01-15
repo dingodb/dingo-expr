@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package io.dingodb.expr.rel.op;
+package io.dingodb.expr.rel;
 
-import io.dingodb.expr.rel.PipeOp;
-import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@EqualsAndHashCode(of = "type")
-abstract class TypedPipeOp implements PipeOp {
+@EqualsAndHashCode(of = {"type"})
+public abstract class AbstractRelOp implements RelOp {
+    private static final long serialVersionUID = -7066415039209226040L;
+
+    protected transient TupleEvalContext evalContext;
+    protected transient ExprConfig exprConfig;
+
     @Getter
     protected TupleType type;
 
-    protected transient ExprConfig exprConfig;
-
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        evalContext = config.getEvalContext();
         exprConfig = config.getExprCompiler().getConfig();
     }
 }

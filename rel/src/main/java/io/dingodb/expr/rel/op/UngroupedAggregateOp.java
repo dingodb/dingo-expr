@@ -18,10 +18,9 @@ package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
-import io.dingodb.expr.runtime.TupleEvalContext;
+import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.expr.AggExpr;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -31,6 +30,8 @@ import java.util.stream.Stream;
 
 public final class UngroupedAggregateOp extends AggregateOp {
     public static final String NAME = "AGG";
+
+    private static final long serialVersionUID = -4719541350568819417L;
 
     private transient Object[] vars;
 
@@ -43,9 +44,10 @@ public final class UngroupedAggregateOp extends AggregateOp {
         if (vars == null) {
             vars = new Object[aggList.size()];
         }
+        evalContext.setTuple(tuple);
         for (int i = 0; i < vars.length; ++i) {
             AggExpr aggExpr = (AggExpr) aggList.get(i);
-            vars[i] = aggExpr.add(vars[i], new TupleEvalContext(tuple), exprConfig);
+            vars[i] = aggExpr.add(vars[i], evalContext, exprConfig);
         }
     }
 
@@ -62,8 +64,8 @@ public final class UngroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        super.init(type, config);
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        super.compile(context, config);
         this.type = Types.tuple(aggList.stream().map(Expr::getType).toArray(Type[]::new));
     }
 

@@ -16,13 +16,12 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.AbstractRelOp;
 import io.dingodb.expr.rel.CacheOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.type.TupleType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,20 +31,16 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = {"aggList", "type"})
-abstract class AggregateOp implements CacheOp {
+@EqualsAndHashCode(callSuper = true, of = {"aggList"})
+abstract class AggregateOp extends AbstractRelOp implements CacheOp {
+    private static final long serialVersionUID = 7414468955475481236L;
+
     @Getter
     protected final List<Expr> aggList;
 
-    @Getter
-    protected TupleType type;
-
-    protected transient ExprConfig exprConfig;
-
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        exprConfig = config.getExprCompiler().getConfig();
-        final TupleCompileContext context = new TupleCompileContext(type);
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        super.compile(context, config);
         ExprCompiler compiler = config.getExprCompiler();
         aggList.replaceAll(agg -> compiler.visit(agg, context));
     }
