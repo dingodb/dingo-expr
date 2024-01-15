@@ -19,6 +19,7 @@ package io.dingodb.expr.coding;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOp;
+import io.dingodb.expr.rel.TupleCompileContextImpl;
 import io.dingodb.expr.rel.op.RelOpStringBuilder;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Types;
@@ -79,7 +80,7 @@ public class TestRelOpCoder {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void test(@NonNull RelOp op, TupleType type, String code) {
-        op.init(type, RelConfig.DEFAULT);
+        op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         RelOpCoder.INSTANCE.visit(op, os);
         assertThat(os.toByteArray()).isEqualTo(CodecUtils.hexStringToBytes(code));

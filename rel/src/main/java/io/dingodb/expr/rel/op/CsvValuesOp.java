@@ -18,9 +18,10 @@ package io.dingodb.expr.rel.op;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import io.dingodb.expr.json.runtime.Parser;
+import io.dingodb.expr.rel.AbstractRelOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.SourceOp;
-import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.op.collection.ArrayBuilder;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;
@@ -42,7 +43,6 @@ import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -58,15 +58,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-final class CsvValuesOp implements SourceOp {
+final class CsvValuesOp extends AbstractRelOp implements SourceOp {
     public static final String NAME = "CSV";
 
+    private static final long serialVersionUID = -5211569722280014209L;
+
     private final InputStream csvFile;
-
-    @Getter
-    private TupleType type;
-
-    private transient ExprConfig exprConfig;
 
     CsvValuesOp(InputStream csvFile) {
         this.csvFile = csvFile;
@@ -89,8 +86,8 @@ final class CsvValuesOp implements SourceOp {
     }
 
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        this.type = type;
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        type = context.getType();
         exprConfig = config.getExprCompiler().getConfig();
     }
 

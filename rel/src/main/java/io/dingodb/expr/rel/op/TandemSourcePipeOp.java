@@ -25,6 +25,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 final class TandemSourcePipeOp extends TandemOp implements SourceOp {
+    private static final long serialVersionUID = 1925144325886141045L;
+
     TandemSourcePipeOp(SourceOp input, PipeOp output) {
         super(input, output);
     }

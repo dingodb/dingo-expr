@@ -18,6 +18,8 @@ package io.dingodb.expr.rel;
 
 import io.dingodb.expr.parser.ExprParser;
 import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.TupleEvalContext;
+import io.dingodb.expr.runtime.TupleEvalContextImpl;
 
 public interface RelConfig {
     RelConfig DEFAULT = new RelConfig() {
@@ -29,5 +31,9 @@ public interface RelConfig {
 
     default ExprCompiler getExprCompiler() {
         return ExprCompiler.ADVANCED;
+    }
+
+    default TupleEvalContext getEvalContext() {
+        return new TupleEvalContextImpl();
     }
 }

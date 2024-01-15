@@ -16,13 +16,13 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.AbstractRelOp;
+import io.dingodb.expr.rel.PipeOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.EqualsAndHashCode;
@@ -32,8 +32,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Arrays;
 
 @EqualsAndHashCode(callSuper = true, of = {"projects"})
-public final class ProjectOp extends TypedPipeOp {
+public final class ProjectOp extends AbstractRelOp implements PipeOp {
     public static final String NAME = "PROJECT";
+
+    private static final long serialVersionUID = 9070704469597102368L;
 
     @Getter
     private Expr[] projects;
@@ -44,16 +46,15 @@ public final class ProjectOp extends TypedPipeOp {
 
     @Override
     public Object @NonNull [] put(Object @NonNull [] tuple) {
-        final TupleEvalContext context = new TupleEvalContext(tuple);
+        evalContext.setTuple(tuple);
         return Arrays.stream(projects)
-            .map(p -> p.eval(context, exprConfig))
+            .map(p -> p.eval(evalContext, exprConfig))
             .toArray(Object[]::new);
     }
 
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        super.init(type, config);
-        final TupleCompileContext context = new TupleCompileContext(type);
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        super.compile(context, config);
         ExprCompiler compiler = config.getExprCompiler();
         projects = Arrays.stream(projects)
             .map(p -> compiler.visit(p, context))

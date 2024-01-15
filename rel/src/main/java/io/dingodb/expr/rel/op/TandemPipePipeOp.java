@@ -22,6 +22,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class TandemPipePipeOp extends TandemOp implements PipeOp {
+    private static final long serialVersionUID = -7719743645871316722L;
+
     public TandemPipePipeOp(PipeOp input, PipeOp output) {
         super(input, output);
     }

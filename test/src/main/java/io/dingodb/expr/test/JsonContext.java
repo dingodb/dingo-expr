@@ -22,6 +22,7 @@ import io.dingodb.expr.json.runtime.DataSchema;
 import io.dingodb.expr.json.runtime.SchemaRoot;
 import io.dingodb.expr.json.schema.SchemaParser;
 import io.dingodb.expr.runtime.TupleEvalContext;
+import io.dingodb.expr.runtime.TupleEvalContextImpl;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -58,13 +59,15 @@ public class JsonContext implements BeforeAllCallback {
     }
 
     /**
-     * Get the {@link TupleEvalContext} corresponding to the data.
+     * Get the {@link TupleEvalContextImpl} corresponding to the data.
      *
      * @param index the index of the data
-     * @return the {@link TupleEvalContext}
+     * @return the {@link TupleEvalContextImpl}
      */
     public TupleEvalContext getEvalContext(int index) {
-        return new TupleEvalContext(tuples[index]);
+        TupleEvalContext context = new TupleEvalContextImpl();
+        context.setTuple(tuples[index]);
+        return context;
     }
 
     @Override

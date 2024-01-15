@@ -18,26 +18,9 @@ package io.dingodb.expr.rel;
 
 import io.dingodb.expr.runtime.CompileContext;
 import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class TupleCompileContext implements CompileContext {
-    private final TupleType type;
+public interface TupleCompileContext extends CompileContext {
+    TupleType getType();
 
-    @Override
-    public CompileContext getChild(Object index) {
-        return new CompileContext() {
-            @Override
-            public Object getId() {
-                return index;
-            }
-
-            @Override
-            public Type getType() {
-                return type.getTypes()[(Integer) index];
-            }
-        };
-    }
+    TupleCompileContext withType(TupleType type);
 }

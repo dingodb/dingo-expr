@@ -23,6 +23,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.stream.Stream;
 
 public final class TandemCacheCacheOp extends TandemOp implements CacheOp {
+    private static final long serialVersionUID = -4273883622644553149L;
+
     public TandemCacheCacheOp(CacheOp input, CacheOp output) {
         super(input, output);
     }

@@ -16,21 +16,23 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.AbstractRelOp;
+import io.dingodb.expr.rel.PipeOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
-import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 @EqualsAndHashCode(callSuper = true, of = {"filter"})
-public final class FilterOp extends TypedPipeOp {
+public final class FilterOp extends AbstractRelOp implements PipeOp {
     public static final String NAME = "FILTER";
+
+    private static final long serialVersionUID = 2278831820076088621L;
 
     @Getter
     private Expr filter;
@@ -41,18 +43,17 @@ public final class FilterOp extends TypedPipeOp {
 
     @Override
     public Object @Nullable [] put(Object @NonNull [] tuple) {
-        final TupleEvalContext context = new TupleEvalContext(tuple);
-        Object v = filter.eval(context, exprConfig);
+        evalContext.setTuple(tuple);
+        Object v = filter.eval(evalContext, exprConfig);
         return (v != null && (Boolean) v) ? tuple : null;
     }
 
     @Override
-    public void init(TupleType type, @NonNull RelConfig config) {
-        super.init(type, config);
-        final TupleCompileContext context = new TupleCompileContext(type);
+    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
+        super.compile(context, config);
         ExprCompiler compiler = config.getExprCompiler();
         filter = compiler.visit(filter, context);
-        this.type = type;
+        type = context.getType();
     }
 
     @Override

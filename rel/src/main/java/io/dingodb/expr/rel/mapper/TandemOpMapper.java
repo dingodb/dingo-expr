@@ -57,10 +57,10 @@ public abstract class TandemOpMapper {
         } // TODO: SourceOp cannot be transferred.
         throw new IllegalArgumentException(
             "Illegal input/output op type \""
-                + input.getClass().getCanonicalName()
-                + "\" and \""
-                + output.getClass().getCanonicalName()
-                + "\".");
+            + input.getClass().getCanonicalName()
+            + "\" and \""
+            + output.getClass().getCanonicalName()
+            + "\".");
     }
 
     @BeanMapping(ignoreByDefault = true)
