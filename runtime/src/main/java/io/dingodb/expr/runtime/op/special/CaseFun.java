@@ -35,7 +35,7 @@ import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CaseFun extends VariadicOp {
-    public static final CaseFun INSTANCE = new CaseFun(Types.ANY);
+    public static final CaseFun INSTANCE = new CaseFun(null);
     public static final String NAME = "CASE";
 
     private static final long serialVersionUID = -898834141136092315L;
@@ -107,7 +107,10 @@ public class CaseFun extends VariadicOp {
             return expr.getOperands()[size - 1];
         }
         nonConstExprs.add(expr.getOperands()[size - 1]);
-        return Exprs.op(Exprs.CASE, (Object[]) nonConstExprs.toArray(new Expr[0]));
+        if (nonConstExprs.size() < size) {
+            return Exprs.op(expr.getOp(), (Object[]) nonConstExprs.toArray(new Expr[0]));
+        }
+        return expr;
     }
 
     @Override

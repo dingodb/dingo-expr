@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.exception.FailEvaluatingValues;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.UnaryOpExpr;
+import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -39,6 +40,11 @@ public class UnaryGeneralOp extends UnaryOp {
             throw new FailEvaluatingValues(this, value);
         }
         return expr.eval(null, config);
+    }
+
+    @Override
+    public Type getType() {
+        return op.getType();
     }
 
     @Override

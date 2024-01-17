@@ -46,7 +46,7 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
 
     @Override
     public Type getType() {
-        return null;
+        return Types.ANY;
     }
 
     @Override

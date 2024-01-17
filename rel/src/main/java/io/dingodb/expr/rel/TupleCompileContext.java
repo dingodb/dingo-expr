@@ -20,6 +20,7 @@ import io.dingodb.expr.runtime.CompileContext;
 import io.dingodb.expr.runtime.type.TupleType;
 
 public interface TupleCompileContext extends CompileContext {
+    @Override
     TupleType getType();
 
     TupleCompileContext withType(TupleType type);

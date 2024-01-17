@@ -48,6 +48,11 @@ public class VariadicGeneralOp extends VariadicOp {
     }
 
     @Override
+    public Type getType() {
+        return op.getType();
+    }
+
+    @Override
     public @NonNull String getName() {
         return op.getName();
     }
