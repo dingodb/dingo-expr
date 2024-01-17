@@ -41,7 +41,7 @@ abstract class NumberFormatFun extends BinaryOp {
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
         if (Types.DECIMAL.matches(type0) && Types.INT.matches(type1)) {
-            return type0;
+            return Types.DECIMAL;
         }
         return null;
     }
@@ -51,8 +51,9 @@ abstract class NumberFormatFun extends BinaryOp {
         if (types[0].isNumeric() && types[1].isNumeric()) {
             types[0] = Types.DECIMAL;
             types[1] = Types.INT;
+            return Types.DECIMAL;
         }
-        return Types.DECIMAL;
+        return null;
     }
 
     @Override

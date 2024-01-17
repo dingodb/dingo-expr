@@ -48,6 +48,11 @@ public class TertiaryGeneralOp extends TertiaryOp {
     }
 
     @Override
+    public Type getType() {
+        return op.getType();
+    }
+
+    @Override
     public @NonNull String getName() {
         return op.getName();
     }

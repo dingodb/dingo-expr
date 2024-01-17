@@ -48,6 +48,11 @@ public class BinaryGeneralOp extends BinaryOp {
     }
 
     @Override
+    public Type getType() {
+        return op.getType();
+    }
+
+    @Override
     public @NonNull String getName() {
         return op.getName();
     }

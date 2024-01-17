@@ -20,6 +20,8 @@ import io.dingodb.expr.parser.ExprParser;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.Exprs;
+import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import io.dingodb.expr.test.asserts.Assert;
 import io.dingodb.expr.test.cases.ParseEvalConstProvider;
@@ -47,12 +49,15 @@ public class TestParseEvalConst {
     }
 
     @Test
-    public void testTemp() throws ExprParseException {
-        String exprString = "round(1, '2')";
+    public void testCaseFun() throws ExprParseException {
+        String exprString = "case(false, 1, true, 2, 3)";
         Expr expr = ExprParser.DEFAULT.parse(exprString);
-        Expr expr1 = ExprCompiler.ADVANCED.visit(expr);
+        Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
+        assertThat(expr1.getType()).isEqualTo(Types.INT);
         Object result = expr1.eval();
-        Assert.value(result).isEqualTo(1);
+        Assert.value(result).isEqualTo(2);
+        Expr expr2 = ExprCompiler.ADVANCED.visit(expr);
+        assertThat(expr2).isEqualTo(Exprs.val(2, Types.INT));
     }
 
     @Test
