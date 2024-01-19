@@ -36,44 +36,59 @@ public final class RelOpBuilder {
         return new InitBuilder();
     }
 
-    public static @NonNull Builder<?, ?> builder(RelOp op) {
-        if (op == null) {
-            return builder();
-        } else if (op instanceof PipeOp) {
-            return new PipeBuilder((PipeOp) op);
-        } else if (op instanceof CacheOp) {
-            return new CacheBuilder((CacheOp) op);
-        } else if (op instanceof SourceOp) {
-            return new SourceBuilder((SourceOp) op);
-        }
-        throw new IllegalArgumentException("Unsupported rel op class \"" + op.getClass().getCanonicalName() + "\".");
+    public static @NonNull Builder<?> builder(RelOp op) {
+        return new InitBuilder().add(op);
     }
 
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
-    public abstract static class Builder<P extends RelOp, B extends Builder<P, B>> {
+    public abstract static class Builder<P extends RelOp> {
         protected transient P relOp;
 
-        protected abstract Builder<?, ?> tandemBuilder(P op0, PipeOp op1);
+        protected abstract Builder<?> tandemBuilder(P op0, PipeOp op1);
 
-        protected abstract Builder<?, ?> tandemBuilder(P op0, CacheOp op1);
+        protected abstract Builder<?> tandemBuilder(P op0, CacheOp op1);
 
-        public Builder<?, ?> project(Expr @NonNull ... projects) {
-            return tandemBuilder(relOp, new ProjectOp(projects));
+        public Builder<?> add(PipeOp op1) {
+            return tandemBuilder(relOp, op1);
         }
 
-        public Builder<?, ?> filter(Expr filter) {
-            return tandemBuilder(relOp, new FilterOp(filter));
+        public Builder<?> add(CacheOp op1) {
+            return tandemBuilder(relOp, op1);
         }
 
-        public Builder<?, ?> agg(Expr... aggExprs) {
+        public Builder<?> add(RelOp op) {
+            if (op == null) {
+                return this;
+            } else if (op instanceof PipeOp) {
+                return add((PipeOp) op);
+            } else if (op instanceof CacheOp) {
+                return add((CacheOp) op);
+            } else if (op instanceof SourceOp) {
+                assert relOp == null : "Source op must be the first one.";
+                return new SourceBuilder((SourceOp) op);
+            }
+            throw new IllegalArgumentException(
+                "Unsupported rel op class \"" + op.getClass().getCanonicalName() + "\"."
+            );
+        }
+
+        public Builder<?> project(Expr @NonNull ... projects) {
+            return add(new ProjectOp(projects));
+        }
+
+        public Builder<?> filter(Expr filter) {
+            return add(new FilterOp(filter));
+        }
+
+        public Builder<?> agg(Expr... aggExprs) {
             return agg(null, aggExprs);
         }
 
-        public Builder<?, ?> agg(int[] groupIndices, Expr... aggExprs) {
+        public Builder<?> agg(int[] groupIndices, Expr... aggExprs) {
             return agg(groupIndices, Arrays.asList(aggExprs));
         }
 
-        public Builder<?, ?> agg(int[] groupIndices, List<Expr> aggList) {
+        public Builder<?> agg(int[] groupIndices, List<Expr> aggList) {
             AggregateOp op;
             if (groupIndices != null) {
                 op = new GroupedAggregateOp(groupIndices, aggList);
@@ -88,7 +103,7 @@ public final class RelOpBuilder {
         }
     }
 
-    public static final class InitBuilder extends Builder<RelOp, InitBuilder> {
+    public static final class InitBuilder extends Builder<RelOp> {
         private InitBuilder() {
             super(null);
         }
@@ -119,7 +134,7 @@ public final class RelOpBuilder {
         }
     }
 
-    public static final class SourceBuilder extends Builder<SourceOp, SourceBuilder> {
+    public static final class SourceBuilder extends Builder<SourceOp> {
         private SourceBuilder(SourceOp relOp) {
             super(relOp);
         }
@@ -137,7 +152,7 @@ public final class RelOpBuilder {
         }
     }
 
-    public static final class PipeBuilder extends Builder<PipeOp, PipeBuilder> {
+    public static final class PipeBuilder extends Builder<PipeOp> {
         private PipeBuilder(PipeOp relOp) {
             super(relOp);
         }
@@ -155,7 +170,7 @@ public final class RelOpBuilder {
         }
     }
 
-    public static final class CacheBuilder extends Builder<CacheOp, CacheBuilder> {
+    public static final class CacheBuilder extends Builder<CacheOp> {
         private CacheBuilder(CacheOp relOp) {
             super(relOp);
         }

@@ -71,6 +71,11 @@ public final class GroupedAggregateOp extends AggregateOp {
     }
 
     @Override
+    public void clear() {
+        cache.clear();
+    }
+
+    @Override
     public void compile(TupleCompileContext context, @NonNull RelConfig config) {
         super.compile(context, config);
         this.type = Types.tuple(

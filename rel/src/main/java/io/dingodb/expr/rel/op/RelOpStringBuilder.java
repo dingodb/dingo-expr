@@ -31,9 +31,9 @@ import java.util.List;
 public class RelOpStringBuilder {
     protected final ExprParser parser;
 
-    protected RelOpBuilder.Builder<?, ?> realBuilder;
+    protected RelOpBuilder.Builder<?> realBuilder;
 
-    private RelOpStringBuilder(ExprParser parser, RelOpBuilder.Builder<?, ?> realBuilder) {
+    private RelOpStringBuilder(ExprParser parser, RelOpBuilder.Builder<?> realBuilder) {
         this.parser = parser;
         this.realBuilder = realBuilder;
     }
@@ -87,17 +87,17 @@ public class RelOpStringBuilder {
         }
 
         public RelOpStringBuilder values(List<Object @NonNull []> values) {
-            RelOpBuilder.Builder<?, ?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(values);
+            RelOpBuilder.Builder<?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(values);
             return new RelOpStringBuilder(parser, builder);
         }
 
         public RelOpStringBuilder values(InputStream is) {
-            RelOpBuilder.Builder<?, ?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(is);
+            RelOpBuilder.Builder<?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(is);
             return new RelOpStringBuilder(parser, builder);
         }
 
         public RelOpStringBuilder values(String... csvLines) {
-            RelOpBuilder.Builder<?, ?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(csvLines);
+            RelOpBuilder.Builder<?> builder = ((RelOpBuilder.InitBuilder) realBuilder).values(csvLines);
             return new RelOpStringBuilder(parser, builder);
         }
     }

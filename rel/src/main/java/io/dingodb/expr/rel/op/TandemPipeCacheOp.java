@@ -42,4 +42,9 @@ public final class TandemPipeCacheOp extends TandemOp implements CacheOp {
     public @NonNull Stream<Object[]> get() {
         return ((CacheOp) output).get();
     }
+
+    @Override
+    public void clear() {
+        ((CacheOp) output).clear();
+    }
 }

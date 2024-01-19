@@ -24,4 +24,6 @@ public interface CacheOp extends RelOp {
     void put(Object @NonNull [] tuple);
 
     @NonNull Stream<Object[]> get();
+
+    void clear();
 }
