@@ -26,7 +26,7 @@ public class TestRelOpBuilder {
     @Test
     public void testBuilder() {
         RelOp op = new FilterOp(Val.TRUE);
-        RelOpBuilder.Builder<?, ?> builder = RelOpBuilder.builder(op);
+        RelOpBuilder.Builder<?> builder = RelOpBuilder.builder(op);
         assertThat(builder).isInstanceOf(RelOpBuilder.PipeBuilder.class);
     }
 }

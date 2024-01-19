@@ -39,4 +39,10 @@ public final class TandemCacheCacheOp extends TandemOp implements CacheOp {
         ((CacheOp) input).get().forEach(((CacheOp) output)::put);
         return ((CacheOp) output).get();
     }
+
+    @Override
+    public void clear() {
+        ((CacheOp) output).clear();
+        ((CacheOp) input).clear();
+    }
 }

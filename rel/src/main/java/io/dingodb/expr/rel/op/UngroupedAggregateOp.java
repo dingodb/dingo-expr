@@ -64,6 +64,11 @@ public final class UngroupedAggregateOp extends AggregateOp {
     }
 
     @Override
+    public void clear() {
+        vars = null;
+    }
+
+    @Override
     public void compile(TupleCompileContext context, @NonNull RelConfig config) {
         super.compile(context, config);
         this.type = Types.tuple(aggList.stream().map(Expr::getType).toArray(Type[]::new));

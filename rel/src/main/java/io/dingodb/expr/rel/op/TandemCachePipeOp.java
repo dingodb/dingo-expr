@@ -42,4 +42,9 @@ public final class TandemCachePipeOp extends TandemOp implements CacheOp {
             .map(((PipeOp) output)::put)
             .filter(Objects::nonNull);
     }
+
+    @Override
+    public void clear() {
+        ((CacheOp) input).clear();
+    }
 }
