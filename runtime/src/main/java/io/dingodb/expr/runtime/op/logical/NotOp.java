@@ -43,4 +43,10 @@ abstract class NotOp extends UnaryOp {
         }
         return null;
     }
+
+    @Override
+    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+        types[0] = Types.BOOL;
+        return Types.BOOL;
+    }
 }
