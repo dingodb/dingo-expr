@@ -61,6 +61,18 @@ public class TestParseEvalConst {
     }
 
     @Test
+    public void testNotFun() throws ExprParseException {
+        String exprString = "! 1";
+        Expr expr = ExprParser.DEFAULT.parse(exprString);
+        Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
+        assertThat(expr1.getType()).isEqualTo(Types.BOOL);
+        Object result = expr1.eval();
+        Assert.value(result).isEqualTo(false);
+        Expr expr2 = ExprCompiler.ADVANCED.visit(expr);
+        assertThat(expr2).isEqualTo(Exprs.val(false, Types.BOOL));
+    }
+
+    @Test
     public void testCurrentDate() throws ExprParseException {
         Expr expr = ExprParser.DEFAULT.parse("current_date()");
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
