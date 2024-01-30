@@ -53,21 +53,19 @@ final class FunIndex {
 
     static int getUnary(@NonNull UnaryOp op) {
         String funName = op.getName();
-        Object key = op.getKey();
-        boolean isIntegral = key.equals(Types.INT) || key.equals(Types.LONG);
         int funIndex = -1;
         switch (funName) {
             case CeilFunFactory.NAME:
-                if (key.equals(Types.DOUBLE)) {
+                if (Types.DOUBLE.equals(op.getKey())) {
                     funIndex = 0x01;
-                } else if (isIntegral) {
+                } else if (Types.INT.matches(op.getKey()) || Types.LONG.matches(op.getKey())) {
                     funIndex = 0;
                 }
                 break;
             case FloorFunFactory.NAME:
-                if (key.equals(Types.DOUBLE)) {
+                if (Types.DOUBLE.equals(op.getKey())) {
                     funIndex = 0x02;
-                } else if (isIntegral) {
+                } else if (Types.INT.matches(op.getKey()) || Types.LONG.matches(op.getKey())) {
                     funIndex = 0;
                 }
                 break;

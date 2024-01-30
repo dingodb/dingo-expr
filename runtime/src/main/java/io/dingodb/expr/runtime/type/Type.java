@@ -31,9 +31,9 @@ public interface Type {
         return numericPrecedence() != NOT_NUMERIC;
     }
 
-    default boolean matches(@NonNull Type type) {
+    default boolean matches(@NonNull Object type) {
         // Types.NULL can be converted to any type.
-        return type.equals(this) || type.equals(Types.NULL);
+        return equals(type) || Types.NULL.equals(type);
     }
 
     <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj);

@@ -28,7 +28,7 @@ public final class AnyType extends ScalarType {
     }
 
     @Override
-    public boolean matches(@NonNull Type type) {
+    public boolean matches(@NonNull Object type) {
         return true;
     }
 
