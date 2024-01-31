@@ -208,6 +208,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("mid('DingoExpression', 1, 5)", "Dingo"),
             arguments("mid('DingoExpression', 1.5, 5)", "ingoE"),
             arguments("mid('DingoExpression', -2, 5)", "on"),
+            arguments("mid('ab', 2, 3)", "b"),
             arguments("repeat('Ac', 2)", "AcAc"),
             arguments("reverse('1234567')", "7654321"),
             arguments("reverse(null)", null),
