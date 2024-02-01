@@ -48,7 +48,10 @@ public abstract class HostedUnaryAgg extends UnaryAgg {
     @Override
     public Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
         if (var != null) {
-            return hostedOp.evalValue(var, value, config);
+            if (value != null) {
+                return hostedOp.evalValue(var, value, config);
+            }
+            return var;
         }
         return value;
     }
