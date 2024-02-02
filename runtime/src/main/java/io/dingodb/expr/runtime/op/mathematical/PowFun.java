@@ -41,7 +41,7 @@ abstract class PowFun extends BinaryOp {
 
     @Override
     public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (type0.equals(Types.DOUBLE) && type1.equals(Types.DOUBLE)) {
+        if (Types.DOUBLE.matches(type0) && Types.DOUBLE.matches(type1)) {
             return Types.DOUBLE;
         }
         return null;
