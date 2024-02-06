@@ -87,8 +87,10 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
     private static final byte MIN = (byte) 0xB1;
     private static final byte MAX = (byte) 0xB2;
     private static final byte ABS = (byte) 0xB3;
+    private static final byte ABS_C = (byte) 0xB4;
 
     private static final byte CAST = (byte) 0xF0;
+    private static final byte CAST_C = (byte) 0xFC;
 
     private static final byte FUN = (byte) 0xF1;
 
@@ -180,7 +182,7 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                     Byte dstType = TypeCoder.INSTANCE.visit(expr.getType());
                     Byte srcType = TypeCoder.INSTANCE.visit((Type) expr.getOp().getKey());
                     if (dstType != null && srcType != null) {
-                        obj.write(CAST);
+                        obj.write(expr.getOp().doRangeChecking() ? CAST_C : CAST);
                         obj.write(dstType << 4 | srcType);
                         success = true;
                     }
@@ -197,7 +199,11 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                             success = writeOpWithType(obj, IS_FALSE, (Type) expr.getOp().getKey());
                             break;
                         case AbsFunFactory.NAME:
-                            success = writeOpWithType(obj, ABS, (Type) expr.getOp().getKey());
+                            success = writeOpWithType(
+                                obj,
+                                expr.getOp().doRangeChecking() ? ABS_C : ABS,
+                                (Type) expr.getOp().getKey()
+                            );
                             break;
                         default:
                             success = writeFun(obj, FunIndex.getUnary(expr.getOp()));

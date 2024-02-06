@@ -29,4 +29,6 @@ dependencies {
     testImplementation project(':dingo-expr-coding')
     testImplementation project(':dingo-expr-jni')
     testImplementation project(':dingo-expr-parser')
+    testRuntimeOnly group: 'ch.qos.logback', name: 'logback-classic', version: 'logback'.v()
+    testRuntimeOnly group: 'ch.qos.logback', name: 'logback-core', version: 'logback'.v()
 }

@@ -56,7 +56,7 @@ public class TestEvalConst {
     @ParameterizedTest
     @ArgumentsSource(EvalConstProvider.class)
     @ArgumentsSource(WeiredEvalConstProvider.class)
-    public void testForSqlCompiler(@NonNull Expr expr, Object expected) {
+    public void testAdvancedCompiler(@NonNull Expr expr, Object expected) {
         Expr expr1 = ExprCompiler.ADVANCED.visit(expr);
         assertThat(expr1).isInstanceOf(Val.class);
         Object v = expr1.eval();

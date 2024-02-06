@@ -80,4 +80,9 @@ abstract class LongCastCheckOp extends CastOp {
     public final Type getType() {
         return Types.LONG;
     }
+
+    @Override
+    public boolean doRangeChecking() {
+        return true;
+    }
 }

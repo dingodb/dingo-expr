@@ -84,4 +84,9 @@ abstract class IntCastCheckOp extends CastOp {
     public final Type getType() {
         return Types.INT;
     }
+
+    @Override
+    public boolean doRangeChecking() {
+        return true;
+    }
 }
