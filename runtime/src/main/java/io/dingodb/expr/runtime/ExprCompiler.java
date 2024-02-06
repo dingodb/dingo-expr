@@ -50,6 +50,10 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Getter
     private final ExprConfig config;
 
+    public static @NonNull ExprCompiler of(ExprConfig config) {
+        return new ExprCompiler(config);
+    }
+
     @Override
     public Expr visitVal(@NonNull Val expr, CompileContext obj) {
         Type type = expr.getType();

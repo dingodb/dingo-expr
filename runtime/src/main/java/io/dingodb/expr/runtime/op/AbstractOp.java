@@ -67,4 +67,8 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
     public Object getKey() {
         return null;
     }
+
+    public boolean doRangeChecking() {
+        return false;
+    }
 }

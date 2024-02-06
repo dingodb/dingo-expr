@@ -60,4 +60,9 @@ abstract class AbsCheckFun extends UnaryNumericOp {
     public final @NonNull String getName() {
         return NAME;
     }
+
+    @Override
+    public boolean doRangeChecking() {
+        return true;
+    }
 }

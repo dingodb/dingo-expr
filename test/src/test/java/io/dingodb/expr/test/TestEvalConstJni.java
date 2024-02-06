@@ -23,6 +23,8 @@ import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.test.asserts.Assert;
 import io.dingodb.expr.test.cases.EvalConstProvider;
+import io.dingodb.expr.test.cases.EvalExceptionProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -32,7 +34,9 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.io.ByteArrayOutputStream;
 
 import static org.assertj.core.api.Assumptions.assumeThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class TestEvalConstJni {
     @BeforeAll
@@ -48,6 +52,19 @@ public class TestEvalConstJni {
         assumeThat(ExprCoder.INSTANCE.visit(expr1, os)).isEqualTo(CodingFlag.OK);
         Object handle = LibExprJni.INSTANCE.decode(os.toByteArray());
         Assert.value(LibExprJni.INSTANCE.run(handle)).isEqualTo(expected);
+        LibExprJni.INSTANCE.release(handle);
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(EvalExceptionProvider.class)
+    public void testRangeCheck(@NonNull Expr expr, Class<? extends Exception> exceptionClass) {
+        Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        assumeThat(ExprCoder.INSTANCE.visit(expr1, os)).isEqualTo(CodingFlag.OK);
+        byte[] code = os.toByteArray();
+        Object handle = LibExprJni.INSTANCE.decode(code);
+        Exception exception = assertThrows(RuntimeException.class, () -> LibExprJni.INSTANCE.run(handle));
+        log.info(exception.getMessage());
         LibExprJni.INSTANCE.release(handle);
     }
 }

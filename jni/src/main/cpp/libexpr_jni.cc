@@ -16,6 +16,7 @@
 
 #include <jni.h>
 
+#include "expr/exception.h"
 #include "expr/runner.h"
 
 using namespace dingodb::expr;
@@ -61,7 +62,13 @@ JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_decode(JNIEnv *jen
         return nullptr;
     }
     auto runner = new Runner();
-    runner->Decode((Byte *)data, len);
+    try {
+        runner->Decode((Byte *)data, len);
+    } catch (const ExprError &e) {
+        jclass jcls = jenv->FindClass("java/lang/RuntimeException");
+        jenv->ThrowNew(jcls, e.what());
+        return nullptr;
+    }
     jenv->ReleaseByteArrayElements(exprBytes, data, JNI_ABORT);
     return jenv->NewDirectByteBuffer(runner, sizeof(Runner));
 }
@@ -74,7 +81,13 @@ Java_io_dingodb_expr_jni_LibExprJni_bindTuple(JNIEnv *jenv, jobject obj, jobject
 JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_run(JNIEnv *jenv, jobject obj, jobject handle)
 {
     auto runner = (Runner *)jenv->GetDirectBufferAddress(handle);
-    runner->Run();
+    try {
+        runner->Run();
+    } catch (const ExprError &e) {
+        jclass jcls = jenv->FindClass("java/lang/RuntimeException");
+        jenv->ThrowNew(jcls, e.what());
+        return nullptr;
+    }
     auto type = runner->GetType();
     Operand v = runner->Get();
     switch (type) {
