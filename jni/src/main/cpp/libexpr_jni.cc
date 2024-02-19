@@ -22,93 +22,89 @@
 using namespace dingodb::expr;
 
 const struct JavaClassInfo {
-    const char *name;
-    const char *initSigature;
+  const char *name;
+  const char *initSigature;
 } JAVA_CLASS[] = {
-    [TYPE_NULL] = {              nullptr, nullptr},
-    [TYPE_INT32] = {"Ljava/lang/Integer;",  "(I)V"},
-    [TYPE_INT64] = {   "Ljava/lang/Long;",  "(J)V"},
-    [TYPE_BOOL] = {"Ljava/lang/Boolean;",  "(Z)V"},
-    [TYPE_FLOAT] = {  "Ljava/lang/Float;",  "(F)V"},
-    [TYPE_DOUBLE] = { "Ljava/lang/Double;",  "(D)V"},
+    [TYPE_NULL]    = {              nullptr, nullptr},
+    [TYPE_INT32]   = {"Ljava/lang/Integer;",  "(I)V"},
+    [TYPE_INT64]   = {   "Ljava/lang/Long;",  "(J)V"},
+    [TYPE_BOOL]    = {"Ljava/lang/Boolean;",  "(Z)V"},
+    [TYPE_FLOAT]   = {  "Ljava/lang/Float;",  "(F)V"},
+    [TYPE_DOUBLE]  = { "Ljava/lang/Double;",  "(D)V"},
     [TYPE_DECIMAL] = {              nullptr, nullptr},
-    [TYPE_STRING] = {              nullptr, nullptr},
+    [TYPE_STRING]  = {              nullptr, nullptr},
 };
 
-template <Byte T> jobject JavaObject(JNIEnv *jenv, const Operand &v)
-{
-    if (v != nullptr) {
-        jclass resClass = jenv->FindClass(JAVA_CLASS[T].name);
-        jmethodID ctor = jenv->GetMethodID(resClass, "<init>", JAVA_CLASS[T].initSigature);
-        return jenv->NewObject(resClass, ctor, v.GetValue<TypeOf<T>>());
-    }
-    return nullptr;
+template <Byte T>
+jobject JavaObject(JNIEnv *jenv, const Operand &v) {
+  if (v != nullptr) {
+    jclass resClass = jenv->FindClass(JAVA_CLASS[T].name);
+    jmethodID ctor  = jenv->GetMethodID(resClass, "<init>", JAVA_CLASS[T].initSigature);
+    return jenv->NewObject(resClass, ctor, v.GetValue<TypeOf<T>>());
+  }
+  return nullptr;
 }
 
-template <> jobject JavaObject<TYPE_STRING>(JNIEnv *jenv, const Operand &v)
-{
-    if (v != nullptr) {
-        return jenv->NewStringUTF(v.GetValue<String>()->c_str());
-    }
-    return nullptr;
+template <>
+jobject JavaObject<TYPE_STRING>(JNIEnv *jenv, const Operand &v) {
+  if (v != nullptr) {
+    return jenv->NewStringUTF(v.GetValue<String>()->c_str());
+  }
+  return nullptr;
 }
 
-JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_decode(JNIEnv *jenv, jobject obj, jbyteArray exprBytes)
-{
-    jboolean isCopy;
-    jsize len = jenv->GetArrayLength(exprBytes);
-    jbyte *data = jenv->GetByteArrayElements(exprBytes, &isCopy);
-    if (jenv->ExceptionCheck()) {
-        return nullptr;
-    }
-    auto runner = new Runner();
-    try {
-        runner->Decode((Byte *)data, len);
-    } catch (const ExprError &e) {
-        jclass jcls = jenv->FindClass("java/lang/RuntimeException");
-        jenv->ThrowNew(jcls, e.what());
-        return nullptr;
-    }
-    jenv->ReleaseByteArrayElements(exprBytes, data, JNI_ABORT);
-    return jenv->NewDirectByteBuffer(runner, sizeof(Runner));
+JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_decode(JNIEnv *jenv, jobject obj, jbyteArray exprBytes) {
+  jboolean isCopy;
+  jsize len   = jenv->GetArrayLength(exprBytes);
+  jbyte *data = jenv->GetByteArrayElements(exprBytes, &isCopy);
+  if (jenv->ExceptionCheck()) {
+    return nullptr;
+  }
+  auto runner = new Runner();
+  try {
+    runner->Decode((Byte *)data, len);
+  } catch (const ExprError &e) {
+    jclass jcls = jenv->FindClass("java/lang/RuntimeException");
+    jenv->ThrowNew(jcls, e.what());
+    return nullptr;
+  }
+  jenv->ReleaseByteArrayElements(exprBytes, data, JNI_ABORT);
+  return jenv->NewDirectByteBuffer(runner, sizeof(Runner));
 }
 
 JNIEXPORT void JNICALL
-Java_io_dingodb_expr_jni_LibExprJni_bindTuple(JNIEnv *jenv, jobject obj, jobject handle, jbyteArray tupleBytes)
-{
+Java_io_dingodb_expr_jni_LibExprJni_bindTuple(JNIEnv *jenv, jobject obj, jobject handle, jbyteArray tupleBytes) {
 }
 
-JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_run(JNIEnv *jenv, jobject obj, jobject handle)
-{
-    auto runner = (Runner *)jenv->GetDirectBufferAddress(handle);
-    try {
-        runner->Run();
-    } catch (const ExprError &e) {
-        jclass jcls = jenv->FindClass("java/lang/RuntimeException");
-        jenv->ThrowNew(jcls, e.what());
-        return nullptr;
-    }
-    auto type = runner->GetType();
-    Operand v = runner->Get();
-    switch (type) {
-    case TYPE_INT32:
-        return JavaObject<TYPE_INT32>(jenv, v);
-    case TYPE_INT64:
-        return JavaObject<TYPE_INT64>(jenv, v);
-    case TYPE_BOOL:
-        return JavaObject<TYPE_BOOL>(jenv, v);
-    case TYPE_FLOAT:
-        return JavaObject<TYPE_FLOAT>(jenv, v);
-    case TYPE_DOUBLE:
-        return JavaObject<TYPE_DOUBLE>(jenv, v);
-    case TYPE_STRING:
-        return JavaObject<TYPE_STRING>(jenv, v);
-    }
+JNIEXPORT jobject JNICALL Java_io_dingodb_expr_jni_LibExprJni_run(JNIEnv *jenv, jobject obj, jobject handle) {
+  auto runner = (Runner *)jenv->GetDirectBufferAddress(handle);
+  try {
+    runner->Run();
+  } catch (const ExprError &e) {
+    jclass jcls = jenv->FindClass("java/lang/RuntimeException");
+    jenv->ThrowNew(jcls, e.what());
     return nullptr;
+  }
+  auto type = runner->GetType();
+  Operand v = runner->Get();
+  switch (type) {
+  case TYPE_INT32:
+    return JavaObject<TYPE_INT32>(jenv, v);
+  case TYPE_INT64:
+    return JavaObject<TYPE_INT64>(jenv, v);
+  case TYPE_BOOL:
+    return JavaObject<TYPE_BOOL>(jenv, v);
+  case TYPE_FLOAT:
+    return JavaObject<TYPE_FLOAT>(jenv, v);
+  case TYPE_DOUBLE:
+    return JavaObject<TYPE_DOUBLE>(jenv, v);
+  case TYPE_STRING:
+    return JavaObject<TYPE_STRING>(jenv, v);
+  }
+  return nullptr;
 }
 
-JNIEXPORT void JNICALL Java_io_dingodb_expr_jni_LibExprJni_release(JNIEnv *jenv, jobject obj, jobject handle)
-{
-    auto runner = (dingodb::expr::Runner *)jenv->GetDirectBufferAddress(handle);
-    delete runner;
+JNIEXPORT void JNICALL Java_io_dingodb_expr_jni_LibExprJni_release(JNIEnv *jenv, jobject obj, jobject handle) {
+  auto runner = (dingodb::expr::Runner *)jenv->GetDirectBufferAddress(handle);
+  delete runner;
 }

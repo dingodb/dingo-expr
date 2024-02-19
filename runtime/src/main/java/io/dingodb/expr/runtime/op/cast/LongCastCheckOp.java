@@ -41,7 +41,7 @@ abstract class LongCastCheckOp extends CastOp {
 
     static long longCast(float value) {
         long r = Math.round((double) value);
-        if (2 * Math.abs((float) r - value) <= 1.0f) {
+        if (Math.abs((float) r - value) <= 0.5f) {
             return r;
         }
         throw new CastingException(Types.LONG, Types.FLOAT, ExceptionUtils.exceedsLongRange());
@@ -49,7 +49,7 @@ abstract class LongCastCheckOp extends CastOp {
 
     static long longCast(double value) {
         long r = Math.round(value);
-        if (2 * Math.abs((double) r - value) <= 1) {
+        if (Math.abs((double) r - value) <= 0.5) {
             return r;
         }
         throw new CastingException(Types.LONG, Types.DOUBLE, ExceptionUtils.exceedsLongRange());

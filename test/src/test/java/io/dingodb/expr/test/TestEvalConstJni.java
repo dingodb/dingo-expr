@@ -21,13 +21,13 @@ import io.dingodb.expr.coding.ExprCoder;
 import io.dingodb.expr.jni.LibExprJni;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.utils.CodecUtils;
 import io.dingodb.expr.test.asserts.Assert;
 import io.dingodb.expr.test.cases.EvalConstProvider;
 import io.dingodb.expr.test.cases.EvalExceptionProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -56,14 +56,14 @@ public class TestEvalConstJni {
         LibExprJni.INSTANCE.release(handle);
     }
 
-    @Disabled("Cannot make it pass on GitHub")
     @ParameterizedTest
     @ArgumentsSource(EvalExceptionProvider.class)
-    public void testRangeCheck(@NonNull Expr expr, Class<? extends Exception> exceptionClass) {
+    public void testRangeCheck(@NonNull Expr expr, Class<? extends Exception> ignoredExceptionClass) {
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         assumeThat(ExprCoder.INSTANCE.visit(expr1, os)).isEqualTo(CodingFlag.OK);
         byte[] code = os.toByteArray();
+        log.info("Coded expr: {}", CodecUtils.bytesToHexString(code));
         Object handle = LibExprJni.INSTANCE.decode(code);
         Exception exception = assertThrows(RuntimeException.class, () -> LibExprJni.INSTANCE.run(handle));
         log.info(exception.getMessage());

@@ -45,7 +45,7 @@ abstract class IntCastCheckOp extends CastOp {
 
     static int intCast(float value) {
         int r = Math.round(value);
-        if (2 * Math.abs((float) r - value) <= 1.0f) {
+        if (Math.abs((float) r - value) <= 0.5f) {
             return r;
         }
         throw new CastingException(Types.INT, Types.FLOAT, ExceptionUtils.exceedsIntRange());
@@ -53,7 +53,7 @@ abstract class IntCastCheckOp extends CastOp {
 
     static int intCast(double value) {
         int r = (int) Math.round(value);
-        if (2 * Math.abs((double) r - value) <= 1) {
+        if (Math.abs((double) r - value) <= 0.5) {
             return r;
         }
         throw new CastingException(Types.INT, Types.DOUBLE, ExceptionUtils.exceedsIntRange());
