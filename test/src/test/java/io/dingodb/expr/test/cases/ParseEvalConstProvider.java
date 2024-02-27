@@ -215,6 +215,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("replace('I love $name', '$name', 'Lucia')", "I love Lucia"),
             arguments("locate('o', 'potatoes')", 2),
             arguments("locate('o', 'potatoes', 3)", 6),
+            arguments("$cp('%')", ".*"),
 
             // Date & time
             arguments("date('1970-1-1')", new Date(0)),

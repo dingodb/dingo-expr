@@ -42,4 +42,6 @@ public interface Expr extends Serializable {
     @NonNull Expr simplify(ExprConfig config);
 
     <R, T> R accept(@NonNull ExprVisitor<R, T> visitor, T obj);
+
+    @NonNull String toDebugString();
 }
