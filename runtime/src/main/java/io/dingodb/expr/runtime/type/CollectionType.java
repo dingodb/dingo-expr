@@ -26,7 +26,7 @@ public abstract class CollectionType implements Type {
     protected final Type elementType;
 
     @Override
-    public boolean isScalar() {
+    public final boolean isScalar() {
         return false;
     }
 }

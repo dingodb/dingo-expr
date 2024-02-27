@@ -16,29 +16,28 @@
 
 package io.dingodb.expr.runtime.op.logical;
 
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.Arrays;
-
 abstract class LogicalFun extends VariadicOp {
     private static final long serialVersionUID = -7427875713281737789L;
 
     @Override
-    public Object keyOf(@NonNull Type @NonNull ... types) {
-        return Arrays.stream(types).allMatch(Types.BOOL::matches) ? Types.BOOL : null;
+    public OpKey keyOf(@NonNull Type @NonNull ... types) {
+        return OpKeys.ALL_BOOL.keyOf(types);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Arrays.fill(types, Types.BOOL);
-        return Types.BOOL;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_BOOL.bestKeyOf(types);
     }
 
     @Override
-    public VariadicOp getOp(Object key) {
+    public VariadicOp getOp(OpKey key) {
         return (key != null && key.equals(Types.BOOL)) ? this : null;
     }
 

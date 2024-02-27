@@ -59,7 +59,7 @@ public class TupleType implements Type {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof TupleType
-            && Arrays.equals(types, ((TupleType) obj).types);
+               && Arrays.equals(types, ((TupleType) obj).types);
     }
 
     @Override

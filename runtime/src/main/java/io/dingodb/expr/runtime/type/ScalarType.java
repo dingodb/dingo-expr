@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class ScalarType implements Type {
     @Override
-    public boolean isScalar() {
+    public final boolean isScalar() {
         return true;
     }
 }

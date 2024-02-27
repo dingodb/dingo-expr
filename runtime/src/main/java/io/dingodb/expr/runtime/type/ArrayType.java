@@ -40,7 +40,7 @@ public final class ArrayType extends CollectionType {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof ArrayType
-            && elementType.equals(((ArrayType) obj).elementType);
+               && elementType.equals(((ArrayType) obj).elementType);
     }
 
     @Override

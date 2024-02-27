@@ -32,7 +32,7 @@ public abstract class HostedUnaryAgg extends UnaryAgg {
     protected final BinaryOp hostedOp;
 
     @Override
-    public @NonNull Expr compile(@NonNull Expr operand, @NonNull ExprConfig config) {
+    public final @NonNull Expr compile(@NonNull Expr operand, @NonNull ExprConfig config) {
         Type type = operand.getType();
         BinaryOp op = hostedOp.getOp(hostedOp.keyOf(type, type));
         return host(op).createExpr(operand);
@@ -41,12 +41,12 @@ public abstract class HostedUnaryAgg extends UnaryAgg {
     protected abstract HostedUnaryAgg host(BinaryOp op);
 
     @Override
-    public Type getType() {
+    public final Type getType() {
         return hostedOp.getType();
     }
 
     @Override
-    public Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
+    public final Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
         if (var != null) {
             if (value != null) {
                 return hostedOp.evalValue(var, value, config);
@@ -57,7 +57,7 @@ public abstract class HostedUnaryAgg extends UnaryAgg {
     }
 
     @Override
-    public Object merge(@NonNull Object var1, @NonNull Object var2, ExprConfig config) {
+    public final Object merge(@NonNull Object var1, @NonNull Object var2, ExprConfig config) {
         return hostedOp.evalValue(var1, var2, config);
     }
 

@@ -18,8 +18,9 @@ package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -36,20 +37,13 @@ abstract class TimestampFormat2Fun extends BinaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (Types.TIMESTAMP.matches(type0) && Types.STRING.matches(type1)) {
-            return Types.TIMESTAMP;
-        }
-        return null;
+    public OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
+        return OpKeys.TIMESTAMP_STRING.keyOf(type0, type1);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[1])) {
-            types[0] = Types.TIMESTAMP;
-            return Types.TIMESTAMP;
-        }
-        return null;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.TIMESTAMP_STRING.bestKeyOf(types);
     }
 
     @Override

@@ -41,11 +41,11 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
         return evalValue(value, config);
     }
 
-    public Object keyOf(@NonNull Type type) {
-        return type;
+    public OpKey keyOf(@NonNull Type type) {
+        return OpKeys.DEFAULT.keyOf(type);
     }
 
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         return keyOf(types[0]);
     }
 
@@ -75,7 +75,7 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
     }
 
     @Override
-    public UnaryOp getOp(Object key) {
+    public UnaryOp getOp(OpKey key) {
         return this;
     }
 

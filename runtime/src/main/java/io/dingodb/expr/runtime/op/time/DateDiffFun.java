@@ -18,13 +18,13 @@ package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
-import java.util.Arrays;
 
 @Operators
 abstract class DateDiffFun extends BinaryOp {
@@ -37,17 +37,8 @@ abstract class DateDiffFun extends BinaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (Types.DATE.matches(type0) && Types.DATE.matches(type1)) {
-            return Types.DATE;
-        }
-        return null;
-    }
-
-    @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Arrays.fill(types, Types.DATE);
-        return Types.DATE;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_DATE.bestKeyOf(types);
     }
 
     @Override

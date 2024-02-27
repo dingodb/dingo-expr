@@ -148,7 +148,7 @@ public class OperatorsProcessor extends AbstractProcessor {
         } else if (typeName.equals(TypeName.get(String.class))) {
             return "STRING";
         } else if (typeName instanceof ArrayTypeName
-            && ((ArrayTypeName) typeName).componentType.equals(TypeName.BYTE)
+                   && ((ArrayTypeName) typeName).componentType.equals(TypeName.BYTE)
         ) {
             return "BYTES";
         } else if (typeName.equals(TypeName.get(Date.class))) {
@@ -184,8 +184,10 @@ public class OperatorsProcessor extends AbstractProcessor {
                     Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
                     for (Element element : elements) {
                         if (!(element instanceof TypeElement)) {
-                            throw showError("Element annotated with \""
-                                + Operators.class.getSimpleName() + "\" must be a class.");
+                            throw showError(
+                                "Element annotated with \""
+                                + Operators.class.getSimpleName() + "\" must be a class."
+                            );
                         }
                         OperatorsInfo info = prepareInfo((TypeElement) element);
                         List<ExecutableElement> methods =
@@ -209,26 +211,32 @@ public class OperatorsProcessor extends AbstractProcessor {
     private @NonNull OperatorsInfo prepareInfo(@NonNull TypeElement element) {
         Element pkg = element.getEnclosingElement();
         if (pkg.getKind() != ElementKind.PACKAGE) {
-            throw showError("Class annotated with \""
-                + Operators.class.getCanonicalName() + "\" must not be an inner class.");
+            throw showError(
+                "Class annotated with \""
+                + Operators.class.getCanonicalName() + "\" must not be an inner class."
+            );
         }
         final String packageName = pkg.asType().toString();
         TypeElement typesClass = processingEnv.getElementUtils().getTypeElement(TYPES_CLASS_NAME);
         TypeElement exprConfigClass = processingEnv.getElementUtils().getTypeElement(EXPR_CONFIG_CLASS_NAME);
         if (typesClass == null || exprConfigClass == null) {
-            throw showError("Cannot find class \"" + TYPES_CLASS_NAME
-                + "\" or class \"" + EXPR_CONFIG_CLASS_NAME + "\".");
+            throw showError(
+                "Cannot find class \"" + TYPES_CLASS_NAME
+                + "\" or class \"" + EXPR_CONFIG_CLASS_NAME + "\"."
+            );
         }
         boolean nullable = element.getAnnotation(Operators.class).nullable();
         String evalMethodName = nullable ? EVAL_VALUE_METHOD_NAME : EVAL_NON_NULL_VALUE_METHOD_NAME;
         ExecutableElement evalMethod = getOverridingMethod(element, evalMethodName, null);
         if (evalMethod == null) {
-            throw showError("Cannot find method \"" + evalMethodName
-                + "\" in base class \"" + element.getQualifiedName() + "\".");
+            throw showError(
+                "Cannot find method \"" + evalMethodName
+                + "\" in base class \"" + element.getQualifiedName() + "\"."
+            );
         }
         List<? extends VariableElement> evalMethodParameters = evalMethod.getParameters();
         boolean variadic = (evalMethodParameters.size() == 2
-            && evalMethodParameters.get(0).asType().getKind() == TypeKind.ARRAY);
+                            && evalMethodParameters.get(0).asType().getKind() == TypeKind.ARRAY);
         return new OperatorsInfo(
             packageName,
             typesClass,
@@ -284,9 +292,11 @@ public class OperatorsProcessor extends AbstractProcessor {
         } else {
             int evalParaCount = evalMethodParameters.size();
             if (paras.size() + 1 != evalParaCount) {
-                throw showError("Required number of eval method parameters for \""
+                throw showError(
+                    "Required number of eval method parameters for \""
                     + info.getBase().getQualifiedName() + "\" is " + (paras.size() + 1)
-                    + ", but is " + evalParaCount + ", maybe the base is wrong.");
+                    + ", but is " + evalParaCount + ", maybe the base is wrong."
+                );
             }
             evalMethodParasCode = evalMethod.getParameters().stream()
                 .map(VariableElement::getSimpleName)
@@ -360,11 +370,13 @@ public class OperatorsProcessor extends AbstractProcessor {
         ExecutableElement getOpMethod = getOverridingMethod(
             info.getBase(),
             GET_OP_METHOD_NAME,
-            Collections.singletonList(TypeName.OBJECT)
+            null
         );
         if (getOpMethod == null) {
-            throw showError("Cannot find method \"" + GET_OP_METHOD_NAME
-                + "\" in base class \"" + info.getBase().getQualifiedName() + "\".");
+            throw showError(
+                "Cannot find method \"" + GET_OP_METHOD_NAME
+                + "\" in base class \"" + info.getBase().getQualifiedName() + "\"."
+            );
         }
         TypeSpec.Builder builder = TypeSpec.classBuilder(className)
             .superclass(info.getBase().asType())

@@ -19,9 +19,11 @@ package io.dingodb.expr.runtime.op.mathematical;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.exception.ExprEvaluatingException;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,6 +48,10 @@ abstract class Round2Fun extends BinaryOp {
         return round(BigDecimal.valueOf(value), scale).longValue();
     }
 
+    static float round(float value, int scale) {
+        return round(BigDecimal.valueOf(value), scale).floatValue();
+    }
+
     static double round(double value, int scale) {
         return round(BigDecimal.valueOf(value), scale).doubleValue();
     }
@@ -64,19 +70,14 @@ abstract class Round2Fun extends BinaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+    public final @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
         return Types.INT.matches(type1) ? type0 : null;
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Type best = Types.bestType(types[0]);
-        if (best != null && best.isNumeric()) {
-            types[0] = best;
-            types[1] = Types.INT;
-            return types[0];
-        }
-        return null;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        types[1] = Types.INT;
+        return types[0];
     }
 
     @Override

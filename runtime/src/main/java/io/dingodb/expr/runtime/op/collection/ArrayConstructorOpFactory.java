@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;
@@ -51,7 +52,7 @@ public class ArrayConstructorOpFactory extends CollectionConstructorOpFactory {
     }
 
     @Override
-    public VariadicOp getOp(Object key) {
+    public VariadicOp getOp(OpKey key) {
         return key != null ? ArrayConstructorOpCreator.INSTANCE.visit((Type) key) : null;
     }
 

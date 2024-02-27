@@ -18,8 +18,6 @@ package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.UnaryNumericOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
@@ -48,11 +46,6 @@ abstract class AbsFun extends UnaryNumericOp {
 
     static @NonNull BigDecimal abs(@NonNull BigDecimal num) {
         return num.abs();
-    }
-
-    @Override
-    public Object keyOf(@NonNull Type type) {
-        return !type.equals(Types.NULL) ? type : Types.INT;
     }
 
     @Override

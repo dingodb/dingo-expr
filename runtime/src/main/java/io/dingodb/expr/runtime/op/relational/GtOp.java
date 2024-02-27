@@ -27,6 +27,8 @@ import java.sql.Timestamp;
 
 @Operators
 abstract class GtOp extends RelationalOp {
+    private static final long serialVersionUID = -743665850736586356L;
+
     static boolean gt(int value0, int value1) {
         return value0 > value1;
     }

@@ -16,24 +16,23 @@
 
 package io.dingodb.expr.runtime.op.mathematical;
 
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.Arrays;
-
 abstract class UnaryMathFun extends UnaryOp {
     private static final long serialVersionUID = -1844263286592402157L;
 
     @Override
-    public Type getType() {
+    public final Type getType() {
         return Types.DOUBLE;
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Arrays.fill(types, Types.DOUBLE);
-        return Types.DOUBLE;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_DOUBLE.bestKeyOf(types);
     }
 }

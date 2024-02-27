@@ -38,6 +38,11 @@ public final class BytesType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof BytesType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

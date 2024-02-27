@@ -48,9 +48,9 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
         return evalValue(values, config);
     }
 
-    public abstract Object keyOf(@NonNull Type @NonNull ... types);
+    public abstract OpKey keyOf(@NonNull Type @NonNull ... types);
 
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         return keyOf(types);
     }
 
@@ -83,7 +83,7 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
     }
 
     @Override
-    public VariadicOp getOp(Object key) {
+    public VariadicOp getOp(OpKey key) {
         return this;
     }
 

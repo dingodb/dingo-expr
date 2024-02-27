@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.BoolType;
 import io.dingodb.expr.runtime.type.BytesType;
@@ -61,7 +62,7 @@ public final class IndexListOp extends IndexOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return type;
     }
 

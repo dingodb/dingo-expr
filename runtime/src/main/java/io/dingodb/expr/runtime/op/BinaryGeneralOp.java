@@ -26,15 +26,16 @@ import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class BinaryGeneralOp extends BinaryOp {
+public final class BinaryGeneralOp extends BinaryOp {
     private static final long serialVersionUID = -664270463407354496L;
 
     private final BinaryOp op;
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+    public @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
         return null;
     }
 

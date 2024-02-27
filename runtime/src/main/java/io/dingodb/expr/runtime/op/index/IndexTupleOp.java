@@ -17,9 +17,8 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -42,12 +41,7 @@ public final class IndexTupleOp extends IndexOpFactory {
     }
 
     @Override
-    public Type getType() {
-        return Types.ANY;
-    }
-
-    @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return originalType;
     }
 }

@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.index;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.IndexOpExpr;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.CollectionType;
@@ -38,7 +39,7 @@ public class IndexOpFactory extends BinaryOp {
     private static final long serialVersionUID = 4166202157298784594L;
 
     @Override
-    public IndexOpFactory getOp(Object key) {
+    public IndexOpFactory getOp(OpKey key) {
         if (key != null) {
             if (key instanceof ArrayType) {
                 return IndexArrayOp.of((ArrayType) key);
@@ -64,7 +65,7 @@ public class IndexOpFactory extends BinaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
+    public OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
         if ((type0 instanceof CollectionType || type0 instanceof TupleType) && type1.equals(Types.INT)) {
             return type0;
         } else if (type0 instanceof MapType && type1 == ((MapType) type0).getKeyType()) {
@@ -74,7 +75,7 @@ public class IndexOpFactory extends BinaryOp {
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         if (types[0] instanceof CollectionType || types[0] instanceof TupleType) {
             types[1] = Types.INT;
             return types[0];

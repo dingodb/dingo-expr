@@ -24,6 +24,7 @@ import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class BinaryOp extends AbstractOp<BinaryOp> {
     private static final long serialVersionUID = -3432586934529603722L;
@@ -42,9 +43,11 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
         return evalValue(value0, value1, config);
     }
 
-    public abstract Object keyOf(@NonNull Type type0, @NonNull Type type1);
+    public @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
+        return OpKeys.DEFAULT.keyOf(type0, type1);
+    }
 
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         return keyOf(types[0], types[1]);
     }
 
@@ -75,7 +78,7 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
     }
 
     @Override
-    public BinaryOp getOp(Object key) {
+    public BinaryOp getOp(OpKey key) {
         return this;
     }
 

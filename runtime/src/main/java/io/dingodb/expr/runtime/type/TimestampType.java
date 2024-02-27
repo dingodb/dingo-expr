@@ -38,6 +38,11 @@ public final class TimestampType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof TimestampType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

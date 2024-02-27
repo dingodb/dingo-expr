@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.MapType;
 import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
@@ -46,7 +47,7 @@ public final class IndexMapOp extends IndexOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return originalType;
     }
 }

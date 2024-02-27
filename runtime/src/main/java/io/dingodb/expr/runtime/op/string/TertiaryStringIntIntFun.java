@@ -16,29 +16,23 @@
 
 package io.dingodb.expr.runtime.op.string;
 
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 abstract class TertiaryStringIntIntFun extends TertiaryOp {
     private static final long serialVersionUID = 8969966142892709405L;
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.INT.matches(type1) && Types.INT.matches(type2)) {
-            return Types.STRING;
-        }
-        return null;
+    public final @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
+        return OpKeys.STRING_INT_INT.keyOf(type0, type1, type2);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
-            types[1] = Types.INT;
-            types[2] = Types.INT;
-            return Types.STRING;
-        }
-        return null;
+    public final @Nullable OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.STRING_INT_INT.bestKeyOf(types);
     }
 }

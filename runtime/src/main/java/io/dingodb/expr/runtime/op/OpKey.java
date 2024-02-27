@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op;
 
-public interface OpFactory<E extends Op> {
-    E getOp(OpKey key);
+import java.io.Serializable;
+
+public interface OpKey extends Serializable {
 }

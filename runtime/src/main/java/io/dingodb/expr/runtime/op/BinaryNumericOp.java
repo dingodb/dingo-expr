@@ -17,26 +17,13 @@
 package io.dingodb.expr.runtime.op;
 
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.Arrays;
 
 public abstract class BinaryNumericOp extends BinaryOp {
     private static final long serialVersionUID = -3432586934529603722L;
 
     @Override
-    public final @Nullable Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (type0.equals(type1)) ? type0 : null;
-    }
-
-    @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Type best = Types.bestType(types[0], types[1]);
-        if (best != null) {
-            Arrays.fill(types, best);
-        }
-        return best;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.DEFAULT.bestKeyOf(types);
     }
 }

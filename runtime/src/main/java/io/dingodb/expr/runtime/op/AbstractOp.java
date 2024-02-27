@@ -64,7 +64,7 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
      *
      * @return null for an {@link OpFactory} or a general op, non-null value for a compiled {@link Op}
      */
-    public Object getKey() {
+    public OpKey getKey() {
         return null;
     }
 

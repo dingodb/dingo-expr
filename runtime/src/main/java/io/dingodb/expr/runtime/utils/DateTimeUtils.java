@@ -169,7 +169,7 @@ public final class DateTimeUtils {
         }
         throw new IllegalArgumentException(
             "Cannot parse date string \"" + value + "\", supported formats are "
-                + Arrays.toString(dateFormatters) + "."
+            + Arrays.toString(dateFormatters) + "."
         );
     }
 
@@ -200,7 +200,7 @@ public final class DateTimeUtils {
         }
         throw new IllegalArgumentException(
             "Cannot parse time string \"" + value + "\", supported formats are "
-                + Arrays.toString(timeFormatters) + "."
+            + Arrays.toString(timeFormatters) + "."
         );
     }
 
@@ -231,7 +231,7 @@ public final class DateTimeUtils {
         }
         throw new IllegalArgumentException(
             "Cannot parse timestamp string \"" + value + "\", supported formats are "
-                + Arrays.toString(timestampFormatters) + "."
+            + Arrays.toString(timestampFormatters) + "."
         );
     }
 
