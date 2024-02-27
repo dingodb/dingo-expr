@@ -50,8 +50,8 @@ public final class MapType implements Type {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof MapType
-            && keyType.equals(((MapType) obj).keyType)
-            && valueType.equals(((MapType) obj).valueType);
+               && keyType.equals(((MapType) obj).keyType)
+               && valueType.equals(((MapType) obj).valueType);
     }
 
     @Override

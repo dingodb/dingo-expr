@@ -61,9 +61,11 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         return evalValue(value0, value1, value2, config);
     }
 
-    public abstract Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2);
+    public OpKey keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
+        return OpKeys.DEFAULT.keyOf(type0, type1, type2);
+    }
 
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         return keyOf(types[0], types[1], types[2]);
     }
 
@@ -104,7 +106,7 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
     }
 
     @Override
-    public TertiaryOp getOp(Object key) {
+    public TertiaryOp getOp(OpKey key) {
         return this;
     }
 

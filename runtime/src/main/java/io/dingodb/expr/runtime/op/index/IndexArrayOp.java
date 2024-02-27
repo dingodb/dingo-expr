@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.index;
 
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;
 import io.dingodb.expr.runtime.type.BoolType;
@@ -64,7 +65,7 @@ public final class IndexArrayOp extends IndexOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return originalType;
     }
 

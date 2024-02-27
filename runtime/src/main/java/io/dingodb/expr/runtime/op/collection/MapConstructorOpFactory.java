@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.BoolType;
@@ -48,7 +49,7 @@ public class MapConstructorOpFactory extends CollectionConstructorOpFactory {
     }
 
     @Override
-    public VariadicOp getOp(Object key) {
+    public VariadicOp getOp(OpKey key) {
         if (key != null) {
             MapType type = (MapType) key;
             if (type.getKeyType().equals(Types.STRING) && type.getValueType().isScalar()) {
@@ -65,7 +66,7 @@ public class MapConstructorOpFactory extends CollectionConstructorOpFactory {
     }
 
     @Override
-    public Object keyOf(@NonNull Type @NonNull ... types) {
+    public OpKey keyOf(@NonNull Type @NonNull ... types) {
         int size = types.length;
         if (size == 0) {
             return Types.MAP_ANY_ANY;

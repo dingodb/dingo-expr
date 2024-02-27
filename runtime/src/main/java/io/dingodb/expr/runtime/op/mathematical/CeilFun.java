@@ -17,13 +17,14 @@
 package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Operators
-abstract class CeilFun extends UnaryMathFun {
+abstract class CeilFun extends UnaryNumericOp {
     public static final String NAME = "CEIL";
 
     private static final long serialVersionUID = -3077375964425561436L;
@@ -34,6 +35,10 @@ abstract class CeilFun extends UnaryMathFun {
 
     static long ceil(long value) {
         return value;
+    }
+
+    static float ceil(float value) {
+        return (float) Math.ceil(value);
     }
 
     static double ceil(double value) {

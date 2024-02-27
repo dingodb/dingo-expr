@@ -17,13 +17,13 @@
 package io.dingodb.expr.runtime.op.collection;
 
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.CollectionType;
 import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class SliceOpFactory extends BinaryOp {
     public static final SliceOpFactory INSTANCE = new SliceOpFactory();
@@ -32,30 +32,18 @@ public class SliceOpFactory extends BinaryOp {
     private static final long serialVersionUID = -7538757587959745023L;
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (type0 instanceof CollectionType) {
-            Type elementType = ((CollectionType) type0).getElementType();
-            if (elementType instanceof CollectionType || elementType instanceof TupleType) {
-                return type0;
-            }
-        }
-        return null;
+    public final @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
+        return Types.INT.matches(type1) ? type0 : null;
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (types[0] instanceof CollectionType) {
-            Type elementType = ((CollectionType) types[0]).getElementType();
-            if (elementType instanceof CollectionType || elementType instanceof TupleType) {
-                types[1] = Types.INT;
-                return types[0];
-            }
-        }
-        return null;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        types[1] = Types.INT;
+        return types[0];
     }
 
     @Override
-    public BinaryOp getOp(Object key) {
+    public BinaryOp getOp(OpKey key) {
         if (key != null) {
             if (key instanceof ArrayType) {
                 return SliceArrayOp.of((ArrayType) key);

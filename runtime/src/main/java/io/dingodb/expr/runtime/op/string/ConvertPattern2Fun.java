@@ -17,14 +17,11 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.op.BinaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.PatternUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-abstract class ConvertPattern2Fun extends BinaryOp {
+abstract class ConvertPattern2Fun extends BinaryStringStringFun {
     public static final String NAME = "$CP";
 
     private static final long serialVersionUID = -6535404891235746L;
@@ -36,13 +33,5 @@ abstract class ConvertPattern2Fun extends BinaryOp {
     @Override
     public @NonNull String getName() {
         return NAME;
-    }
-
-    @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (Types.STRING.matches(type0) && Types.STRING.matches(type1)) {
-            return Types.STRING;
-        }
-        return null;
     }
 }

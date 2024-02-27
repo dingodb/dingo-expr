@@ -26,9 +26,10 @@ import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class UnaryGeneralOp extends UnaryOp {
+public final class UnaryGeneralOp extends UnaryOp {
     private static final long serialVersionUID = 2593356748179461756L;
 
     private final UnaryOp op;
@@ -40,6 +41,11 @@ public class UnaryGeneralOp extends UnaryOp {
             throw new FailEvaluatingValues(this, value);
         }
         return expr.eval(null, config);
+    }
+
+    @Override
+    public @Nullable OpKey keyOf(@NonNull Type type) {
+        return null;
     }
 
     @Override

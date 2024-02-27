@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -29,6 +30,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class CaseFun extends VariadicOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type @NonNull ... types) {
+    public final @Nullable OpKey keyOf(@NonNull Type @NonNull ... types) {
         Type type = null;
         int len = types.length;
         if (len % 2 != 1) {
@@ -114,7 +116,7 @@ public class CaseFun extends VariadicOp {
     }
 
     @Override
-    public VariadicOp getOp(Object key) {
+    public VariadicOp getOp(OpKey key) {
         return key != null ? new CaseFun((Type) key) : null;
     }
 

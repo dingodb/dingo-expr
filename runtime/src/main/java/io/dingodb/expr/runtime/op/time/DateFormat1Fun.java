@@ -18,9 +18,10 @@ package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -42,8 +43,7 @@ abstract class DateFormat1Fun extends UnaryOp {
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        types[0] = Types.DATE;
-        return keyOf(Types.DATE);
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_DATE.bestKeyOf(types);
     }
 }

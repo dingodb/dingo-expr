@@ -20,6 +20,7 @@ import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -56,18 +57,13 @@ public class TestFunFactory {
         }
 
         @Override
-        public Object keyOf(@NonNull Type type) {
-            return type.equals(Types.STRING) ? Types.STRING.hashCode() : null;
-        }
-
-        @Override
         public Type getType() {
             return Types.STRING;
         }
 
         @Override
-        public UnaryOp getOp(Object key) {
-            return (key != null && key.equals(Types.STRING.hashCode())) ? INSTANCE : null;
+        public UnaryOp getOp(OpKey key) {
+            return (key != null && key.equals(Types.STRING)) ? INSTANCE : null;
         }
     }
 }

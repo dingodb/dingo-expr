@@ -17,24 +17,22 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 abstract class BinaryStringIntFun extends BinaryOp {
     private static final long serialVersionUID = 3079348353670203351L;
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return (Types.STRING.matches(type0) && Types.INT.matches(type1)) ? Types.STRING : null;
+    public final @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
+        return OpKeys.STRING_INT.keyOf(type0, type1);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0])) {
-            types[1] = Types.INT;
-            return Types.STRING;
-        }
-        return null;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.STRING_INT.bestKeyOf(types);
     }
 }

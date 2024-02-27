@@ -18,11 +18,10 @@ package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.Arrays;
 
 @Operators
 abstract class PowFun extends BinaryOp {
@@ -40,16 +39,7 @@ abstract class PowFun extends BinaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        if (Types.DOUBLE.matches(type0) && Types.DOUBLE.matches(type1)) {
-            return Types.DOUBLE;
-        }
-        return null;
-    }
-
-    @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Arrays.fill(types, Types.DOUBLE);
-        return Types.DOUBLE;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_DOUBLE.bestKeyOf(types);
     }
 }

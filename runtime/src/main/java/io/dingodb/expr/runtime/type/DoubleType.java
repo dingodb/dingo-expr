@@ -43,6 +43,11 @@ public final class DoubleType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof DoubleType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.cast.CastOp;
 import io.dingodb.expr.runtime.type.ArrayType;
@@ -36,7 +37,7 @@ public class CastArrayOpFactory extends CastCollectionOpFactory {
     public CastArrayOpFactory(CastOp castOp) {
         super(castOp);
         type = Types.array(castOp.getType());
-        Object k = castOp.getKey();
+        OpKey k = castOp.getKey();
         key = (k != null ? Types.array((Type) k) : null);
     }
 
@@ -46,7 +47,7 @@ public class CastArrayOpFactory extends CastCollectionOpFactory {
     }
 
     @Override
-    public UnaryOp getOp(Object key) {
+    public UnaryOp getOp(OpKey key) {
         if (key instanceof ArrayType) {
             return new CastArrayArrayOp(getCastOp((ArrayType) key));
         } else if (key instanceof ListType) {

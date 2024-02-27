@@ -17,28 +17,22 @@
 package io.dingodb.expr.runtime.op.logical;
 
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.Arrays;
 
 abstract class LogicalOp extends BinaryOp {
     private static final long serialVersionUID = -5778606762979793469L;
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return Types.BOOL.matches(type0) && Types.BOOL.matches(type1) ? Types.BOOL : null;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_BOOL.bestKeyOf(types);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        Arrays.fill(types, Types.BOOL);
-        return Types.BOOL;
-    }
-
-    @Override
-    public BinaryOp getOp(Object key) {
+    public BinaryOp getOp(OpKey key) {
         return (key != null && key.equals(Types.BOOL)) ? this : null;
     }
 

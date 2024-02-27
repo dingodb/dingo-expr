@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -27,7 +28,7 @@ abstract class CollectionConstructorOpFactory extends VariadicOp {
     private static final long serialVersionUID = -5648876774812972099L;
 
     @Override
-    public Object keyOf(@NonNull Type @NonNull ... types) {
+    public OpKey keyOf(@NonNull Type @NonNull ... types) {
         long c = Arrays.stream(types).distinct().count();
         if (c == 1) {
             return types[0];
@@ -38,7 +39,7 @@ abstract class CollectionConstructorOpFactory extends VariadicOp {
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         Type best = Types.bestType(types);
         if (best != null) {
             Arrays.fill(types, best);

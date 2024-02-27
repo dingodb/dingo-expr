@@ -17,13 +17,14 @@
 package io.dingodb.expr.runtime.op.mathematical;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.UnaryNumericOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Operators
-abstract class FloorFun extends UnaryMathFun {
+abstract class FloorFun extends UnaryNumericOp {
     public static final String NAME = "FLOOR";
 
     private static final long serialVersionUID = -3433872871753770106L;
@@ -34,6 +35,10 @@ abstract class FloorFun extends UnaryMathFun {
 
     static long floor(long value) {
         return value;
+    }
+
+    static float floor(float value) {
+        return (float) Math.floor(value);
     }
 
     static double floor(double value) {

@@ -18,8 +18,6 @@ package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.TertiaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
@@ -35,13 +33,5 @@ abstract class ReplaceFun extends TertiaryOp {
     @Override
     public @NonNull String getName() {
         return NAME;
-    }
-
-    @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.STRING.matches(type1) && Types.STRING.matches(type2)) {
-            return Types.STRING;
-        }
-        return null;
     }
 }

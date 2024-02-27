@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.collection;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.ListType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -52,7 +53,7 @@ public final class ListConstructorOp extends ListConstructorOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return type.getElementType();
     }
 }

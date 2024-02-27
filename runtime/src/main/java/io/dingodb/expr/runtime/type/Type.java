@@ -16,9 +16,10 @@
 
 package io.dingodb.expr.runtime.type;
 
+import io.dingodb.expr.runtime.op.OpKey;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface Type {
+public interface Type extends OpKey {
     int NOT_NUMERIC = 100;
 
     boolean isScalar();

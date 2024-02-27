@@ -17,10 +17,11 @@
 package io.dingodb.expr.runtime.op.logical;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
@@ -37,16 +38,7 @@ abstract class NotOp extends UnaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type) {
-        if (Types.BOOL.matches(type)) {
-            return Types.BOOL;
-        }
-        return null;
-    }
-
-    @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        types[0] = Types.BOOL;
-        return Types.BOOL;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_BOOL.bestKeyOf(types);
     }
 }

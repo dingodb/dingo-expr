@@ -21,6 +21,7 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.ExprEvaluatingException;
 import io.dingodb.expr.runtime.exception.NullElementsNotAllowed;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.MapType;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -61,7 +62,7 @@ public final class MapConstructorOp extends MapConstructorOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return type;
     }
 }

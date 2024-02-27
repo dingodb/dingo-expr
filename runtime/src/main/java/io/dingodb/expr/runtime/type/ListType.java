@@ -40,7 +40,7 @@ public final class ListType extends CollectionType {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof ListType
-            && elementType.equals(((ListType) obj).elementType);
+               && elementType.equals(((ListType) obj).elementType);
     }
 
     @Override

@@ -20,6 +20,7 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Val;
+import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.type.CollectionType;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
@@ -51,7 +52,7 @@ abstract class SliceOp extends SliceOpFactory {
     }
 
     @Override
-    public Object getKey() {
+    public OpKey getKey() {
         return originalType;
     }
 

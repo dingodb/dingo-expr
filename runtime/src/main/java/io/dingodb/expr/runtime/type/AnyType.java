@@ -43,6 +43,11 @@ public final class AnyType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof AnyType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

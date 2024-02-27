@@ -36,7 +36,7 @@ public abstract class NullaryOp extends AbstractOp<NullaryOp> {
     }
 
     @Override
-    public NullaryOp getOp(Object key) {
+    public NullaryOp getOp(OpKey key) {
         return this;
     }
 

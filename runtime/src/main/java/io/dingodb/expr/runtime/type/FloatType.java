@@ -43,6 +43,11 @@ public final class FloatType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof FloatType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

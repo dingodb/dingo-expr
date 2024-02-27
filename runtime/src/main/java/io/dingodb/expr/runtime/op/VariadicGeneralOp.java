@@ -26,15 +26,16 @@ import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class VariadicGeneralOp extends VariadicOp {
+public final class VariadicGeneralOp extends VariadicOp {
     private static final long serialVersionUID = -1023165365948123356L;
 
     private final VariadicOp op;
 
     @Override
-    public Object keyOf(@NonNull Type @NonNull ... types) {
+    public @Nullable OpKey keyOf(@NonNull Type @NonNull ... types) {
         return null;
     }
 

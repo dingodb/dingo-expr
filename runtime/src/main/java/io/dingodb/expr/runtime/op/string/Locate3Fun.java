@@ -17,9 +17,10 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
@@ -38,19 +39,12 @@ abstract class Locate3Fun extends TertiaryOp {
     }
 
     @Override
-    public Object keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
-        if (Types.STRING.matches(type0) && Types.STRING.matches(type1) && Types.INT.matches(type2)) {
-            return Types.STRING;
-        }
-        return null;
+    public final OpKey keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
+        return OpKeys.STRING_STRING_INT.keyOf(type0, type1, type2);
     }
 
     @Override
-    public Object bestKeyOf(@NonNull Type @NonNull [] types) {
-        if (Types.STRING.matches(types[0]) && Types.STRING.matches(types[1])) {
-            types[2] = Types.INT;
-            return Types.STRING;
-        }
-        return null;
+    public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.STRING_STRING_INT.bestKeyOf(types);
     }
 }

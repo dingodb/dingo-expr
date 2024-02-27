@@ -44,6 +44,11 @@ public class NullType extends ScalarType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NullType;
+    }
+
+    @Override
     public String toString() {
         return NAME;
     }

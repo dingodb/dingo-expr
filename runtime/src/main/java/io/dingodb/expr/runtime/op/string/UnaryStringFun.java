@@ -16,19 +16,17 @@
 
 package io.dingodb.expr.runtime.op.string;
 
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 abstract class UnaryStringFun extends UnaryOp {
     private static final long serialVersionUID = 5761679834072680839L;
 
     @Override
-    public Object keyOf(@NonNull Type type) {
-        if (Types.STRING.matches(type)) {
-            return Types.STRING;
-        }
-        return null;
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.ALL_STRING.bestKeyOf(types);
     }
 }
