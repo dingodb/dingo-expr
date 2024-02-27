@@ -64,6 +64,14 @@ public class BinaryOpExpr implements OpExpr {
     }
 
     @Override
+    public @NonNull String toDebugString() {
+        return op.getClass().getSimpleName()
+               + "[" + op.getName() + "]"
+               + "(" + operand0.toDebugString()
+               + ", " + operand1.toDebugString() + ")";
+    }
+
+    @Override
     public String toString() {
         OpType opType = op.getOpType();
         if (opType.getSymbol().equals(OpSymbol.FUN)) {

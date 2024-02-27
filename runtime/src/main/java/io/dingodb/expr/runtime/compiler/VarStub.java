@@ -56,6 +56,11 @@ public class VarStub implements Expr {
         throw new NeverRunHere();
     }
 
+    @Override
+    public @NonNull String toDebugString() {
+        return getClass().getSimpleName() + "[" + context + "]";
+    }
+
     public Expr getElement(Object index) {
         CompileContext child = context.getChild(index);
         if (child != null) {

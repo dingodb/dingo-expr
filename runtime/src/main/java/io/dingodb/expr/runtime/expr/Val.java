@@ -118,6 +118,11 @@ public final class Val implements Expr {
     }
 
     @Override
+    public @NonNull String toDebugString() {
+        return getClass().getSimpleName() + "[" + getValue() + ", " + type + "]";
+    }
+
+    @Override
     public String toString() {
         Expr expr = ExprCompiler.SIMPLE.visit(this);
         return smartToString(expr.eval());

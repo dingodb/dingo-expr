@@ -66,6 +66,15 @@ public final class TertiaryOpExpr implements OpExpr {
     }
 
     @Override
+    public @NonNull String toDebugString() {
+        return op.getClass().getSimpleName()
+               + "[" + op.getName() + "]"
+               + "(" + operand0.toDebugString()
+               + ", " + operand1.toDebugString()
+               + ", " + operand2.toDebugString() + ")";
+    }
+
+    @Override
     public @NonNull String toString() {
         OpType opType = op.getOpType();
         assert opType.getSymbol().equals(OpSymbol.FUN);

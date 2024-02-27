@@ -65,6 +65,15 @@ public final class VariadicOpExpr implements OpExpr {
     }
 
     @Override
+    public @NonNull String toDebugString() {
+        return op.getClass().getSimpleName()
+               + "[" + op.getName() + "]"
+               + "(" + Arrays.stream(operands)
+                   .map(Expr::toDebugString)
+                   .collect(Collectors.joining(", ")) + ")";
+    }
+
+    @Override
     public @NonNull String toString() {
         OpType opType = op.getOpType();
         assert opType.getSymbol().equals(OpSymbol.FUN);

@@ -25,9 +25,11 @@ import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.expr.Expr;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+@Slf4j
 @EqualsAndHashCode(callSuper = true, of = {"filter"})
 public final class FilterOp extends AbstractRelOp implements PipeOp {
     public static final String NAME = "FILTER";
@@ -52,6 +54,9 @@ public final class FilterOp extends AbstractRelOp implements PipeOp {
     public void compile(TupleCompileContext context, @NonNull RelConfig config) {
         super.compile(context, config);
         ExprCompiler compiler = config.getExprCompiler();
+        if (log.isTraceEnabled()) {
+            log.trace("filter = \"{}\".", filter.toDebugString());
+        }
         filter = compiler.visit(filter, context);
         type = context.getType();
     }

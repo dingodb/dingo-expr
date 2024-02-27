@@ -54,6 +54,11 @@ public class Var implements Expr {
         return visitor.visitVar(this, obj);
     }
 
+    @Override
+    public @NonNull String toDebugString() {
+        return getClass().getSimpleName() + "[" + getId() + ", " + type + "]";
+    }
+
     /**
      * Set the value of this variable in a specified EvalContext.
      *
