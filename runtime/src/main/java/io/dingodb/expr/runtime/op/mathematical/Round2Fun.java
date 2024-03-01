@@ -77,6 +77,9 @@ abstract class Round2Fun extends BinaryOp {
     @Override
     public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
         types[1] = Types.INT;
+        if (Types.BOOL.matches(types[0])) {
+            types[0] = Types.INT;
+        }
         return types[0];
     }
 
