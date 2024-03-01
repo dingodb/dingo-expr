@@ -17,6 +17,7 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.PipeOp;
+import io.dingodb.expr.rel.RelOp;
 import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TandemOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -34,5 +35,10 @@ final class TandemSourcePipeOp extends TandemOp implements SourceOp {
     @Override
     public @NonNull Stream<Object[]> get() {
         return ((SourceOp) input).get().map(((PipeOp) output)::put).filter(Objects::nonNull);
+    }
+
+    @Override
+    protected @NonNull TandemSourcePipeOp make(RelOp input, RelOp output) {
+        return new TandemSourcePipeOp((SourceOp) input, (PipeOp) output);
     }
 }

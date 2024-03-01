@@ -80,7 +80,7 @@ public class TestRelOpCoder {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void test(@NonNull RelOp op, TupleType type, String code) {
-        op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
+        op = op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         RelOpCoder.INSTANCE.visit(op, os);
         assertThat(os.toByteArray()).isEqualTo(CodecUtils.hexStringToBytes(code));

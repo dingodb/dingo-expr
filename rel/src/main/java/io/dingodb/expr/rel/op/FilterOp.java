@@ -22,7 +22,10 @@ import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +40,19 @@ public final class FilterOp extends AbstractRelOp implements PipeOp {
     private static final long serialVersionUID = 2278831820076088621L;
 
     @Getter
-    private Expr filter;
+    private final Expr filter;
 
     public FilterOp(Expr filter) {
+        this(null, null, null, filter);
+    }
+
+    private FilterOp(
+        TupleType type,
+        TupleEvalContext evalContext,
+        ExprConfig exprConfig,
+        Expr filter
+    ) {
+        super(type, evalContext, exprConfig);
         this.filter = filter;
     }
 
@@ -51,14 +64,18 @@ public final class FilterOp extends AbstractRelOp implements PipeOp {
     }
 
     @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        super.compile(context, config);
+    public @NonNull FilterOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
         ExprCompiler compiler = config.getExprCompiler();
         if (log.isTraceEnabled()) {
             log.trace("filter = \"{}\".", filter.toDebugString());
         }
-        filter = compiler.visit(filter, context);
-        type = context.getType();
+        Expr compiledFilter = compiler.visit(filter, context);
+        return new FilterOp(
+            context.getType(),
+            config.getEvalContext(),
+            compiler.getConfig(),
+            compiledFilter
+        );
     }
 
     @Override

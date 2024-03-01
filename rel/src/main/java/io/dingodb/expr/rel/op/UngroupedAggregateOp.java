@@ -16,11 +16,16 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.CacheSupplier;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
+import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.AggExpr;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -36,13 +41,26 @@ public final class UngroupedAggregateOp extends AggregateOp {
     private transient Object[] vars;
 
     public UngroupedAggregateOp(List<Expr> aggList) {
-        super(aggList);
+        this(null, null, null, aggList, null);
+    }
+
+    private UngroupedAggregateOp(
+        TupleType type,
+        TupleEvalContext evalContext,
+        ExprConfig exprConfig,
+        List<Expr> aggList,
+        CacheSupplier cacheSupplier
+    ) {
+        super(type, evalContext, exprConfig, aggList, cacheSupplier);
+        vars = null;
     }
 
     @Override
     public void put(Object @NonNull [] tuple) {
+        assert cacheSupplier != null
+            : "Cache not initialized, call `this.setCache` first.";
         if (vars == null) {
-            vars = new Object[aggList.size()];
+            vars = cacheSupplier.item(aggList.size());
         }
         evalContext.setTuple(tuple);
         for (int i = 0; i < vars.length; ++i) {
@@ -69,9 +87,17 @@ public final class UngroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        super.compile(context, config);
-        this.type = Types.tuple(aggList.stream().map(Expr::getType).toArray(Type[]::new));
+    public @NonNull UngroupedAggregateOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
+        ExprCompiler compiler = config.getExprCompiler();
+        List<Expr> compiledAggList = compileAggList(context, compiler);
+        TupleType newType = Types.tuple(aggList.stream().map(Expr::getType).toArray(Type[]::new));
+        return new UngroupedAggregateOp(
+            newType,
+            config.getEvalContext(),
+            compiler.getConfig(),
+            compiledAggList,
+            config.getCacheSupplier()
+        );
     }
 
     @Override

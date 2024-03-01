@@ -17,6 +17,7 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.PipeOp;
+import io.dingodb.expr.rel.RelOp;
 import io.dingodb.expr.rel.TandemOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -32,5 +33,10 @@ public final class TandemPipePipeOp extends TandemOp implements PipeOp {
     public Object @Nullable [] put(Object @NonNull [] tuple) {
         Object[] inter = ((PipeOp) input).put(tuple);
         return inter != null ? ((PipeOp) output).put(inter) : null;
+    }
+
+    @Override
+    protected @NonNull TandemPipePipeOp make(RelOp input, RelOp output) {
+        return new TandemPipePipeOp((PipeOp) input, (PipeOp) output);
     }
 }

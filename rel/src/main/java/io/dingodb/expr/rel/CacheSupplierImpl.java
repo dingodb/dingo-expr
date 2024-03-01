@@ -16,22 +16,22 @@
 
 package io.dingodb.expr.rel;
 
-import io.dingodb.expr.runtime.type.TupleType;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import java.io.Serializable;
+public class CacheSupplierImpl implements CacheSupplier {
+    public static CacheSupplierImpl INSTANCE = new CacheSupplierImpl();
 
-public interface RelOp extends Serializable {
-    /**
-     * Return a new {@link RelOp} with expression compiled, and cache initialized (for {@link CacheOp}).
-     *
-     * @param context the compile context
-     * @param config  the config
-     * @return the new {@link RelOp}
-     */
-    @NonNull RelOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config);
+    private CacheSupplierImpl() {
+    }
 
-    TupleType getType();
+    @Override
+    public Map<TupleKey, Object[]> cache() {
+        return new ConcurrentHashMap<>();
+    }
 
-    <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj);
+    @Override
+    public Object[] item(int size) {
+        return new Object[size];
+    }
 }
