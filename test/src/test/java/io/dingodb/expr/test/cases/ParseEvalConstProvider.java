@@ -187,6 +187,10 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("floor(12.3)", BigDecimal.valueOf(12)),
             arguments("round(null)", null),
             arguments("round(3.2)", BigDecimal.valueOf(3)),
+            arguments("round(12.35, 1)", BigDecimal.valueOf(12.4)),
+            arguments("round(null, 1)", null),
+            arguments("round(null, null)", null),
+            arguments("round(12.35, null)", null),
 
             // Strings
             arguments("\"Alice\" + 'Bob'", "AliceBob"),
