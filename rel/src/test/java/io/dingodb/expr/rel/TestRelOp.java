@@ -48,7 +48,7 @@ public class TestRelOp {
 
     private static Object @NonNull [][] valueOf(TupleType type, String... csvLines) {
         SourceOp op = RelOpBuilder.builder().values(csvLines).build();
-        op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
+        op = (SourceOp) op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         return op.get().toArray(Object[][]::new);
     }
 
@@ -100,7 +100,7 @@ public class TestRelOp {
     @ParameterizedTest
     @MethodSource("getParameters")
     public void test(@NonNull SourceOp op, TupleType type, @NonNull Object[][] result) {
-        op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
+        op = (SourceOp) op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         assertThat(op.get()).containsExactlyInAnyOrder(result);
     }
 }

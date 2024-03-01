@@ -16,24 +16,27 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.rel.CacheSupplier;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
 import io.dingodb.expr.rel.TupleCompileContext;
+import io.dingodb.expr.rel.TupleKey;
 import io.dingodb.expr.rel.utils.ArrayUtils;
+import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.AggExpr;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @EqualsAndHashCode(callSuper = true, of = {"groupIndices"})
@@ -45,18 +48,31 @@ public final class GroupedAggregateOp extends AggregateOp {
     @Getter
     private final int[] groupIndices;
 
-    private final Map<TupleKey, Object[]> cache;
+    private final transient Map<TupleKey, Object[]> cache;
 
     public GroupedAggregateOp(int @NonNull [] groupIndices, List<Expr> aggList) {
-        super(aggList);
+        this(null, null, null, groupIndices, aggList, null);
+    }
+
+    private GroupedAggregateOp(
+        TupleType type,
+        TupleEvalContext evalContext,
+        ExprConfig exprConfig,
+        int @NonNull [] groupIndices,
+        List<Expr> aggList,
+        CacheSupplier cacheSupplier
+    ) {
+        super(type, evalContext, exprConfig, aggList, cacheSupplier);
         this.groupIndices = groupIndices;
-        this.cache = new ConcurrentHashMap<>();
+        cache = cacheSupplier != null ? cacheSupplier.cache() : null;
     }
 
     @Override
     public void put(Object @NonNull [] tuple) {
+        assert cacheSupplier != null && cache != null
+            : "Cache not initialized, call `this.setCache` first.";
         Object[] keyTuple = ArrayUtils.map(tuple, groupIndices);
-        Object[] vars = cache.computeIfAbsent(new TupleKey(keyTuple), k -> new Object[aggList.size()]);
+        Object[] vars = cache.computeIfAbsent(new TupleKey(keyTuple), k -> cacheSupplier.item(aggList.size()));
         evalContext.setTuple(tuple);
         for (int i = 0; i < vars.length; ++i) {
             AggExpr aggExpr = (AggExpr) aggList.get(i);
@@ -76,13 +92,22 @@ public final class GroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        super.compile(context, config);
-        this.type = Types.tuple(
+    public @NonNull GroupedAggregateOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
+        ExprCompiler compiler = config.getExprCompiler();
+        List<Expr> compiledAggList = compileAggList(context, compiler);
+        TupleType newType = Types.tuple(
             ArrayUtils.concat(
                 ArrayUtils.map(context.getType().getTypes(), groupIndices),
-                aggList.stream().map(Expr::getType).toArray(Type[]::new)
+                compiledAggList.stream().map(Expr::getType).toArray(Type[]::new)
             )
+        );
+        return new GroupedAggregateOp(
+            newType,
+            config.getEvalContext(),
+            compiler.getConfig(),
+            groupIndices,
+            compiledAggList,
+            config.getCacheSupplier()
         );
     }
 
@@ -94,27 +119,5 @@ public final class GroupedAggregateOp extends AggregateOp {
     @Override
     public @NonNull String toString() {
         return NAME + ": " + Arrays.toString(groupIndices) + aggList.toString();
-    }
-
-    /**
-     * Wrap tuples to provide hash and equals.
-     */
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-    public static class TupleKey {
-        @Getter
-        private final Object[] tuple;
-
-        @Override
-        public int hashCode() {
-            return Arrays.hashCode(tuple);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof TupleKey) {
-                return Arrays.equals(this.tuple, ((TupleKey) obj).tuple);
-            }
-            return false;
-        }
     }
 }

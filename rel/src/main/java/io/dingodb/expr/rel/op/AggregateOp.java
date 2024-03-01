@@ -18,19 +18,20 @@ package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.AbstractRelOp;
 import io.dingodb.expr.rel.CacheOp;
-import io.dingodb.expr.rel.RelConfig;
+import io.dingodb.expr.rel.CacheSupplier;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
-import lombok.AccessLevel;
+import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, of = {"aggList"})
 abstract class AggregateOp extends AbstractRelOp implements CacheOp {
     private static final long serialVersionUID = 7414468955475481236L;
@@ -38,10 +39,21 @@ abstract class AggregateOp extends AbstractRelOp implements CacheOp {
     @Getter
     protected final List<Expr> aggList;
 
-    @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        super.compile(context, config);
-        ExprCompiler compiler = config.getExprCompiler();
-        aggList.replaceAll(agg -> compiler.visit(agg, context));
+    protected final transient CacheSupplier cacheSupplier;
+
+    protected AggregateOp(
+        TupleType type,
+        TupleEvalContext evalContext,
+        ExprConfig exprConfig,
+        List<Expr> aggList,
+        CacheSupplier cacheSupplier
+    ) {
+        super(type, evalContext, exprConfig);
+        this.aggList = aggList;
+        this.cacheSupplier = cacheSupplier;
+    }
+
+    protected List<Expr> compileAggList(TupleCompileContext context, @NonNull ExprCompiler compiler) {
+        return aggList.stream().map(agg -> compiler.visit(agg, context)).collect(Collectors.toList());
     }
 }

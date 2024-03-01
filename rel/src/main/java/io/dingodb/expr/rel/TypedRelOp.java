@@ -16,25 +16,18 @@
 
 package io.dingodb.expr.rel;
 
-import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@EqualsAndHashCode(callSuper = true)
-public abstract class AbstractRelOp extends TypedRelOp {
-    private static final long serialVersionUID = -7066415039209226040L;
+@EqualsAndHashCode(of = "type")
+public abstract class TypedRelOp implements RelOp {
+    private static final long serialVersionUID = 4973470345659345867L;
 
-    protected final transient TupleEvalContext evalContext;
-    protected final transient ExprConfig exprConfig;
+    @Getter
+    protected final transient TupleType type;
 
-    protected AbstractRelOp(
-        TupleType type,
-        TupleEvalContext evalContext,
-        ExprConfig exprConfig
-    ) {
-        super(type);
-        this.evalContext = evalContext;
-        this.exprConfig = exprConfig;
+    protected TypedRelOp(TupleType type) {
+        this.type = type;
     }
 }

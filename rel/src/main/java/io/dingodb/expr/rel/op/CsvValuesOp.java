@@ -18,10 +18,11 @@ package io.dingodb.expr.rel.op;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import io.dingodb.expr.json.runtime.Parser;
-import io.dingodb.expr.rel.AbstractRelOp;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TupleCompileContext;
+import io.dingodb.expr.rel.TypedRelOp;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.collection.ArrayBuilder;
 import io.dingodb.expr.runtime.type.AnyType;
 import io.dingodb.expr.runtime.type.ArrayType;
@@ -58,19 +59,27 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-final class CsvValuesOp extends AbstractRelOp implements SourceOp {
+final class CsvValuesOp extends TypedRelOp implements SourceOp {
     public static final String NAME = "CSV";
 
     private static final long serialVersionUID = -5211569722280014209L;
 
     private final InputStream csvFile;
 
+    private final transient ExprConfig exprConfig;
+
     CsvValuesOp(InputStream csvFile) {
-        this.csvFile = csvFile;
+        this(null, null, csvFile);
     }
 
     CsvValuesOp(String... csvLines) {
-        this.csvFile = IOUtils.toInputStream(String.join("\n", csvLines), StandardCharsets.UTF_8);
+        this(null, null, IOUtils.toInputStream(String.join("\n", csvLines), StandardCharsets.UTF_8));
+    }
+
+    private CsvValuesOp(TupleType type, ExprConfig exprConfig, InputStream csvFile) {
+        super(type);
+        this.exprConfig = exprConfig;
+        this.csvFile = csvFile;
     }
 
     @Override
@@ -86,9 +95,8 @@ final class CsvValuesOp extends AbstractRelOp implements SourceOp {
     }
 
     @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        type = context.getType();
-        exprConfig = config.getExprCompiler().getConfig();
+    public @NonNull CsvValuesOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
+        return new CsvValuesOp(context.getType(), config.getExprCompiler().getConfig(), csvFile);
     }
 
     @Override

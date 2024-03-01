@@ -21,7 +21,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class TupleEvalContextImpl implements TupleEvalContext {
     private static final long serialVersionUID = -1735756800219588237L;
 
-    private Object[] tuple;
+    private final ThreadLocal<Object[]> threadLocalTuple = new ThreadLocal<>();
 
     /**
      * Create a {@link TupleEvalContextImpl}.
@@ -31,6 +31,10 @@ public class TupleEvalContextImpl implements TupleEvalContext {
 
     @Override
     public String toString() {
+        Object[] tuple = threadLocalTuple.get();
+        if (tuple == null) {
+            return "(null)";
+        }
         if (tuple.length == 0) {
             return "(empty)";
         }
@@ -49,16 +53,16 @@ public class TupleEvalContextImpl implements TupleEvalContext {
 
     @Override
     public Object get(Object id) {
-        return tuple[(int) id];
+        return threadLocalTuple.get()[(int) id];
     }
 
     @Override
     public void set(Object id, Object value) {
-        tuple[(int) id] = value;
+        threadLocalTuple.get()[(int) id] = value;
     }
 
     @Override
     public void setTuple(Object @NonNull [] tuple) {
-        this.tuple = tuple;
+        threadLocalTuple.set(tuple);
     }
 }

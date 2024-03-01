@@ -17,6 +17,7 @@
 package io.dingodb.expr.rel.op;
 
 import io.dingodb.expr.rel.CacheOp;
+import io.dingodb.expr.rel.RelOp;
 import io.dingodb.expr.rel.TandemOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -44,5 +45,10 @@ public final class TandemCacheCacheOp extends TandemOp implements CacheOp {
     public void clear() {
         ((CacheOp) output).clear();
         ((CacheOp) input).clear();
+    }
+
+    @Override
+    protected @NonNull TandemCacheCacheOp make(RelOp input, RelOp output) {
+        return new TandemCacheCacheOp((CacheOp) input, (CacheOp) output);
     }
 }

@@ -16,22 +16,30 @@
 
 package io.dingodb.expr.rel;
 
-import io.dingodb.expr.runtime.type.TupleType;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.io.Serializable;
+import java.util.Arrays;
 
-public interface RelOp extends Serializable {
-    /**
-     * Return a new {@link RelOp} with expression compiled, and cache initialized (for {@link CacheOp}).
-     *
-     * @param context the compile context
-     * @param config  the config
-     * @return the new {@link RelOp}
-     */
-    @NonNull RelOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config);
+/**
+ * Wrap tuples to provide hash and equals.
+ */
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
+public class TupleKey {
+    @Getter
+    private final Object[] tuple;
 
-    TupleType getType();
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(tuple);
+    }
 
-    <R, T> R accept(@NonNull RelOpVisitor<R, T> visitor, T obj);
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TupleKey) {
+            return Arrays.equals(this.tuple, ((TupleKey) obj).tuple);
+        }
+        return false;
+    }
 }

@@ -33,7 +33,16 @@ public interface RelConfig {
         return ExprCompiler.ADVANCED;
     }
 
+    /**
+     * Create new {@link TupleEvalContext} for a relational operator.
+     *
+     * @return the new {@link TupleEvalContext}
+     */
     default TupleEvalContext getEvalContext() {
         return new TupleEvalContextImpl();
+    }
+
+    default CacheSupplier getCacheSupplier() {
+        return CacheSupplierImpl.INSTANCE;
     }
 }

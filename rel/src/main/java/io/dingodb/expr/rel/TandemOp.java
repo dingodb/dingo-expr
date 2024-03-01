@@ -33,10 +33,13 @@ public abstract class TandemOp implements RelOp {
     @Getter
     protected final RelOp output;
 
+    protected abstract TandemOp make(RelOp input, RelOp output);
+
     @Override
-    public void compile(TupleCompileContext context, @NonNull RelConfig config) {
-        input.compile(context, config);
-        output.compile(context.withType(input.getType()), config);
+    public @NonNull TandemOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
+        RelOp newInput = input.compile(context, config);
+        RelOp newOutput = output.compile(context.withType(newInput.getType()), config);
+        return make(newInput, newOutput);
     }
 
     @Override

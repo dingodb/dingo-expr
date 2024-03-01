@@ -19,24 +19,26 @@ package io.dingodb.expr.rel.op;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TupleCompileContext;
+import io.dingodb.expr.rel.TypedRelOp;
 import io.dingodb.expr.runtime.type.TupleType;
-import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
 import java.util.stream.Stream;
 
-final class ValuesOp implements SourceOp {
+final class ValuesOp extends TypedRelOp implements SourceOp {
     public static final String NAME = "VALUE";
 
     private static final long serialVersionUID = -6015415126811940690L;
 
     private final List<Object @NonNull []> values;
 
-    @Getter
-    private TupleType type;
-
     ValuesOp(List<Object @NonNull []> values) {
+        this(null, values);
+    }
+
+    private ValuesOp(TupleType type, List<Object @NonNull []> values) {
+        super(type);
         this.values = values;
     }
 
@@ -46,8 +48,8 @@ final class ValuesOp implements SourceOp {
     }
 
     @Override
-    public void compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
-        type = context.getType();
+    public @NonNull ValuesOp compile(@NonNull TupleCompileContext context, @NonNull RelConfig config) {
+        return new ValuesOp(context.getType(), values);
     }
 
     @Override
