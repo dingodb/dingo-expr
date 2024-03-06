@@ -16,8 +16,8 @@
 
 package io.dingodb.expr.rel;
 
-import com.google.common.collect.ImmutableList;
 import io.dingodb.expr.parser.exception.ExprParseException;
+import io.dingodb.expr.rel.op.AggregateOp;
 import io.dingodb.expr.rel.op.RelOpBuilder;
 import io.dingodb.expr.rel.op.RelOpStringBuilder;
 import io.dingodb.expr.runtime.type.TupleType;
@@ -28,6 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +49,7 @@ public class TestRelOp {
 
     private static final TupleType TYPE = Types.tuple("INT", "STRING", "FLOAT");
 
-    private static Object @NonNull [][] valueOf(TupleType type, String... csvLines) {
+    private static Object @NonNull [][] valuesOf(TupleType type, String... csvLines) {
         SourceOp op = RelOpBuilder.builder().values(csvLines).build();
         op = (SourceOp) op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         return op.get().toArray(Object[][]::new);
@@ -63,7 +64,7 @@ public class TestRelOp {
                     .project("$[0]", "$[1]", "$[2] / 10")
                     .build(),
                 TYPE,
-                valueOf(
+                valuesOf(
                     TYPE,
                     "6, Alice, 6.0",
                     "7, Betty, 7.0",
@@ -87,7 +88,7 @@ public class TestRelOp {
                     .agg(new int[]{1}, "COUNT()", "SUM($[2])", "MIN($[2])", "MAX($[2])")
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
-                valueOf(
+                valuesOf(
                     Types.tuple("STRING", "LONG", "FLOAT", "FLOAT", "FLOAT"),
                     "Alice, 3, 150, 10, 80",
                     "Betty, 2, 90, 20, 70",
@@ -116,6 +117,34 @@ public class TestRelOp {
             new TupleCompileContextImpl(Types.tuple(Types.INT)),
             RelConfig.DEFAULT
         );
-        assertThat(sourceOp.get()).containsExactlyElementsOf(ImmutableList.of(new Object[]{100}));
+        assertThat(sourceOp.get()).containsExactly(new Object[]{100});
+    }
+
+    @Test
+    public void testAggregateOpReduce() throws ExprParseException {
+        RelOp op = RelOpStringBuilder.builder(RelConfig.DEFAULT)
+            .agg(new int[]{1}, "COUNT()", "SUM($[2])", "MIN($[2])", "MAX($[2])")
+            .build();
+        AggregateOp aggregateOp = (AggregateOp) op.compile(
+            new TupleCompileContextImpl(Types.tuple("INT", "STRING", "FLOAT")),
+            RelConfig.DEFAULT
+        );
+        TupleType type = Types.tuple("STRING", "LONG", "FLOAT", "FLOAT", "FLOAT");
+        Arrays.stream(valuesOf(
+            type,
+            "Alice, 3, 150, 10, 80",
+            "Betty, 2, 90, 20, 70",
+            "Cindy, 2, 120, 30, 90",
+            "Alice, 1, 40, 40, 40",
+            "Betty, 1, 50, 50, 50"
+        )).forEach(aggregateOp::reduce);
+        assertThat(aggregateOp.get()).containsExactlyInAnyOrder(
+            valuesOf(
+                type,
+                "Alice, 4, 190, 10, 80",
+                "Betty, 3, 140, 20, 70",
+                "Cindy, 2, 120, 30, 90"
+            )
+        );
     }
 }

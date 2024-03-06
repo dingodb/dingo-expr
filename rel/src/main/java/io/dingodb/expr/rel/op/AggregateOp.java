@@ -36,7 +36,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true, of = {"aggList"})
-abstract class AggregateOp extends AbstractRelOp implements CacheOp {
+public abstract class AggregateOp extends AbstractRelOp implements CacheOp {
     private static final long serialVersionUID = 7414468955475481236L;
 
     @Getter

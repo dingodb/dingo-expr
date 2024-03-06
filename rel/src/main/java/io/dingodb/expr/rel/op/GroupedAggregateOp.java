@@ -90,8 +90,7 @@ public final class GroupedAggregateOp extends AggregateOp {
     public void reduce(Object @NonNull [] tuple) {
         int length = groupIndices.length;
         TupleKey tupleKey = new TupleKey(Arrays.copyOf(tuple, length));
-        Object[] vars = cache.get(tupleKey);
-        merge(vars, tuple, length, () -> createVars(tupleKey));
+        merge(cache.get(tupleKey), tuple, length, () -> createVars(tupleKey));
     }
 
     @Override
