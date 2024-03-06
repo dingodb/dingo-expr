@@ -33,6 +33,8 @@ dependencies {
     testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     testImplementation project(':dingo-expr-json')
     testImplementation project(':dingo-expr-test')
+    testRuntimeOnly group: 'ch.qos.logback', name: 'logback-classic', version: 'logback'.v()
+    testRuntimeOnly group: 'ch.qos.logback', name: 'logback-core', version: 'logback'.v()
 }
 
 publishing {

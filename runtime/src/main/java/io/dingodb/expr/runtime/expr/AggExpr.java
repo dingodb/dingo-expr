@@ -23,6 +23,15 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public interface AggExpr {
     /**
+     * Add the first row arrived to aggregating context.
+     *
+     * @param rowContext the new row as an {@link EvalContext}
+     * @param config     the {@link ExprConfig}
+     * @return the result value
+     */
+    Object first(@NonNull EvalContext rowContext, ExprConfig config);
+
+    /**
      * Add a new row to aggregating context.
      *
      * @param var        the current value from the aggregating context, {@code null} means empty

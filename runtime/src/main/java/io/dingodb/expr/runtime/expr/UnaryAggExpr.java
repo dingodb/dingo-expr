@@ -30,6 +30,12 @@ public final class UnaryAggExpr extends UnaryOpExpr implements AggExpr {
     }
 
     @Override
+    public Object first(@NonNull EvalContext rowContext, ExprConfig config) {
+        Object value = operand.eval(rowContext, config);
+        return ((UnaryAgg) op).first(value, config);
+    }
+
+    @Override
     public Object add(@Nullable Object var, @NonNull EvalContext rowContext, ExprConfig config) {
         Object value = operand.eval(rowContext, config);
         return ((UnaryAgg) op).add(var, value, config);

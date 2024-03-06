@@ -55,18 +55,22 @@ public final class UngroupedAggregateOp extends AggregateOp {
         vars = null;
     }
 
+
+    private Object[] createVars() {
+        vars = cacheSupplier.item(aggList.size());
+        return vars;
+    }
+
+    @Override
+    public void reduce(Object @NonNull [] tuple) {
+        merge(vars, tuple, 0, this::createVars);
+    }
+
     @Override
     public void put(Object @NonNull [] tuple) {
         assert cacheSupplier != null
             : "Cache not initialized, call `this.setCache` first.";
-        if (vars == null) {
-            vars = cacheSupplier.item(aggList.size());
-        }
-        evalContext.setTuple(tuple);
-        for (int i = 0; i < vars.length; ++i) {
-            AggExpr aggExpr = (AggExpr) aggList.get(i);
-            vars[i] = aggExpr.add(vars[i], evalContext, exprConfig);
-        }
+        calc(vars, tuple, this::createVars);
     }
 
     @Override

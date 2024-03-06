@@ -27,6 +27,15 @@ public abstract class UnaryAgg extends UnaryOp implements Agg {
     private static final long serialVersionUID = -1765824099692470414L;
 
     /**
+     * Add the first row arrived to aggregating context.
+     *
+     * @param value  the new value
+     * @param config the {@link ExprConfig}
+     * @return the result value
+     */
+    public abstract Object first(@Nullable Object value, ExprConfig config);
+
+    /**
      * Add a new value to aggregating context.
      *
      * @param var    the current value from the aggregating context, {@code null} means empty

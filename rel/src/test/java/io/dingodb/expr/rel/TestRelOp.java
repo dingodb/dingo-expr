@@ -16,12 +16,14 @@
 
 package io.dingodb.expr.rel;
 
+import com.google.common.collect.ImmutableList;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.rel.op.RelOpBuilder;
 import io.dingodb.expr.rel.op.RelOpStringBuilder;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -102,5 +104,18 @@ public class TestRelOp {
     public void test(@NonNull SourceOp op, TupleType type, @NonNull Object[][] result) {
         op = (SourceOp) op.compile(new TupleCompileContextImpl(type), RelConfig.DEFAULT);
         assertThat(op.get()).containsExactlyInAnyOrder(result);
+    }
+
+    @Test
+    public void testSingleValue() throws ExprParseException {
+        RelOp op = RelOpStringBuilder.builder(RelConfig.DEFAULT)
+            .values("100")
+            .agg("SINGLE_VALUE_AGG($[0])")
+            .build();
+        SourceOp sourceOp = (SourceOp) op.compile(
+            new TupleCompileContextImpl(Types.tuple(Types.INT)),
+            RelConfig.DEFAULT
+        );
+        assertThat(sourceOp.get()).containsExactlyElementsOf(ImmutableList.of(new Object[]{100}));
     }
 }

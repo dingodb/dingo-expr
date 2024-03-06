@@ -31,6 +31,11 @@ public final class NullaryAggExpr extends NullaryOpExpr implements AggExpr {
     }
 
     @Override
+    public Object first(@NonNull EvalContext rowContext, ExprConfig config) {
+        return ((NullaryAgg) op).first(config);
+    }
+
+    @Override
     public Object add(@Nullable Object var, @NonNull EvalContext rowContext, ExprConfig config) {
         return ((NullaryAgg) op).add(var, config);
     }
