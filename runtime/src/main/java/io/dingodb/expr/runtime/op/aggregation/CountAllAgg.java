@@ -49,6 +49,11 @@ public final class CountAllAgg extends NullaryAgg {
     }
 
     @Override
+    public @NonNull Object first(ExprConfig config) {
+        return 1L;
+    }
+
+    @Override
     public @NonNull Long add(@Nullable Object var, ExprConfig config) {
         return var != null ? (long) var + 1L : 1L;
     }

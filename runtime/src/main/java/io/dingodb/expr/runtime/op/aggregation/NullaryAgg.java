@@ -24,6 +24,21 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public abstract class NullaryAgg extends NullaryOp implements Agg {
     private static final long serialVersionUID = -8558147715706778680L;
 
+    /**
+     * Add the first row arrived to aggregating context.
+     *
+     * @param config the {@link ExprConfig}
+     * @return the result value
+     */
+    public abstract Object first(ExprConfig config);
+
+    /**
+     * Add a new value to aggregating context.
+     *
+     * @param var    the current value from the aggregating context, {@code null} means empty
+     * @param config the {@link ExprConfig}
+     * @return the result value
+     */
     public abstract Object add(@Nullable Object var, ExprConfig config);
 
     @Override

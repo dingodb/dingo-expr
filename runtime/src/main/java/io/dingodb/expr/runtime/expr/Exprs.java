@@ -25,6 +25,7 @@ import io.dingodb.expr.runtime.op.aggregation.CountAgg;
 import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
 import io.dingodb.expr.runtime.op.aggregation.MaxAgg;
 import io.dingodb.expr.runtime.op.aggregation.MinAgg;
+import io.dingodb.expr.runtime.op.aggregation.SingleValueAgg;
 import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
 import io.dingodb.expr.runtime.op.aggregation.SumAgg;
 import io.dingodb.expr.runtime.op.arithmetic.AddOpFactory;
@@ -309,6 +310,7 @@ public final class Exprs {
     public static final MinAgg MIN_AGG = MinAgg.INSTANCE;
     public static final SumAgg SUM_AGG = SumAgg.INSTANCE;
     public static final Sum0Agg SUM0_AGG = Sum0Agg.INSTANCE;
+    public static final SingleValueAgg SINGLE_VALUE_AGG = SingleValueAgg.INSTANCE;
 
     private Exprs() {
     }

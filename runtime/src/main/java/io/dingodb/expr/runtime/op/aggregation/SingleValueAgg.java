@@ -17,31 +17,26 @@
 package io.dingodb.expr.runtime.op.aggregation;
 
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.op.OpType;
+import io.dingodb.expr.runtime.exception.NeverRunHere;
+import io.dingodb.expr.runtime.exception.SingleValueException;
+import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class CountAgg extends UnaryAgg {
-    public static final String NAME = "COUNT";
+public final class SingleValueAgg extends UnaryAgg {
+    public static final String NAME = "SINGLE_VALUE_AGG";
 
-    public static final CountAgg INSTANCE = new CountAgg();
+    public static final SingleValueAgg INSTANCE = new SingleValueAgg(null);
 
-    private static final long serialVersionUID = -3825256114500372480L;
+    private static final long serialVersionUID = 1272593999607684823L;
 
-    @Override
-    public Type getType() {
-        return Types.LONG;
-    }
-
-    @Override
-    public @NonNull OpType getOpType() {
-        return OpType.AGG;
-    }
+    @Getter
+    private final Type type;
 
     @Override
     public @NonNull String getName() {
@@ -49,25 +44,27 @@ public final class CountAgg extends UnaryAgg {
     }
 
     @Override
+    public @NonNull Long merge(@NonNull Object var1, @NonNull Object var2, ExprConfig config) {
+        throw new NeverRunHere();
+    }
+
+    @Override
+    public @Nullable Object emptyValue() {
+        return null;
+    }
+
+    @Override
     public Object first(@Nullable Object value, ExprConfig config) {
-        return value != null ? 1L : null;
+        return value;
     }
 
     @Override
     public Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
-        if (value != null) {
-            return var != null ? (long) var + 1L : 1L;
-        }
-        return var;
+        throw new SingleValueException();
     }
 
     @Override
-    public @NonNull Long merge(@NonNull Object var1, @NonNull Object var2, ExprConfig config) {
-        return (long) var1 + (long) var2;
-    }
-
-    @Override
-    public @NonNull Long emptyValue() {
-        return 0L;
+    public @NonNull Expr compile(@NonNull Expr operand, @NonNull ExprConfig config) {
+        return new SingleValueAgg(operand.getType()).createExpr(operand);
     }
 }

@@ -46,6 +46,11 @@ public abstract class HostedUnaryAgg extends UnaryAgg {
     }
 
     @Override
+    public Object first(@Nullable Object value, ExprConfig config) {
+        return value;
+    }
+
+    @Override
     public final Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
         if (var != null) {
             if (value != null) {

@@ -25,7 +25,6 @@ import io.dingodb.expr.rel.utils.ArrayUtils;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.TupleEvalContext;
-import io.dingodb.expr.runtime.expr.AggExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
@@ -67,23 +66,32 @@ public final class GroupedAggregateOp extends AggregateOp {
         cache = cacheSupplier != null ? cacheSupplier.cache() : null;
     }
 
+    private Object[] createVars(TupleKey tupleKey) {
+        Object[] vars = cacheSupplier.item(aggList.size());
+        cache.put(tupleKey, vars);
+        return vars;
+    }
+
     @Override
     public void put(Object @NonNull [] tuple) {
         assert cacheSupplier != null && cache != null
             : "Cache not initialized, call `this.setCache` first.";
-        Object[] keyTuple = ArrayUtils.map(tuple, groupIndices);
-        Object[] vars = cache.computeIfAbsent(new TupleKey(keyTuple), k -> cacheSupplier.item(aggList.size()));
-        evalContext.setTuple(tuple);
-        for (int i = 0; i < vars.length; ++i) {
-            AggExpr aggExpr = (AggExpr) aggList.get(i);
-            vars[i] = aggExpr.add(vars[i], evalContext, exprConfig);
-        }
+        TupleKey tupleKey = new TupleKey(ArrayUtils.map(tuple, groupIndices));
+        calc(cache.get(tupleKey), tuple, () -> createVars(tupleKey));
     }
 
     @Override
     public @NonNull Stream<Object[]> get() {
         return cache.entrySet().stream()
             .map(e -> ArrayUtils.concat(e.getKey().getTuple(), e.getValue()));
+    }
+
+    @Override
+    public void reduce(Object @NonNull [] tuple) {
+        int length = groupIndices.length;
+        TupleKey tupleKey = new TupleKey(Arrays.copyOf(tuple, length));
+        Object[] vars = cache.get(tupleKey);
+        merge(vars, tuple, length, () -> createVars(tupleKey));
     }
 
     @Override
