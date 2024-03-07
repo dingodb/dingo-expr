@@ -23,7 +23,6 @@ import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CountAllAgg extends NullaryAgg {
@@ -54,8 +53,8 @@ public final class CountAllAgg extends NullaryAgg {
     }
 
     @Override
-    public @NonNull Long add(@Nullable Object var, ExprConfig config) {
-        return var != null ? (long) var + 1L : 1L;
+    public @NonNull Long add(Object var, ExprConfig config) {
+        return (long) var + 1L;
     }
 
     @Override

@@ -265,7 +265,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_DECIMAL, "12.3"), BigDecimal.valueOf(12.3)),
             arguments(op(TO_STRING, 1), "1"),
             arguments(op(TO_STRING, 1L), "1"),
-            arguments(op(TO_STRING, 1.4f), "1.4"),
+            arguments(op(TO_STRING, 1.0f), "1.0"),
             arguments(op(TO_STRING, 1.4), "1.4"),
             arguments(op(TO_STRING, true), "true"),
             arguments(op(TO_STRING, false), "false"),

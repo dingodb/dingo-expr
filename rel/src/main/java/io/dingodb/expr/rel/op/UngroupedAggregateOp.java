@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public final class UngroupedAggregateOp extends AggregateOp {
@@ -76,7 +77,11 @@ public final class UngroupedAggregateOp extends AggregateOp {
     @Override
     public @NonNull Stream<Object[]> get() {
         if (vars != null) {
-            return Stream.<Object[]>of(vars);
+            return Stream.<Object[]>of(
+                IntStream.range(0, vars.length)
+                    .mapToObj(i -> vars[i] != null ? vars[i] : ((AggExpr) aggList.get(i)).emptyValue())
+                    .toArray()
+            );
         }
         return Stream.<Object[]>of(
             aggList.stream()
