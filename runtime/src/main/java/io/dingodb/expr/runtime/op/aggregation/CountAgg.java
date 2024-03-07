@@ -49,14 +49,14 @@ public final class CountAgg extends UnaryAgg {
     }
 
     @Override
-    public Object first(@Nullable Object value, ExprConfig config) {
-        return value != null ? 1L : null;
+    public @NonNull Object first(@Nullable Object value, ExprConfig config) {
+        return value != null ? 1L : 0L;
     }
 
     @Override
-    public Object add(@Nullable Object var, @Nullable Object value, ExprConfig config) {
+    public Object add(Object var, @Nullable Object value, ExprConfig config) {
         if (value != null) {
-            return var != null ? (long) var + 1L : 1L;
+            return (long) var + 1L;
         }
         return var;
     }
