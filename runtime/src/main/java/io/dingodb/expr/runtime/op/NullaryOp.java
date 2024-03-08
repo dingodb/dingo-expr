@@ -19,20 +19,20 @@ package io.dingodb.expr.runtime.op;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
-import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.NullaryOpExpr;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class NullaryOp extends AbstractOp<NullaryOp> {
+public abstract class NullaryOp extends AbstractOp<NullaryOp, NullaryOpExpr> {
     private static final long serialVersionUID = -5008875403399768833L;
 
     public Object eval(EvalContext context, ExprConfig config) {
         throw new EvalNotImplemented(this.getClass().getCanonicalName());
     }
 
-    public @NonNull Expr simplify(@NonNull NullaryOpExpr expr, ExprConfig ignoredConfig) {
+    @Override
+    public boolean isConst(@NonNull NullaryOpExpr expr) {
         assert expr.getOp() == this;
-        return expr;
+        return true;
     }
 
     @Override

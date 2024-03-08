@@ -22,10 +22,11 @@ import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.TertiaryOpExpr;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
+public abstract class TertiaryOp extends AbstractOp<TertiaryOp, TertiaryOpExpr> {
     private static final long serialVersionUID = 7024305609460207841L;
 
     protected Object evalNonNullValue(
@@ -59,6 +60,14 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
         Object value1 = expr1.eval(context, config);
         Object value2 = expr2.eval(context, config);
         return evalValue(value0, value1, value2, config);
+    }
+
+    @Override
+    public boolean isConst(@NonNull TertiaryOpExpr expr) {
+        assert expr.getOp() == this;
+        return expr.getOperand0() instanceof Val
+               && expr.getOperand1() instanceof Val
+               && expr.getOperand2() instanceof Val;
     }
 
     public OpKey keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
@@ -98,11 +107,6 @@ public abstract class TertiaryOp extends AbstractOp<TertiaryOp> {
             }
         }
         return config.withSimplification() ? result.simplify(config) : result;
-    }
-
-    public @NonNull Expr simplify(@NonNull TertiaryOpExpr expr, ExprConfig ignoredConfig) {
-        assert expr.getOp() == this;
-        return expr;
     }
 
     @Override

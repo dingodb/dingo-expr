@@ -22,11 +22,12 @@ import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public abstract class BinaryOp extends AbstractOp<BinaryOp> {
+public abstract class BinaryOp extends AbstractOp<BinaryOp, BinaryOpExpr> {
     private static final long serialVersionUID = -3432586934529603722L;
 
     protected Object evalNonNullValue(@NonNull Object value0, @NonNull Object value1, ExprConfig config) {
@@ -41,6 +42,12 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
         Object value0 = expr0.eval(context, config);
         Object value1 = expr1.eval(context, config);
         return evalValue(value0, value1, config);
+    }
+
+    @Override
+    public boolean isConst(@NonNull BinaryOpExpr expr) {
+        assert expr.getOp() == this;
+        return expr.getOperand0() instanceof Val && expr.getOperand1() instanceof Val;
     }
 
     public @Nullable OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
@@ -70,11 +77,6 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp> {
             }
         }
         return config.withSimplification() ? result.simplify(config) : result;
-    }
-
-    public @NonNull Expr simplify(@NonNull BinaryOpExpr expr, ExprConfig config) {
-        assert expr.getOp() == this;
-        return expr;
     }
 
     @Override

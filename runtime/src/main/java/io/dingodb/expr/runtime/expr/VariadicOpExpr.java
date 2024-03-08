@@ -22,24 +22,24 @@ import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op", "operands"})
-public final class VariadicOpExpr implements OpExpr {
+@EqualsAndHashCode(of = {"operands"}, callSuper = true)
+public final class VariadicOpExpr extends OpExpr<VariadicOp, VariadicOpExpr> {
     private static final long serialVersionUID = -2145574267641248415L;
 
     @Getter
-    private final VariadicOp op;
-    @Getter
     private final Expr[] operands;
+
+    public VariadicOpExpr(VariadicOp op, Expr[] operands) {
+        super(op);
+        this.operands = operands;
+    }
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -53,7 +53,7 @@ public final class VariadicOpExpr implements OpExpr {
 
     @Override
     public @NonNull Expr simplify(ExprConfig config) {
-        if (Arrays.stream(operands).allMatch(o -> o instanceof Val)) {
+        if (op.isConst(this)) {
             return Exprs.val(eval(null, config), getType());
         }
         return op.simplify(this, config);

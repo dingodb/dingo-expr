@@ -16,20 +16,30 @@
 
 package io.dingodb.expr.runtime.expr;
 
-import io.dingodb.expr.runtime.op.Op;
+import io.dingodb.expr.runtime.op.AbstractOp;
 import io.dingodb.expr.runtime.op.OpType;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface OpExpr extends Expr {
-    @NonNull Op getOp();
+@EqualsAndHashCode(of = {"op"})
+public abstract class OpExpr<O extends AbstractOp<O, E>, E extends OpExpr<O, E>> implements Expr {
+    private static final long serialVersionUID = -9011805373573763769L;
 
-    default @NonNull OpType getOpType() {
+    @Getter
+    protected final O op;
+
+    protected OpExpr(O op) {
+        this.op = op;
+    }
+
+    public @NonNull OpType getOpType() {
         return getOp().getOpType();
     }
 
-    default String oprandToString(Expr operand) {
+    protected String oprandToString(Expr operand) {
         if (operand instanceof OpExpr) {
-            OpExpr op = (OpExpr) operand;
+            OpExpr<?, ?> op = (OpExpr<?, ?>) operand;
             if (op.getOpType().getPrecedence() > getOpType().getPrecedence()) {
                 return "(" + operand + ")";
             }

@@ -19,11 +19,12 @@ package io.dingodb.expr.runtime.op;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.compiler.CastingFactory;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.OpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
+public abstract class AbstractOp<O extends AbstractOp<O, E>, E extends OpExpr<O, E>> implements Op, OpFactory<O> {
     private static final long serialVersionUID = -2046211912438996616L;
 
     protected AbstractOp() {
@@ -40,11 +41,6 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
     }
 
     @Override
-    public String toString() {
-        return getName();
-    }
-
-    @Override
     public Type getType() {
         return Types.ANY;
     }
@@ -52,6 +48,13 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
     @Override
     public @NonNull OpType getOpType() {
         return OpType.FUN;
+    }
+
+    public abstract boolean isConst(@NonNull E expr);
+
+    public @NonNull Expr simplify(@NonNull E expr, ExprConfig config) {
+        assert expr.getOp() == this;
+        return expr;
     }
 
     @Override
@@ -70,5 +73,10 @@ public abstract class AbstractOp<E extends Op> implements Op, OpFactory<E> {
 
     public boolean doRangeChecking() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

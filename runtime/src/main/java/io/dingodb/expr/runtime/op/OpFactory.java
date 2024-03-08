@@ -16,6 +16,6 @@
 
 package io.dingodb.expr.runtime.op;
 
-public interface OpFactory<E extends Op> {
-    E getOp(OpKey key);
+public interface OpFactory<O extends Op> {
+    O getOp(OpKey key);
 }
