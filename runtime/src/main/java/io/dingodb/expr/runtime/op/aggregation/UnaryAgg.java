@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.aggregation;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.UnaryAggExpr;
+import io.dingodb.expr.runtime.expr.UnaryOpExpr;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -44,6 +45,11 @@ public abstract class UnaryAgg extends UnaryOp implements Agg {
      * @return the result value
      */
     public abstract Object add(@Nullable Object var, @Nullable Object value, ExprConfig config);
+
+    @Override
+    public boolean isConst(@NonNull UnaryOpExpr expr) {
+        return false;
+    }
 
     @Override
     public UnaryAggExpr createExpr(@NonNull Expr operand) {

@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.expr.NullaryOpExpr;
 import io.dingodb.expr.runtime.op.NullaryOp;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
@@ -44,6 +45,11 @@ public class CurrentTimeFun extends NullaryOp {
     @Override
     public Type getType() {
         return Types.TIME;
+    }
+
+    @Override
+    public boolean isConst(@NonNull NullaryOpExpr expr) {
+        return false;
     }
 
     @Override

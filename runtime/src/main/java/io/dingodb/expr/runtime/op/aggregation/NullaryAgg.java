@@ -18,7 +18,9 @@ package io.dingodb.expr.runtime.op.aggregation;
 
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.NullaryAggExpr;
+import io.dingodb.expr.runtime.expr.NullaryOpExpr;
 import io.dingodb.expr.runtime.op.NullaryOp;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public abstract class NullaryAgg extends NullaryOp implements Agg {
@@ -40,6 +42,11 @@ public abstract class NullaryAgg extends NullaryOp implements Agg {
      * @return the result value
      */
     public abstract Object add(@Nullable Object var, ExprConfig config);
+
+    @Override
+    public boolean isConst(@NonNull NullaryOpExpr expr) {
+        return false;
+    }
 
     @Override
     public NullaryAggExpr createExpr() {

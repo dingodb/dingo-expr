@@ -22,23 +22,24 @@ import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op", "operand0", "operand1"})
-public class BinaryOpExpr implements OpExpr {
+@EqualsAndHashCode(of = {"operand0", "operand1"}, callSuper = true)
+public class BinaryOpExpr extends OpExpr<BinaryOp, BinaryOpExpr> {
     private static final long serialVersionUID = -4980001325586095328L;
 
-    @Getter
-    protected final BinaryOp op;
     @Getter
     protected final Expr operand0;
     @Getter
     protected final Expr operand1;
+
+    public BinaryOpExpr(BinaryOp op, Expr operand0, Expr operand1) {
+        super(op);
+        this.operand0 = operand0;
+        this.operand1 = operand1;
+    }
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -52,7 +53,7 @@ public class BinaryOpExpr implements OpExpr {
 
     @Override
     public @NonNull Expr simplify(ExprConfig config) {
-        if (operand0 instanceof Val && operand1 instanceof Val) {
+        if (op.isConst(this)) {
             return Exprs.val(eval(null, config), getType());
         }
         return op.simplify(this, config);

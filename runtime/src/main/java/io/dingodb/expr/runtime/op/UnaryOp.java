@@ -22,10 +22,11 @@ import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.UnaryOpExpr;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public abstract class UnaryOp extends AbstractOp<UnaryOp> {
+public abstract class UnaryOp extends AbstractOp<UnaryOp, UnaryOpExpr> {
     private static final long serialVersionUID = 4820294023360498270L;
 
     protected Object evalNonNullValue(@NonNull Object value, ExprConfig config) {
@@ -39,6 +40,12 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
     public Object eval(@NonNull Expr expr, EvalContext context, ExprConfig config) {
         Object value = expr.eval(context, config);
         return evalValue(value, config);
+    }
+
+    @Override
+    public boolean isConst(@NonNull UnaryOpExpr expr) {
+        assert expr.getOp() == this;
+        return expr.getOperand() instanceof Val;
     }
 
     public OpKey keyOf(@NonNull Type type) {
@@ -67,11 +74,6 @@ public abstract class UnaryOp extends AbstractOp<UnaryOp> {
             }
         }
         return config.withSimplification() ? result.simplify(config) : result;
-    }
-
-    public @NonNull Expr simplify(@NonNull UnaryOpExpr expr, ExprConfig ignoredConfig) {
-        assert expr.getOp() == this;
-        return expr;
     }
 
     @Override

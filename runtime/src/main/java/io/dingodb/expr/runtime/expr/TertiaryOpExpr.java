@@ -22,25 +22,27 @@ import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op", "operand0", "operand1", "operand2"})
-public final class TertiaryOpExpr implements OpExpr {
+@EqualsAndHashCode(of = {"operand0", "operand1", "operand2"}, callSuper = true)
+public final class TertiaryOpExpr extends OpExpr<TertiaryOp, TertiaryOpExpr> {
     private static final long serialVersionUID = -1597326280376061590L;
 
-    @Getter
-    private final TertiaryOp op;
     @Getter
     private final Expr operand0;
     @Getter
     private final Expr operand1;
     @Getter
     private final Expr operand2;
+
+    public TertiaryOpExpr(TertiaryOp op, Expr operand0, Expr operand1, Expr operand2) {
+        super(op);
+        this.operand0 = operand0;
+        this.operand1 = operand1;
+        this.operand2 = operand2;
+    }
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -54,7 +56,7 @@ public final class TertiaryOpExpr implements OpExpr {
 
     @Override
     public @NonNull Expr simplify(ExprConfig config) {
-        if (operand0 instanceof Val && operand1 instanceof Val && operand2 instanceof Val) {
+        if (op.isConst(this)) {
             return Exprs.val(eval(null, config), getType());
         }
         return op.simplify(this, config);

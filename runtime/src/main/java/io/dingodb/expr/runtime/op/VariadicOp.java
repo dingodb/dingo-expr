@@ -21,6 +21,7 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
 import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.Expr;
+import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
 import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -29,7 +30,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public abstract class VariadicOp extends AbstractOp<VariadicOp> {
+public abstract class VariadicOp extends AbstractOp<VariadicOp, VariadicOpExpr> {
     private static final long serialVersionUID = 6629213458109720362L;
 
     protected Object evalNonNullValue(@NonNull Object[] value, ExprConfig config) {
@@ -46,6 +47,12 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
     public Object eval(@NonNull Expr @NonNull [] exprs, EvalContext context, ExprConfig config) {
         Object[] values = Arrays.stream(exprs).map(e -> e.eval(context, config)).toArray();
         return evalValue(values, config);
+    }
+
+    @Override
+    public boolean isConst(@NonNull VariadicOpExpr expr) {
+        assert expr.getOp() == this;
+        return Arrays.stream(expr.getOperands()).allMatch(e -> e instanceof Val);
     }
 
     public abstract OpKey keyOf(@NonNull Type @NonNull ... types);
@@ -75,11 +82,6 @@ public abstract class VariadicOp extends AbstractOp<VariadicOp> {
             }
         }
         return config.withSimplification() ? result.simplify(config) : result;
-    }
-
-    public @NonNull Expr simplify(@NonNull VariadicOpExpr expr, ExprConfig config) {
-        assert expr.getOp() == this;
-        return expr;
     }
 
     @Override

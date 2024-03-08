@@ -22,21 +22,21 @@ import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op", "operand"})
-public class UnaryOpExpr implements OpExpr {
+@EqualsAndHashCode(of = {"operand"}, callSuper = true)
+public class UnaryOpExpr extends OpExpr<UnaryOp, UnaryOpExpr> {
     private static final long serialVersionUID = 7964987353969166202L;
 
     @Getter
-    protected final UnaryOp op;
-    @Getter
     protected final Expr operand;
+
+    public UnaryOpExpr(UnaryOp op, Expr operand) {
+        super(op);
+        this.operand = operand;
+    }
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -50,7 +50,7 @@ public class UnaryOpExpr implements OpExpr {
 
     @Override
     public @NonNull Expr simplify(ExprConfig config) {
-        if (operand instanceof Val) {
+        if (op.isConst(this)) {
             return Exprs.val(eval(null, config), getType());
         }
         return op.simplify(this, config);

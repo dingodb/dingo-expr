@@ -22,19 +22,14 @@ import io.dingodb.expr.runtime.op.NullaryOp;
 import io.dingodb.expr.runtime.op.OpSymbol;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.type.Type;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-@EqualsAndHashCode(of = {"op"})
-public class NullaryOpExpr implements OpExpr {
+public class NullaryOpExpr extends OpExpr<NullaryOp, NullaryOpExpr> {
     private static final long serialVersionUID = 3647341413168339783L;
 
-    @Getter
-    protected final NullaryOp op;
+    public NullaryOpExpr(NullaryOp op) {
+        super(op);
+    }
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
@@ -48,6 +43,9 @@ public class NullaryOpExpr implements OpExpr {
 
     @Override
     public @NonNull Expr simplify(ExprConfig config) {
+        if (op.isConst(this)) {
+            return Exprs.val(eval(null, config), getType());
+        }
         return op.simplify(this, config);
     }
 
