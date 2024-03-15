@@ -105,8 +105,11 @@ public final class UngroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
         vars = null;
+        if (log.isTraceEnabled()) {
+            log.trace("Cache cleared.");
+        }
     }
 
     @Override
