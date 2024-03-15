@@ -37,6 +37,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -91,10 +92,13 @@ public final class GroupedAggregateOp extends AggregateOp {
             if (cache.isEmpty()) {
                 log.trace("No result in cache.");
             } else {
-                log.trace("Result in cache: {} items", cache.size());
-                for (Map.Entry<TupleKey, Object[]> entry : cache.entrySet()) {
-                    log.trace("key = {}, value = {}", entry.getKey(), Arrays.toString(entry.getValue()));
-                }
+                String content =
+                    "{"
+                    + cache.entrySet().stream()
+                        .map(e -> e.getKey() + ": " + Arrays.toString(e.getValue()))
+                        .collect(Collectors.joining(", "))
+                    + "}";
+                log.trace("Result in cache: {} items, {}", cache.size(), content);
             }
         }
         return cache.entrySet().stream()
@@ -109,8 +113,11 @@ public final class GroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void clear() {
+    public synchronized void clear() {
         cache.clear();
+        if (log.isTraceEnabled()) {
+            log.trace("Cache cleared.");
+        }
     }
 
     @Override
