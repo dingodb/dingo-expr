@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+@Slf4j
 @EqualsAndHashCode(callSuper = true, of = {"groupIndices"})
 public final class GroupedAggregateOp extends AggregateOp {
     public static final String NAME = "AGG";
@@ -73,21 +75,34 @@ public final class GroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void put(Object @NonNull [] tuple) {
+    public synchronized void put(Object @NonNull [] tuple) {
         assert cacheSupplier != null && cache != null
             : "Cache not initialized, call `this.setCache` first.";
         TupleKey tupleKey = new TupleKey(ArrayUtils.map(tuple, groupIndices));
         calc(cache.get(tupleKey), tuple, () -> createVars(tupleKey));
+        if (log.isTraceEnabled()) {
+            log.trace("Input: {}", Arrays.toString(tuple));
+        }
     }
 
     @Override
-    public @NonNull Stream<Object[]> get() {
+    public synchronized @NonNull Stream<Object[]> get() {
+        if (log.isTraceEnabled()) {
+            if (cache.isEmpty()) {
+                log.trace("No result in cache.");
+            } else {
+                log.trace("Result in cache: {} items", cache.size());
+                for (Map.Entry<TupleKey, Object[]> entry : cache.entrySet()) {
+                    log.trace("key = {}, value = {}", entry.getKey(), Arrays.toString(entry.getValue()));
+                }
+            }
+        }
         return cache.entrySet().stream()
             .map(e -> ArrayUtils.concat(e.getKey().getTuple(), e.getValue()));
     }
 
     @Override
-    public void reduce(Object @NonNull [] tuple) {
+    public synchronized void reduce(Object @NonNull [] tuple) {
         int length = groupIndices.length;
         TupleKey tupleKey = new TupleKey(Arrays.copyOf(tuple, length));
         merge(cache.get(tupleKey), tuple, length, () -> createVars(tupleKey));

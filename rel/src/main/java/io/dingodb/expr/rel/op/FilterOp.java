@@ -32,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Arrays;
+
 @Slf4j
 @EqualsAndHashCode(callSuper = true, of = {"filter"})
 public final class FilterOp extends AbstractRelOp implements PipeOp {
@@ -60,6 +62,9 @@ public final class FilterOp extends AbstractRelOp implements PipeOp {
     public Object @Nullable [] put(Object @NonNull [] tuple) {
         evalContext.setTuple(tuple);
         Object v = filter.eval(evalContext, exprConfig);
+        if (log.isTraceEnabled()) {
+            log.trace("Input: {}, filter evaluated result: {}", Arrays.toString(tuple), v);
+        }
         return (v != null && (Boolean) v) ? tuple : null;
     }
 
