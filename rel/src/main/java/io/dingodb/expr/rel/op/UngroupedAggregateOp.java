@@ -28,12 +28,17 @@ import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.type.TupleType;
 import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
+import lombok.EqualsAndHashCode;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+@Slf4j
+@EqualsAndHashCode(callSuper = true)
 public final class UngroupedAggregateOp extends AggregateOp {
     public static final String NAME = "AGG";
 
@@ -63,31 +68,40 @@ public final class UngroupedAggregateOp extends AggregateOp {
     }
 
     @Override
-    public void reduce(Object @NonNull [] tuple) {
-        merge(vars, tuple, 0, this::createVars);
-    }
-
-    @Override
-    public void put(Object @NonNull [] tuple) {
+    public synchronized void put(Object @NonNull [] tuple) {
         assert cacheSupplier != null
             : "Cache not initialized, call `this.setCache` first.";
         calc(vars, tuple, this::createVars);
+        if (log.isTraceEnabled()) {
+            log.trace("Input: {}", Arrays.toString(tuple));
+        }
     }
 
     @Override
-    public @NonNull Stream<Object[]> get() {
+    public synchronized @NonNull Stream<Object[]> get() {
         if (vars != null) {
+            if (log.isTraceEnabled()) {
+                log.trace("Result in cache: {}", Arrays.toString(vars));
+            }
             return Stream.<Object[]>of(
                 IntStream.range(0, vars.length)
                     .mapToObj(i -> vars[i] != null ? vars[i] : ((AggExpr) aggList.get(i)).emptyValue())
                     .toArray()
             );
         }
+        if (log.isTraceEnabled()) {
+            log.trace("No result in cache.");
+        }
         return Stream.<Object[]>of(
             aggList.stream()
                 .map(agg -> ((AggExpr) agg).emptyValue())
                 .toArray(Object[]::new)
         );
+    }
+
+    @Override
+    public synchronized void reduce(Object @NonNull [] tuple) {
+        merge(vars, tuple, 0, this::createVars);
     }
 
     @Override

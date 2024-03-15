@@ -30,10 +30,12 @@ import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.type.Types;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
 
+@Slf4j
 @EqualsAndHashCode(callSuper = true, of = {"projects"})
 public final class ProjectOp extends AbstractRelOp implements PipeOp {
     public static final String NAME = "PROJECT";
@@ -55,15 +57,18 @@ public final class ProjectOp extends AbstractRelOp implements PipeOp {
     ) {
         super(type, evalContext, exprConfig);
         this.projects = projects;
-
     }
 
     @Override
     public Object @NonNull [] put(Object @NonNull [] tuple) {
         evalContext.setTuple(tuple);
-        return Arrays.stream(projects)
+        Object[] result = Arrays.stream(projects)
             .map(p -> p.eval(evalContext, exprConfig))
             .toArray(Object[]::new);
+        if (log.isTraceEnabled()) {
+            log.trace("Input: {}, output: {}", Arrays.toString(tuple), Arrays.toString(result));
+        }
+        return result;
     }
 
     @Override
