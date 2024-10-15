@@ -37,6 +37,7 @@ public final class OpKeys {
     public static final BinaryOpKeys STRING_INT = new BinaryOpKeys(Types.STRING, Types.INT);
     public static final BinaryOpKeys DECIMAL_INT = new BinaryOpKeys(Types.DECIMAL, Types.INT);
     public static final BinaryOpKeys DATE_STRING = new BinaryOpKeys(Types.DATE, Types.STRING);
+    public static final BinaryOpKeys DATE_LONG = new BinaryOpKeys(Types.DATE, Types.LONG);
     public static final BinaryOpKeys TIME_STRING = new BinaryOpKeys(Types.TIME, Types.STRING);
     public static final BinaryOpKeys TIMESTAMP_STRING = new BinaryOpKeys(Types.TIMESTAMP, Types.STRING);
     public static final TertiaryOpKeys STRING_INT_INT = new TertiaryOpKeys(Types.STRING, Types.INT, Types.INT);
