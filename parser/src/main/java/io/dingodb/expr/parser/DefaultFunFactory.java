@@ -34,6 +34,20 @@ import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.MapConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.SliceOpFactory;
+import io.dingodb.expr.runtime.op.date.DayFunFactory;
+import io.dingodb.expr.runtime.op.date.DayHourFunFactory;
+import io.dingodb.expr.runtime.op.date.DayMinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.DaySecondFunFactory;
+import io.dingodb.expr.runtime.op.date.HourFunFactory;
+import io.dingodb.expr.runtime.op.date.HourMinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.HourSecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MillisecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.MinuteSecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MonthFunFactory;
+import io.dingodb.expr.runtime.op.date.SecondFunFactory;
+import io.dingodb.expr.runtime.op.date.WeekFunFactory;
+import io.dingodb.expr.runtime.op.date.YearFunFactory;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.OrFun;
 import io.dingodb.expr.runtime.op.mathematical.AbsFunFactory;
@@ -240,6 +254,22 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(UnixTimestamp1FunFactory.NAME, Exprs.UNIX_TIMESTAMP1);
         registerNullaryFun(UnixTimestamp0Fun.NAME, Exprs.UNIX_TIMESTAMP0);
         registerBinaryFun(DateDiffFunFactory.NAME, Exprs.DATEDIFF);
+
+        // Extract functions
+        registerUnaryFun(YearFunFactory.NAME, Exprs.YEAR);
+        registerUnaryFun(MonthFunFactory.NAME, Exprs.MONTH);
+        registerUnaryFun(DayFunFactory.NAME, Exprs.DAY);
+        registerUnaryFun(WeekFunFactory.NAME, Exprs.WEEK);
+        registerUnaryFun(HourFunFactory.NAME, Exprs.HOUR);
+        registerUnaryFun(MinuteFunFactory.NAME, Exprs.MINUTE);
+        registerUnaryFun(SecondFunFactory.NAME, Exprs.SECOND);
+        registerUnaryFun(MillisecondFunFactory.NAME, Exprs.MILLISECOND);
+        registerUnaryFun(DayHourFunFactory.NAME, Exprs.DAY_HOUR);
+        registerUnaryFun(DayMinuteFunFactory.NAME, Exprs.DAY_MINUTE);
+        registerUnaryFun(DaySecondFunFactory.NAME, Exprs.DAY_SECOND);
+        registerUnaryFun(HourMinuteFunFactory.NAME, Exprs.HOUR_MINUTE);
+        registerUnaryFun(HourSecondFunFactory.NAME, Exprs.HOUR_SECOND);
+        registerUnaryFun(MinuteSecondFunFactory.NAME, Exprs.MINUTE_SECOND);
 
         // Collection functions
         registerVariadicFun(ArrayConstructorOpFactory.NAME, Exprs.ARRAY);
