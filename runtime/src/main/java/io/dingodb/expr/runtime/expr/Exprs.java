@@ -53,6 +53,21 @@ import io.dingodb.expr.runtime.op.collection.CastListOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.MapConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.SliceOpFactory;
+import io.dingodb.expr.runtime.op.date.DayFunFactory;
+import io.dingodb.expr.runtime.op.date.DayHourFunFactory;
+import io.dingodb.expr.runtime.op.date.DayMinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.DaySecondFunFactory;
+import io.dingodb.expr.runtime.op.date.HourFunFactory;
+import io.dingodb.expr.runtime.op.date.HourMinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.HourSecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MillisecondFun;
+import io.dingodb.expr.runtime.op.date.MillisecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MinuteFunFactory;
+import io.dingodb.expr.runtime.op.date.MinuteSecondFunFactory;
+import io.dingodb.expr.runtime.op.date.MonthFunFactory;
+import io.dingodb.expr.runtime.op.date.SecondFunFactory;
+import io.dingodb.expr.runtime.op.date.WeekFunFactory;
+import io.dingodb.expr.runtime.op.date.YearFunFactory;
 import io.dingodb.expr.runtime.op.index.IndexOpFactory;
 import io.dingodb.expr.runtime.op.logical.AndFun;
 import io.dingodb.expr.runtime.op.logical.AndOp;
@@ -270,6 +285,22 @@ public final class Exprs {
     public static final UnixTimestamp0Fun UNIX_TIMESTAMP0 = UnixTimestamp0Fun.INSTANCE;
     public static final UnixTimestamp1FunFactory UNIX_TIMESTAMP1 = UnixTimestamp1FunFactory.INSTANCE;
     public static final DateDiffFunFactory DATEDIFF = DateDiffFunFactory.INSTANCE;
+
+    // Extract date and time
+    public static final YearFunFactory YEAR = YearFunFactory.INSTANCE;
+    public static final MonthFunFactory MONTH = MonthFunFactory.INSTANCE;
+    public static final DayFunFactory DAY = DayFunFactory.INSTANCE;
+    public static final WeekFunFactory WEEK = WeekFunFactory.INSTANCE;
+    public static final HourFunFactory HOUR = HourFunFactory.INSTANCE;
+    public static final MinuteFunFactory MINUTE = MinuteFunFactory.INSTANCE;
+    public static final SecondFunFactory SECOND = SecondFunFactory.INSTANCE;
+    public static final MillisecondFunFactory MILLISECOND = MillisecondFunFactory.INSTANCE;
+    public static final DayHourFunFactory DAY_HOUR = DayHourFunFactory.INSTANCE;
+    public static final DayMinuteFunFactory DAY_MINUTE = DayMinuteFunFactory.INSTANCE;
+    public static final DaySecondFunFactory DAY_SECOND = DaySecondFunFactory.INSTANCE;
+    public static final HourMinuteFunFactory HOUR_MINUTE = HourMinuteFunFactory.INSTANCE;
+    public static final HourSecondFunFactory HOUR_SECOND = HourSecondFunFactory.INSTANCE;
+    public static final MinuteSecondFunFactory MINUTE_SECOND = MinuteSecondFunFactory.INSTANCE;
 
     // Collections
     public static final ArrayConstructorOpFactory ARRAY = ArrayConstructorOpFactory.INSTANCE;
