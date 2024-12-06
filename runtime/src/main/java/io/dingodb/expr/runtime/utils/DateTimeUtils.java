@@ -320,6 +320,114 @@ public final class DateTimeUtils {
         return new Timestamp(millis);
     }
 
+    public static int extractYear(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getYear();
+    }
+
+    public static int extractMonth(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getMonthValue();
+    }
+
+    public static int extractDay(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getDayOfMonth();
+    }
+
+    public static int extractWeek(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getDayOfWeek().getValue();
+    }
+
+    public static int extractHour(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getHour();
+    }
+
+    public static int extractMinute(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getMinute();
+    }
+
+    public static int extractSecond(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.getSecond();
+    }
+
+    public static int extractMillisecond(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        int nano = localDateTime.getNano();
+        return nano / 1_000_000;
+    }
+
+    public static int extractDayHour(Object value) {
+        int day = extractDay(value);
+        int hour = extractHour(value);
+        return concatIntegers(new int[] {day, hour});
+    }
+
+    public static int extractDayMinute(Object value) {
+        int day = extractDay(value);
+        int hour = extractHour(value);
+        int minute = extractMinute(value);
+        return concatIntegers(new int[] {day, hour, minute});
+    }
+
+    public static int extractDaySecond(Object value) {
+        int day = extractDay(value);
+        int hour = extractHour(value);
+        int minute = extractMinute(value);
+        int second = extractSecond(value);
+        return concatIntegers(new int[] {day, hour, minute, second});
+    }
+
+    public static int extractHourMinute(Object value) {
+        int hour = extractHour(value);
+        int minute = extractMinute(value);
+        return concatIntegers(new int[] {hour, minute});
+    }
+
+    public static int extractHourSecond(Object value) {
+        int hour = extractHour(value);
+        int minute = extractMinute(value);
+        int second = extractSecond(value);
+        return concatIntegers(new int[] {hour, minute, second});
+    }
+
+    public static int extractMinuteSecond(Object value) {
+        int minute = extractMinute(value);
+        int second = extractSecond(value);
+        return concatIntegers(new int[] {minute, second});
+    }
+
+    private static int concatIntegers(int[] numbers) {
+        int result = 0;
+        for (int num : numbers) {
+            int temp = num;
+            int numDigits = 1;
+            while (temp >= 10) {
+                numDigits *= 10;
+                temp /= 10;
+            }
+            result = result * numDigits + num;
+        }
+        return result;
+    }
+
+    private static LocalDateTime toLocalDateTime(Object value) {
+        if (value instanceof Date) {
+            return ((Date) value).toLocalDate().atStartOfDay();
+        }
+        if (value instanceof Time) {
+            return ((Time) value).toLocalTime().atDate(LocalDate.now());
+        }
+        if (value instanceof Timestamp) {
+            return ((Timestamp) value).toLocalDateTime();
+        }
+        return null;
+    }
+
     private static LocalDate localDateOf(@NonNull Date value) {
         return toUtcTime(value.getTime()).toLocalDate();
     }
