@@ -21,22 +21,22 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import io.dingodb.expr.common.type.AnyType;
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.BytesType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.MapType;
+import io.dingodb.expr.common.type.NullType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.op.collection.ArrayBuilder;
-import io.dingodb.expr.runtime.type.AnyType;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.BytesType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.MapType;
-import io.dingodb.expr.runtime.type.NullType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -320,5 +320,7 @@ public final class DataParser extends Parser {
         public Object visitMapType(@NonNull MapType type, @NonNull JsonNode obj) {
             return jsonNodeValue(obj);
         }
+
+
     }
 }

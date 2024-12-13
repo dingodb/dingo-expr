@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation group: 'org.assertj', name: 'assertj-core', version: 'assertj'.v()
     implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: 'junit5'.v()
+    implementation project(':dingo-expr-common')
     implementation project(':dingo-expr-json')
     implementation project(':dingo-expr-rel')
     implementation project(':dingo-expr-runtime')

@@ -16,13 +16,13 @@
 
 package io.dingodb.expr.runtime.op.logical;
 
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

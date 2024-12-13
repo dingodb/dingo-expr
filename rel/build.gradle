@@ -30,6 +30,7 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: 'commons-io'.v()
     implementation group: 'org.mapstruct', name: 'mapstruct', version: 'mapstruct'.v()
     implementation project(':dingo-expr-json')
+    implementation project(':dingo-expr-common')
     testImplementation group: 'com.google.guava', name: 'guava', version: 'guava'.v()
     testImplementation project(':dingo-expr-json')
     testImplementation project(':dingo-expr-test')

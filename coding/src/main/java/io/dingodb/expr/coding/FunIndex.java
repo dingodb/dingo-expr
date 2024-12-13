@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.coding;
 
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import io.dingodb.expr.runtime.op.UnaryOp;
@@ -44,7 +45,6 @@ import io.dingodb.expr.runtime.op.string.Substr2FunFactory;
 import io.dingodb.expr.runtime.op.string.Substr3FunFactory;
 import io.dingodb.expr.runtime.op.string.Trim1FunFactory;
 import io.dingodb.expr.runtime.op.string.UpperFunFactory;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 final class FunIndex {

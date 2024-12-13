@@ -19,10 +19,10 @@ package io.dingodb.expr.json.schema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.json.runtime.DataLeaf;
 import io.dingodb.expr.json.runtime.DataSchema;
 import io.dingodb.expr.json.runtime.DataTuple;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @JsonTypeName("array")

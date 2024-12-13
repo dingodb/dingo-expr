@@ -16,13 +16,13 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.cast.CastOp;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 

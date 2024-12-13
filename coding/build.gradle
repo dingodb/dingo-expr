@@ -27,6 +27,7 @@ gitProperties {
 
 dependencies {
     api project(':dingo-expr-rel')
+    implementation project(':dingo-expr-common')
 }
 
 publishing {

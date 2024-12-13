@@ -17,12 +17,12 @@
 package io.dingodb.expr.runtime.op.time;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;

@@ -16,12 +16,12 @@
 
 package io.dingodb.expr.test;
 
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.parser.ExprParser;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Exprs;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import io.dingodb.expr.test.asserts.Assert;
 import io.dingodb.expr.test.cases.ParseEvalConstProvider;

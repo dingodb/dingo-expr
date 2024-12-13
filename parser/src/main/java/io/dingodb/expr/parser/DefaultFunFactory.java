@@ -16,6 +16,17 @@
 
 package io.dingodb.expr.parser;
 
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.BytesType;
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimeType;
+import io.dingodb.expr.common.type.TimestampType;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.op.BinaryOp;
@@ -115,17 +126,6 @@ import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.UnixTimestamp0Fun;
 import io.dingodb.expr.runtime.op.time.UnixTimestamp1FunFactory;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.BytesType;
-import io.dingodb.expr.runtime.type.DateType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.TimeType;
-import io.dingodb.expr.runtime.type.TimestampType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Map;

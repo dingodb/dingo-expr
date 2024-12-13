@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.runtime;
 
-import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.common.type.Type;
 
 public interface CompileContext {
     /**

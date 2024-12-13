@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.runtime.exception;
 
-import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.common.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CastingException extends ExprEvaluatingException {

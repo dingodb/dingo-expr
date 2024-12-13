@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.json.runtime;
 
-import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.common.type.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

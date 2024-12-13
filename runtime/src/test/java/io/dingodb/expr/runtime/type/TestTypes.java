@@ -16,6 +16,9 @@
 
 package io.dingodb.expr.runtime.type;
 
+import io.dingodb.expr.common.type.NullType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.json.schema;
 
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.json.runtime.DataSchema;
 import io.dingodb.expr.json.runtime.SchemaRoot;
-import io.dingodb.expr.runtime.type.Types;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 

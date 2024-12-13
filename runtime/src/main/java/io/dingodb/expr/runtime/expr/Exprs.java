@@ -16,6 +16,26 @@
 
 package io.dingodb.expr.runtime.expr;
 
+import io.dingodb.expr.common.type.AnyType;
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.BytesType;
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.MapType;
+import io.dingodb.expr.common.type.NullType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimeType;
+import io.dingodb.expr.common.type.TimestampType;
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.TypeVisitorBase;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.NullaryOp;
 import io.dingodb.expr.runtime.op.TertiaryOp;
@@ -60,7 +80,6 @@ import io.dingodb.expr.runtime.op.date.DaySecondFunFactory;
 import io.dingodb.expr.runtime.op.date.HourFunFactory;
 import io.dingodb.expr.runtime.op.date.HourMinuteFunFactory;
 import io.dingodb.expr.runtime.op.date.HourSecondFunFactory;
-import io.dingodb.expr.runtime.op.date.MillisecondFun;
 import io.dingodb.expr.runtime.op.date.MillisecondFunFactory;
 import io.dingodb.expr.runtime.op.date.MinuteFunFactory;
 import io.dingodb.expr.runtime.op.date.MinuteSecondFunFactory;
@@ -146,26 +165,6 @@ import io.dingodb.expr.runtime.op.time.TimestampFormat1FunFactory;
 import io.dingodb.expr.runtime.op.time.TimestampFormat2FunFactory;
 import io.dingodb.expr.runtime.op.time.UnixTimestamp0Fun;
 import io.dingodb.expr.runtime.op.time.UnixTimestamp1FunFactory;
-import io.dingodb.expr.runtime.type.AnyType;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.BytesType;
-import io.dingodb.expr.runtime.type.DateType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.MapType;
-import io.dingodb.expr.runtime.type.NullType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.TimeType;
-import io.dingodb.expr.runtime.type.TimestampType;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;
@@ -193,6 +192,12 @@ public final class Exprs {
     public static final SubOpFactory SUB = SubOpFactory.INSTANCE;
     public static final MulOpFactory MUL = MulOpFactory.INSTANCE;
     public static final DivOpFactory DIV = DivOpFactory.INSTANCE;
+
+    // Interval
+    public static final io.dingodb.expr.runtime.op.interval.SubOpFactory INTERVAL_SUB =
+        io.dingodb.expr.runtime.op.interval.SubOpFactory.INSTANCE;
+    public static final io.dingodb.expr.runtime.op.interval.AddOpFactory INTERVAL_ADD =
+        io.dingodb.expr.runtime.op.interval.AddOpFactory.INSTANCE;
 
     // Relations
     public static final EqOpFactory EQ = EqOpFactory.INSTANCE;

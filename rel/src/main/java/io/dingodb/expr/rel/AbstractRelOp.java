@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.TupleEvalContext;
-import io.dingodb.expr.runtime.type.TupleType;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)

@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.CompileContext;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

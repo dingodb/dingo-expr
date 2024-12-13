@@ -16,8 +16,8 @@
 
 package io.dingodb.expr.runtime.exception;
 
+import io.dingodb.expr.common.type.NullType;
 import io.dingodb.expr.runtime.op.Op;
-import io.dingodb.expr.runtime.type.NullType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Arrays;

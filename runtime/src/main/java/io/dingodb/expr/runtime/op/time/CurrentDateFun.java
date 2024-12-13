@@ -16,12 +16,12 @@
 
 package io.dingodb.expr.runtime.op.time;
 
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.expr.NullaryOpExpr;
 import io.dingodb.expr.runtime.op.NullaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

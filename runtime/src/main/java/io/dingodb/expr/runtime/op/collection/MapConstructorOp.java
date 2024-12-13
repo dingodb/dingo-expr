@@ -16,13 +16,13 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.common.type.MapType;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.ExprEvaluatingException;
 import io.dingodb.expr.runtime.exception.NullElementsNotAllowed;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.op.OpKey;
-import io.dingodb.expr.runtime.type.MapType;
 import lombok.Getter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 

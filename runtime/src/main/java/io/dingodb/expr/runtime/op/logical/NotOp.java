@@ -17,11 +17,11 @@
 package io.dingodb.expr.runtime.op.logical;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.OpType;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
