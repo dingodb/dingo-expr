@@ -16,18 +16,18 @@
 
 package io.dingodb.expr.runtime.op.index;
 
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.CollectionType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.MapType;
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.IndexOpExpr;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpType;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.CollectionType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.MapType;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

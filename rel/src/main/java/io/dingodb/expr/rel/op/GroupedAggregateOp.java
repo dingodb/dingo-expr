@@ -16,6 +16,9 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.rel.CacheSupplier;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.RelOpVisitor;
@@ -26,9 +29,6 @@ import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.expr.Expr;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

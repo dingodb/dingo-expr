@@ -16,11 +16,11 @@
 
 package io.dingodb.expr.rel.op;
 
+import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.SourceOp;
 import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.rel.TypedRelOp;
-import io.dingodb.expr.runtime.type.TupleType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;

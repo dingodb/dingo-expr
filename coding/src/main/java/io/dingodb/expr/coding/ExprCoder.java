@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.coding;
 
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.ExprVisitorBase;
@@ -44,7 +45,6 @@ import io.dingodb.expr.runtime.op.mathematical.ModFunFactory;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
-import io.dingodb.expr.runtime.type.Type;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

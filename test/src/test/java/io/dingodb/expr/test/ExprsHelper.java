@@ -16,8 +16,8 @@
 
 package io.dingodb.expr.test;
 
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.expr.Val;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 

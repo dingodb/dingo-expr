@@ -17,7 +17,7 @@
 package io.dingodb.expr.test.cases;
 
 import com.google.common.collect.ImmutableMap;
-import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;

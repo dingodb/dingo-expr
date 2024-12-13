@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.compiler;
 
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.CompileContext;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
@@ -23,7 +24,6 @@ import io.dingodb.expr.runtime.exception.ElementNotExist;
 import io.dingodb.expr.runtime.exception.NeverRunHere;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.ExprVisitor;
-import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

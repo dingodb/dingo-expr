@@ -16,12 +16,12 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.parser.exception.ExprParseException;
 import io.dingodb.expr.rel.op.AggregateOp;
 import io.dingodb.expr.rel.op.RelOpBuilder;
 import io.dingodb.expr.rel.op.RelOpStringBuilder;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

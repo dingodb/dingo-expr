@@ -16,8 +16,8 @@
 
 package io.dingodb.expr.coding;
 
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

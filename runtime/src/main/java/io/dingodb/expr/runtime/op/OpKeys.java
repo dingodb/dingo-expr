@@ -16,17 +16,19 @@
 
 package io.dingodb.expr.runtime.op;
 
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 
 public final class OpKeys {
     public static final DefaultOpKeys DEFAULT = new DefaultOpKeys();
+    public static final BinaryOtherOpKeys INTERVAL = new BinaryOtherOpKeys();
     public static final SameTypeOpKeys ALL_BOOL = new SameTypeOpKeys(Types.BOOL);
     public static final SameTypeOpKeys ALL_LONG = new SameTypeOpKeys(Types.LONG);
     public static final SameTypeOpKeys ALL_DOUBLE = new SameTypeOpKeys(Types.DOUBLE);
@@ -141,6 +143,26 @@ public final class OpKeys {
             types[0] = type0;
             types[1] = type1;
             return type0;
+        }
+    }
+
+    @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class BinaryOtherOpKeys {
+
+        private static final List<Type> types = Arrays.asList(
+            Types.INTERVAL_YEAR,
+            Types.YEAR,
+            Types.INTERVAL_MONTH,
+            Types.MONTH,
+            Types.INTERVAL_DAY,
+            Types.DAY,
+            Types.INTERVAL_DAY_TIME,
+            Types.INTERVAL_HOUR,
+            Types.INTERVAL_MINUTE,
+            Types.INTERVAL_SECOND);
+
+        public @Nullable OpKey keyOf(Type type0, Type type1) {
+            return types.stream().anyMatch(type1::matches) ? type1 : null;
         }
     }
 

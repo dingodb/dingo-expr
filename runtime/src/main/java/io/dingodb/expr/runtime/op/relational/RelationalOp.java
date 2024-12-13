@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.runtime.op.relational;
 
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.op.BinaryNumericOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 
 abstract class RelationalOp extends BinaryNumericOp {
     private static final long serialVersionUID = -7664583318220135004L;

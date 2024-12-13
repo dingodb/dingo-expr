@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.runtime.op.special;
 
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 
 abstract class SpecialFun extends UnaryOp {
     private static final long serialVersionUID = 5775232807315696439L;

@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.rel;
 
-import io.dingodb.expr.runtime.type.TupleType;
+import io.dingodb.expr.common.type.TupleType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

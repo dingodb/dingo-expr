@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.rel;
 
-import io.dingodb.expr.runtime.type.TupleType;
+import io.dingodb.expr.common.type.TupleType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.Serializable;

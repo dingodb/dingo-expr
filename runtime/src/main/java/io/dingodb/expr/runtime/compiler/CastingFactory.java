@@ -16,27 +16,33 @@
 
 package io.dingodb.expr.runtime.compiler;
 
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.BytesType;
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.IntervalDayType;
+import io.dingodb.expr.common.type.IntervalHourType;
+import io.dingodb.expr.common.type.IntervalMinuteType;
+import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalYearType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimeType;
+import io.dingodb.expr.common.type.TimestampType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.ExprCompileException;
 import io.dingodb.expr.runtime.expr.Exprs;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.collection.CastArrayOpFactory;
 import io.dingodb.expr.runtime.op.collection.CastListOpFactory;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.BytesType;
-import io.dingodb.expr.runtime.type.DateType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.TimeType;
-import io.dingodb.expr.runtime.type.TimestampType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -120,6 +126,36 @@ public final class CastingFactory {
         @Override
         public UnaryOp visitListType(@NonNull ListType type, ExprConfig obj) {
             return CastListOpSelector.INSTANCE.visit(type.getElementType(), obj);
+        }
+
+        @Override
+        public UnaryOp visitIntervalYearType(@NonNull IntervalYearType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalMonthType(@NonNull IntervalMonthType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalDayType(@NonNull IntervalDayType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalHourType(@NonNull IntervalHourType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalMinuteType(@NonNull IntervalMinuteType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalSecondType(@NonNull IntervalSecondType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
         }
     }
 

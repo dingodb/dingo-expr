@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
+import io.dingodb.expr.common.type.CollectionType;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.cast.CastOp;
-import io.dingodb.expr.runtime.type.CollectionType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

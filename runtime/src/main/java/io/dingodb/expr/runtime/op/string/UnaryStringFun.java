@@ -16,10 +16,10 @@
 
 package io.dingodb.expr.runtime.op.string;
 
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 abstract class UnaryStringFun extends UnaryOp {

@@ -26,6 +26,9 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import io.dingodb.expr.common.type.IntervalDayType;
+import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalYearType;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -73,7 +76,7 @@ public class OperatorsProcessor extends AbstractProcessor {
     private static final String OP_MAP_VAR_NAME = "opMap";
     private static final String INSTANCE_VAR_NAME = "INSTANCE";
 
-    private static final String TYPES_CLASS_NAME = "io.dingodb.expr.runtime.type.Types";
+    private static final String TYPES_CLASS_NAME = "io.dingodb.expr.common.type.Types";
     private static final String EXPR_CONFIG_CLASS_NAME = "io.dingodb.expr.runtime.ExprConfig";
 
     private static final Pattern NAME_PATTERN = Pattern.compile("^([a-zA-Z]+)\\d*$");
@@ -159,6 +162,12 @@ public class OperatorsProcessor extends AbstractProcessor {
             return "TIMESTAMP";
         } else if (typeName.equals(TypeName.get(Void.class))) {
             return "NULL";
+        } else if (typeName.equals(TypeName.get(IntervalYearType.IntervalYear.class))) {
+            return "YEAR";
+        } else if (typeName.equals(TypeName.get(IntervalMonthType.IntervalMonth.class))) {
+            return "MONTH";
+        } else if (typeName.equals(TypeName.get(IntervalDayType.IntervalDay.class))) {
+            return "DAY";
         }
         return "ANY";
     }

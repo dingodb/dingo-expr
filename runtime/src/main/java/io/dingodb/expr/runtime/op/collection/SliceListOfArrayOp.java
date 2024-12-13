@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.runtime.op.collection;
 
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.Types;
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.Types;
 
 import java.lang.reflect.Array;
 

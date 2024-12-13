@@ -16,9 +16,9 @@
 
 package io.dingodb.expr.runtime.op.index;
 
+import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpKey;
-import io.dingodb.expr.runtime.type.TupleType;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

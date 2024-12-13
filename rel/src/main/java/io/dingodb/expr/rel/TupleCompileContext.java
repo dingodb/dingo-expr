@@ -16,8 +16,8 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.runtime.CompileContext;
-import io.dingodb.expr.runtime.type.TupleType;
 
 public interface TupleCompileContext extends CompileContext {
     @Override

@@ -30,6 +30,7 @@ dependencies {
     compileOnly project(':dingo-expr-annotations')
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: 'commons-lang3'.v()
     implementation group: 'org.apache.commons', name: 'commons-text', version: 'commons-text'.v()
+    implementation project(':dingo-expr-common')
 }
 
 publishing {

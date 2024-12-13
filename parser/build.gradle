@@ -30,6 +30,7 @@ dependencies {
     antlr group: "org.antlr", name: "antlr4", version: 'antlr'.v()
     api project(':dingo-expr-runtime')
     testImplementation project(':dingo-expr-test')
+    implementation project(':dingo-expr-common')
 }
 
 generateGrammarSource {

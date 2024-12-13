@@ -16,10 +16,10 @@
 
 package io.dingodb.expr.runtime.op.index;
 
+import io.dingodb.expr.common.type.MapType;
+import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpKey;
-import io.dingodb.expr.runtime.type.MapType;
-import io.dingodb.expr.runtime.type.Type;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

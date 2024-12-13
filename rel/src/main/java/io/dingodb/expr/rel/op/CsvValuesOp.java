@@ -17,6 +17,29 @@
 package io.dingodb.expr.rel.op;
 
 import com.fasterxml.jackson.databind.MappingIterator;
+import io.dingodb.expr.common.type.AnyType;
+import io.dingodb.expr.common.type.ArrayType;
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.BytesType;
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.IntervalDayType;
+import io.dingodb.expr.common.type.IntervalHourType;
+import io.dingodb.expr.common.type.IntervalMinuteType;
+import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalYearType;
+import io.dingodb.expr.common.type.ListType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimeType;
+import io.dingodb.expr.common.type.TimestampType;
+import io.dingodb.expr.common.type.TupleType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.TypeVisitorBase;
 import io.dingodb.expr.json.runtime.Parser;
 import io.dingodb.expr.rel.RelConfig;
 import io.dingodb.expr.rel.SourceOp;
@@ -24,23 +47,6 @@ import io.dingodb.expr.rel.TupleCompileContext;
 import io.dingodb.expr.rel.TypedRelOp;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.collection.ArrayBuilder;
-import io.dingodb.expr.runtime.type.AnyType;
-import io.dingodb.expr.runtime.type.ArrayType;
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.BytesType;
-import io.dingodb.expr.runtime.type.DateType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.ListType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.TimeType;
-import io.dingodb.expr.runtime.type.TimestampType;
-import io.dingodb.expr.runtime.type.TupleType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import lombok.AccessLevel;
@@ -195,6 +201,36 @@ final class CsvValuesOp extends TypedRelOp implements SourceOp {
                 tuple[i] = visit(types[i], strings[i]);
             }
             return tuple;
+        }
+
+        @Override
+        public Object visitIntervalYearType(@NonNull IntervalYearType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalMonthType(@NonNull IntervalMonthType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalDayType(@NonNull IntervalDayType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalHourType(@NonNull IntervalHourType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalMinuteType(@NonNull IntervalMinuteType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalSecondType(@NonNull IntervalSecondType type, @NonNull Object obj) {
+            return obj;
         }
     }
 }

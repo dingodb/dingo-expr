@@ -16,14 +16,14 @@
 
 package io.dingodb.expr.coding;
 
-import io.dingodb.expr.runtime.type.BoolType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.IntType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.StringType;
-import io.dingodb.expr.runtime.type.TypeVisitorBase;
+import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TypeVisitorBase;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;

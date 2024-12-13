@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime;
 
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.compiler.CastingFactory;
 import io.dingodb.expr.runtime.compiler.ConstFactory;
 import io.dingodb.expr.runtime.compiler.VarFactory;
@@ -33,8 +35,6 @@ import io.dingodb.expr.runtime.expr.UnaryOpExpr;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.expr.Var;
 import io.dingodb.expr.runtime.expr.VariadicOpExpr;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

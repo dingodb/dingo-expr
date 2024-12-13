@@ -16,20 +16,20 @@
 
 package io.dingodb.expr.runtime.expr;
 
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.LongType;
+import io.dingodb.expr.common.type.NullType;
+import io.dingodb.expr.common.type.TimeType;
+import io.dingodb.expr.common.type.TimestampType;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.string.HexFunFactory;
-import io.dingodb.expr.runtime.type.DateType;
-import io.dingodb.expr.runtime.type.DecimalType;
-import io.dingodb.expr.runtime.type.DoubleType;
-import io.dingodb.expr.runtime.type.FloatType;
-import io.dingodb.expr.runtime.type.LongType;
-import io.dingodb.expr.runtime.type.NullType;
-import io.dingodb.expr.runtime.type.TimeType;
-import io.dingodb.expr.runtime.type.TimestampType;
-import io.dingodb.expr.runtime.type.Type;
-import io.dingodb.expr.runtime.type.Types;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

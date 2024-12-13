@@ -16,7 +16,7 @@
 
 package io.dingodb.expr.runtime.op;
 
-import io.dingodb.expr.runtime.type.Type;
+import io.dingodb.expr.common.type.Type;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public abstract class UnaryNumericOp extends UnaryOp {
