@@ -121,6 +121,7 @@ import io.dingodb.expr.runtime.op.relational.LeOpFactory;
 import io.dingodb.expr.runtime.op.relational.LtOpFactory;
 import io.dingodb.expr.runtime.op.relational.NeOpFactory;
 import io.dingodb.expr.runtime.op.special.CaseFun;
+import io.dingodb.expr.runtime.op.special.IfNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
@@ -147,6 +148,7 @@ import io.dingodb.expr.runtime.op.string.RepeatFunFactory;
 import io.dingodb.expr.runtime.op.string.ReplaceFunFactory;
 import io.dingodb.expr.runtime.op.string.ReverseFunFactory;
 import io.dingodb.expr.runtime.op.string.RightFunFactory;
+import io.dingodb.expr.runtime.op.string.SubStringIndexFunFactory;
 import io.dingodb.expr.runtime.op.string.Substr2FunFactory;
 import io.dingodb.expr.runtime.op.string.Substr3FunFactory;
 import io.dingodb.expr.runtime.op.string.Trim1FunFactory;
@@ -218,6 +220,7 @@ public final class Exprs {
     public static final IsNullFunFactory IS_NULL = IsNullFunFactory.INSTANCE;
     public static final IsTrueFunFactory IS_TRUE = IsTrueFunFactory.INSTANCE;
     public static final IsFalseFunFactory IS_FALSE = IsFalseFunFactory.INSTANCE;
+    public static final IfNullFunFactory IF_NULL = IfNullFunFactory.INSTANCE;
     public static final CaseFun CASE = CaseFun.INSTANCE;
 
     // Mathematics
@@ -272,6 +275,7 @@ public final class Exprs {
     public static final ConvertTimeFormatFunFactory _CTF = ConvertTimeFormatFunFactory.INSTANCE;
     public static final ConvertPattern1FunFactory _CP1 = ConvertPattern1FunFactory.INSTANCE;
     public static final ConvertPattern2FunFactory _CP2 = ConvertPattern2FunFactory.INSTANCE;
+    public static final SubStringIndexFunFactory SUBSTRING_INDEX = SubStringIndexFunFactory.INSTANCE;
 
     // Index
     public static final IndexOpFactory INDEX = IndexOpFactory.INSTANCE;

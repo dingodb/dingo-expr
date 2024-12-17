@@ -82,6 +82,7 @@ import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanhFunFactory;
 import io.dingodb.expr.runtime.op.special.CaseFun;
+import io.dingodb.expr.runtime.op.special.IfNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
@@ -108,6 +109,7 @@ import io.dingodb.expr.runtime.op.string.RepeatFunFactory;
 import io.dingodb.expr.runtime.op.string.ReplaceFunFactory;
 import io.dingodb.expr.runtime.op.string.ReverseFunFactory;
 import io.dingodb.expr.runtime.op.string.RightFunFactory;
+import io.dingodb.expr.runtime.op.string.SubStringIndexFunFactory;
 import io.dingodb.expr.runtime.op.string.Substr2FunFactory;
 import io.dingodb.expr.runtime.op.string.Substr3FunFactory;
 import io.dingodb.expr.runtime.op.string.Trim1FunFactory;
@@ -209,6 +211,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(IsTrueFunFactory.NAME, Exprs.IS_TRUE);
         registerUnaryFun(IsFalseFunFactory.NAME, Exprs.IS_FALSE);
         registerVariadicFun(CaseFun.NAME, Exprs.CASE);
+        registerBinaryFun(IfNullFunFactory.NAME, Exprs.IF_NULL);
 
         // String functions
         registerUnaryFun(CharLengthFunFactory.NAME, Exprs.CHAR_LENGTH);
@@ -239,6 +242,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(ConvertTimeFormatFunFactory.NAME, Exprs._CTF);
         registerUnaryFun(ConvertPattern1FunFactory.NAME, Exprs._CP1);
         registerBinaryFun(ConvertPattern2FunFactory.NAME, Exprs._CP2);
+        registerTertiaryFun(SubStringIndexFunFactory.NAME, Exprs.SUBSTRING_INDEX);
 
         // Time functions
         registerNullaryFun(CurrentDateFun.NAME, Exprs.CURRENT_DATE);
