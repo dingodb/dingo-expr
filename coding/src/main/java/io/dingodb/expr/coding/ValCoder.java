@@ -18,6 +18,7 @@ package io.dingodb.expr.coding;
 
 import io.dingodb.expr.common.type.ArrayType;
 import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.DateType;
 import io.dingodb.expr.common.type.DoubleType;
 import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.IntType;
@@ -33,6 +34,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
@@ -74,6 +76,20 @@ class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
             }
         } else {
             obj.write(NULL | TypeCoder.TYPE_INT64);
+        }
+        return CodingFlag.OK;
+    }
+
+    @SneakyThrows
+    @Override
+    public CodingFlag visitDateType(@NonNull DateType type, OutputStream obj) {
+        Date value = (Date) val.getValue();
+        if (value != null) {
+            long milliseconds = value.getTime();
+            obj.write(CONST | TypeCoder.TYPE_DATE);
+            CodecUtils.encodeVarInt(obj, milliseconds);
+        } else {
+            obj.write(NULL | TypeCoder.TYPE_DATE);
         }
         return CodingFlag.OK;
     }
