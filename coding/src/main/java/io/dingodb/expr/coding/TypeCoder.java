@@ -17,6 +17,7 @@
 package io.dingodb.expr.coding;
 
 import io.dingodb.expr.common.type.BoolType;
+import io.dingodb.expr.common.type.DateType;
 import io.dingodb.expr.common.type.DecimalType;
 import io.dingodb.expr.common.type.DoubleType;
 import io.dingodb.expr.common.type.FloatType;
@@ -37,6 +38,7 @@ class TypeCoder extends TypeVisitorBase<Byte, Void> {
     public static final byte TYPE_DOUBLE = (byte) 0x05;
     public static final byte TYPE_DECIMAL = (byte) 0x06;
     public static final byte TYPE_STRING = (byte) 0x07;
+    public static final byte TYPE_DATE = (byte) 0x08;
     static final TypeCoder INSTANCE = new TypeCoder();
 
     @Override
@@ -73,5 +75,10 @@ class TypeCoder extends TypeVisitorBase<Byte, Void> {
     @Override
     public Byte visitStringType(@NonNull StringType type, Void obj) {
         return TYPE_STRING;
+    }
+
+    @Override
+    public Byte visitDateType(@NonNull DateType type, Void obj) {
+        return TYPE_DATE;
     }
 }

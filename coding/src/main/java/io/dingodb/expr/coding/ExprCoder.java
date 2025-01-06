@@ -181,7 +181,8 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                 case CAST:
                     Byte dstType = TypeCoder.INSTANCE.visit(expr.getType());
                     Byte srcType = TypeCoder.INSTANCE.visit((Type) expr.getOp().getKey());
-                    if (dstType != null && srcType != null) {
+                    if (dstType != null && srcType != null
+                        && dstType != TypeCoder.TYPE_DATE && srcType != TypeCoder.TYPE_DATE) {
                         obj.write(expr.getOp().doRangeChecking() ? CAST_C : CAST);
                         obj.write(dstType << 4 | srcType);
                         success = true;
