@@ -16,11 +16,21 @@
 
 package io.dingodb.expr.jni;
 
+import java.nio.file.Paths;
+
 public class LibExprJni {
     public static final LibExprJni INSTANCE = new LibExprJni();
 
     private LibExprJni() {
-        System.loadLibrary("expr_jni");
+        String name = System.getProperty("os.name").toLowerCase();
+        String path = Paths.get("").toAbsolutePath().getParent().toString();
+        if (name.indexOf("win") >= 0) {
+            System.load(path + "/jni/src/main/cpp/build/libexpr_jni.dll");
+        } else if (name.indexOf("mac") >= 0) {
+            System.load(path + "/jni/src/main/cpp/build/libexpr_jni.dylib");
+        } else {
+            System.load(path + "/jni/src/main/cpp/build/libexpr_jni.so");
+        }
     }
 
     public native Object decode(final byte[] exprBytes);

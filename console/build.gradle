@@ -20,7 +20,7 @@ plugins {
 }
 
 application {
-    mainClass = 'io.dingodb.expr.console.DingoExprConsole'
+    getMainClass().set('io.dingodb.expr.console.DingoExprConsole')
 }
 
 dependencies {

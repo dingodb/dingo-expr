@@ -40,7 +40,7 @@ abstract class MinuteFun extends UnaryOp {
     }
 
     static int extractMinute(@NonNull Timestamp value, ExprConfig config) {
-        return DateTimeUtils.extractHour(value);
+        return DateTimeUtils.extractMinute(value);
     }
 
     @Override

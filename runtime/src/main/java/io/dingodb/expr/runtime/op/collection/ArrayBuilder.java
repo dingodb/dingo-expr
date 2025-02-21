@@ -30,6 +30,7 @@ import io.dingodb.expr.common.type.IntervalHourType;
 import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
 import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
 import io.dingodb.expr.common.type.ListType;
 import io.dingodb.expr.common.type.LongType;
@@ -146,6 +147,11 @@ public final class ArrayBuilder extends TypeVisitorBase<Object, @NonNull Integer
 
     @Override
     public Object visitIntervalDayType(@NonNull IntervalDayType type, @NonNull Integer obj) {
+        return new Object[obj];
+    }
+
+    @Override
+    public Object visitIntervalWeekType(@NonNull IntervalWeekType type, @NonNull Integer obj) {
         return new Object[obj];
     }
 

@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.json.runtime;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -55,6 +57,8 @@ public class Parser implements Serializable {
                 mapper = setJsonFeature(JsonMapper.builder())
                     .addModule(new AfterburnerModule())
                     .build();
+                mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                 break;
             case APPLICATION_YAML:
                 YAMLFactory yamlFactory = new YAMLFactory()
@@ -62,9 +66,13 @@ public class Parser implements Serializable {
                 mapper = setJsonFeature(JsonMapper.builder(yamlFactory))
                     .addModule(new AfterburnerModule())
                     .build();
+                mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                 break;
             case TEXT_CSV:
                 mapper = setCsvFeature(new CsvMapper());
+                mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid DataFormat value \"" + format

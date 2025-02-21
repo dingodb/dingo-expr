@@ -16,9 +16,26 @@
 
 package io.dingodb.expr.common.type;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public final class IntervalMinuteType extends ScalarType {
+import java.math.BigDecimal;
+
+public class IntervalMinuteType extends IntervalType {
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class IntervalMinute extends IntervalMinuteType {
+        public BigDecimal value;
+        public Type elementType;
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof IntervalMinute;
+        }
+    }
+
 
     public static final String NAME = "INTERVAL_MINUTE";
     private static final int CODE = 205;

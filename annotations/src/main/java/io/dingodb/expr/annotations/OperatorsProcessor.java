@@ -27,7 +27,11 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import io.dingodb.expr.common.type.IntervalDayType;
+import io.dingodb.expr.common.type.IntervalHourType;
+import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
 import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -168,6 +172,14 @@ public class OperatorsProcessor extends AbstractProcessor {
             return "MONTH";
         } else if (typeName.equals(TypeName.get(IntervalDayType.IntervalDay.class))) {
             return "DAY";
+        } else if (typeName.equals(TypeName.get(IntervalWeekType.IntervalWeek.class))) {
+            return "WEEK";
+        } else if (typeName.equals(TypeName.get(IntervalHourType.IntervalHour.class))) {
+            return "HOUR";
+        } else if (typeName.equals(TypeName.get(IntervalMinuteType.IntervalMinute.class))) {
+            return "MINUTE";
+        } else if (typeName.equals(TypeName.get(IntervalSecondType.IntervalSecond.class))) {
+            return "SECOND";
         }
         return "ANY";
     }

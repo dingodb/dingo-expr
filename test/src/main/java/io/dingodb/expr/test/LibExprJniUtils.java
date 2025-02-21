@@ -25,7 +25,8 @@ public final class LibExprJniUtils {
     }
 
     public static void setLibPath() {
-        System.setProperty("java.library.path", System.getProperty("java.library.path") + ":" + LIB_PATH);
+        String property = System.getProperty("user.home");
+        /*System.setProperty("java.library.path", System.getProperty("java.library.path") + ":" + LIB_PATH);
         try {
             // Refresh lib path.
             Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
@@ -33,6 +34,6 @@ public final class LibExprJniUtils {
             fieldSysPath.set(null, null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 }
