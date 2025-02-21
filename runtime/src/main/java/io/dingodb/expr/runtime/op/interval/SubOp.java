@@ -19,14 +19,20 @@ package io.dingodb.expr.runtime.op.interval;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.common.type.IntervalDayTimeType;
 import io.dingodb.expr.common.type.IntervalDayType;
+import io.dingodb.expr.common.type.IntervalHourType;
+import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
 import io.dingodb.expr.runtime.op.BinaryIntervalOp;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Operators
 public abstract class SubOp extends BinaryIntervalOp {
@@ -60,6 +66,95 @@ public abstract class SubOp extends BinaryIntervalOp {
         }
         LocalDate resultDate = localDate.minusDays(daysToSubtract);
         return Date.valueOf(resultDate);
+    }
+
+    static Date sub(Date value0, IntervalWeekType.IntervalWeek value1) {
+        LocalDate localDate = value0.toLocalDate();
+        long week;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            week = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            week = value1.value.longValue();
+        }
+        LocalDate resultDate = localDate.minusWeeks(week);
+        return Date.valueOf(resultDate);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalYearType.IntervalYear value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        LocalDateTime resultDateTime;
+        if (value1.elementType instanceof IntervalMonthType) {
+            resultDateTime = localDateTime.minusMonths(value1.value.longValue());
+        } else {
+            resultDateTime = localDateTime.minusYears(value1.value.longValue());
+        }
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalMonthType.IntervalMonth value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        LocalDateTime resultDateTime = localDateTime.minusMonths(value1.value.longValue());
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalDayType.IntervalDay value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        long daysToSubtract;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            daysToSubtract = value1.value.longValue() / (24 * 60 * 60 * 1000);
+        } else {
+            daysToSubtract = value1.value.longValue();
+        }
+        LocalDateTime resultDateTime = localDateTime.minusDays(daysToSubtract);
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalWeekType.IntervalWeek value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        long week;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            week = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            week = value1.value.longValue();
+        }
+        LocalDateTime resultDateTime = localDateTime.minusWeeks(week);
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalHourType.IntervalHour value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        long hours;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            hours = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            hours = value1.value.longValue();
+        }
+        LocalDateTime resultDateTime = localDateTime.minusHours(hours);
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalMinuteType.IntervalMinute value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        long minute;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            minute = value1.value.longValue() / (60 * 1000);
+        } else {
+            minute = value1.value.longValue();
+        }
+        LocalDateTime resultDateTime = localDateTime.minusMinutes(minute);
+        return Timestamp.valueOf(resultDateTime);
+    }
+
+    static Timestamp sub(Timestamp value0, IntervalSecondType.IntervalSecond value1) {
+        LocalDateTime localDateTime = value0.toLocalDateTime();
+        long second;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            second = value1.value.longValue() / 1000;
+        } else {
+            second = value1.value.longValue();
+        }
+        LocalDateTime resultDateTime = localDateTime.minusSeconds(second);
+        return Timestamp.valueOf(resultDateTime);
     }
 
     @Override

@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +40,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
+import java.time.temporal.IsoFields;
 import java.util.Arrays;
 import java.util.TimeZone;
 
@@ -337,7 +339,7 @@ public final class DateTimeUtils {
 
     public static int extractWeek(Object value) {
         LocalDateTime localDateTime = toLocalDateTime(value);
-        return localDateTime.getDayOfWeek().getValue();
+        return localDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     }
 
     public static int extractHour(Object value) {

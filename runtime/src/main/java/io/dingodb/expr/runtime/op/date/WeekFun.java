@@ -23,6 +23,7 @@ import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Operators
 abstract class WeekFun extends UnaryOp {
@@ -32,6 +33,10 @@ abstract class WeekFun extends UnaryOp {
 
     static int extractWeek(@NonNull Date value, @NonNull ExprConfig config) {
         return DateTimeUtils.extractWeek(value);
+    }
+
+    static int extractWeek(@NonNull Timestamp value0, @NonNull ExprConfig config) {
+        return DateTimeUtils.extractWeek(value0);
     }
 
     @Override

@@ -31,6 +31,7 @@ import io.dingodb.expr.common.type.IntervalHourType;
 import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
 import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
 import io.dingodb.expr.common.type.ListType;
 import io.dingodb.expr.common.type.LongType;
@@ -215,6 +216,11 @@ final class CsvValuesOp extends TypedRelOp implements SourceOp {
 
         @Override
         public Object visitIntervalDayType(@NonNull IntervalDayType type, @NonNull Object obj) {
+            return obj;
+        }
+
+        @Override
+        public Object visitIntervalWeekType(@NonNull IntervalWeekType type, @NonNull Object obj) {
             return obj;
         }
 

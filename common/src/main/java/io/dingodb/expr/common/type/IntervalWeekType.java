@@ -22,30 +22,30 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 
-public class IntervalSecondType extends IntervalType {
+public class IntervalWeekType extends IntervalType {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class IntervalSecond extends IntervalSecondType {
+    public static class IntervalWeek extends IntervalWeekType {
         public BigDecimal value;
         public Type elementType;
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof IntervalSecond;
+            return obj instanceof IntervalWeek;
         }
     }
 
-    public static final String NAME = "INTERVAL_SECOND";
-    private static final int CODE = 206;
+    public static final String NAME = "INTERVAL_WEEK";
+    private static final int CODE = 207;
 
-    IntervalSecondType() {
+    IntervalWeekType() {
         super();
     }
 
     @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
-        return visitor.visitIntervalSecondType(this, obj);
+        return visitor.visitIntervalWeekType(this, obj);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class IntervalSecondType extends IntervalType {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof IntervalSecondType;
+        return obj instanceof IntervalWeekType;
     }
 
     @Override

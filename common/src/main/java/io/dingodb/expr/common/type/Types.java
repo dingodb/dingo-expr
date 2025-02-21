@@ -50,9 +50,14 @@ public final class Types {
     public static final IntervalMonthType.IntervalMonth MONTH = new IntervalMonthType.IntervalMonth();
     public static final IntervalDayType INTERVAL_DAY = new IntervalDayType();
     public static final IntervalDayType.IntervalDay DAY = new IntervalDayType.IntervalDay();
+    public static final IntervalWeekType INTERVAL_WEEK = new IntervalWeekType();
+    public static final IntervalWeekType.IntervalWeek WEEK = new IntervalWeekType.IntervalWeek();
     public static final IntervalHourType INTERVAL_HOUR = new IntervalHourType();
+    public static final IntervalHourType.IntervalHour HOUR = new IntervalHourType.IntervalHour();
     public static final IntervalMinuteType INTERVAL_MINUTE = new IntervalMinuteType();
+    public static final IntervalMinuteType.IntervalMinute MINUTE = new IntervalMinuteType.IntervalMinute();
     public static final IntervalSecondType INTERVAL_SECOND = new IntervalSecondType();
+    public static final IntervalSecondType.IntervalSecond SECOND = new IntervalSecondType.IntervalSecond();
     public static final IntervalDayTimeType INTERVAL_DAY_TIME = new IntervalDayTimeType();
 
     public static final ArrayType ARRAY_INT = new ArrayType(INT);

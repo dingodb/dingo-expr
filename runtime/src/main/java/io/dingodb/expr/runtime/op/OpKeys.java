@@ -60,6 +60,8 @@ public final class OpKeys {
                 return type0;
             } else if (type0.equals(Types.NULL)) {
                 return type1;
+            } else if (!type0.matches(type1)) {
+                return Types.ANY;
             }
             return null;
         }
@@ -149,20 +151,31 @@ public final class OpKeys {
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
     public static final class BinaryOtherOpKeys {
 
-        private static final List<Type> types = Arrays.asList(
+        private static final List<Type> types0 = Arrays.asList(
+            Types.DATE,
+            Types.TIME,
+            Types.TIMESTAMP);
+
+        private static final List<Type> types1 = Arrays.asList(
             Types.INTERVAL_YEAR,
             Types.YEAR,
             Types.INTERVAL_MONTH,
             Types.MONTH,
             Types.INTERVAL_DAY,
             Types.DAY,
+            Types.INTERVAL_WEEK,
+            Types.WEEK,
             Types.INTERVAL_DAY_TIME,
             Types.INTERVAL_HOUR,
+            Types.HOUR,
             Types.INTERVAL_MINUTE,
-            Types.INTERVAL_SECOND);
+            Types.MINUTE,
+            Types.INTERVAL_SECOND,
+            Types.SECOND);
 
         public @Nullable OpKey keyOf(Type type0, Type type1) {
-            return types.stream().anyMatch(type1::matches) ? type1 : null;
+            return types0.stream().anyMatch(type0::matches)
+                ? (types1.stream().anyMatch(type1::matches) ? Types.tuple(type0, type1) : null) : null;
         }
     }
 

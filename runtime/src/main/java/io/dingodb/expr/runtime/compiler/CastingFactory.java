@@ -29,6 +29,7 @@ import io.dingodb.expr.common.type.IntervalHourType;
 import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
 import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
 import io.dingodb.expr.common.type.ListType;
 import io.dingodb.expr.common.type.LongType;
@@ -140,6 +141,11 @@ public final class CastingFactory {
 
         @Override
         public UnaryOp visitIntervalDayType(@NonNull IntervalDayType type, ExprConfig obj) {
+            return Exprs.TO_STRING;
+        }
+
+        @Override
+        public UnaryOp visitIntervalWeekType(@NonNull IntervalWeekType type, ExprConfig obj) {
             return Exprs.TO_STRING;
         }
 

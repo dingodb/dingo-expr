@@ -128,6 +128,11 @@ public abstract class TypeVisitorBase<R, T> implements TypeVisitor<R, T> {
     }
 
     @Override
+    public R visitIntervalWeekType(@NonNull IntervalWeekType type, T obj) {
+        return null;
+    }
+
+    @Override
     public R visitIntervalHourType(@NonNull IntervalHourType type, T obj) {
         return null;
     }

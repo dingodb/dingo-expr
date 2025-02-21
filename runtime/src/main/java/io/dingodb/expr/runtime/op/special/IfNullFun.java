@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.special;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.BinarySpecialOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -72,6 +73,14 @@ abstract class IfNullFun extends BinarySpecialOp {
 
     static Timestamp ifNull(Timestamp value0, Timestamp value1) {
         return value0 == null ? value1 : value0;
+    }
+
+    static Object ifNull(Object value0, Object value1) {
+        return value0 == null ? value1 : value0;
+    }
+
+    static @Nullable Object ifNull(Void value0, Void value1) {
+        return null;
     }
 
     @Override

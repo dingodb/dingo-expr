@@ -59,6 +59,8 @@ public interface TypeVisitor<R, T> {
 
     R visitIntervalDayType(@NonNull IntervalDayType type, T obj);
 
+    R visitIntervalWeekType(@NonNull IntervalWeekType type, T obj);
+
     R visitIntervalHourType(@NonNull IntervalHourType type, T obj);
 
     R visitIntervalMinuteType(@NonNull IntervalMinuteType type, T obj);
