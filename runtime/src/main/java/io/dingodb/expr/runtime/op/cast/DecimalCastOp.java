@@ -56,6 +56,19 @@ abstract class DecimalCastOp extends CastOp {
         return new BigDecimal(value);
     }
 
+    static BigDecimal decimalCast(byte[] value) {
+        if (value == null) {
+            return null;
+        } else {
+            try {
+                String val = new String(value);
+                return new BigDecimal(val);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
+
     static @Nullable BigDecimal decimalCast(Void ignoredValue) {
         return null;
     }

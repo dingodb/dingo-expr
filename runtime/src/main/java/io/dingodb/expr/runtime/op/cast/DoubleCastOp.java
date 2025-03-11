@@ -56,6 +56,19 @@ abstract class DoubleCastOp extends CastOp {
         return Double.parseDouble(value);
     }
 
+    static double doubleCast(byte[] value) {
+        if (value == null) {
+            return 0;
+        } else {
+            try {
+                String val = new String(value);
+                return Double.parseDouble(val);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+    }
+
     static @Nullable Double doubleCast(Void ignoredValue) {
         return null;
     }

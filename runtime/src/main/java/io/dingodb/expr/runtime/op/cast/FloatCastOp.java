@@ -56,6 +56,19 @@ abstract class FloatCastOp extends CastOp {
         return Float.parseFloat(value);
     }
 
+    static float floatCast(byte[] value) {
+        if (value == null) {
+            return 0;
+        } else {
+            try {
+                String val = new String(value);
+                return Float.parseFloat(val);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+    }
+
     static @Nullable Float floatCast(Void ignoredValue) {
         return null;
     }
