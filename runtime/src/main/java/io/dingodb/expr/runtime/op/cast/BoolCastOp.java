@@ -52,6 +52,26 @@ abstract class BoolCastOp extends CastOp {
         return value.compareTo(BigDecimal.ZERO) != 0;
     }
 
+    static boolean boolCast(byte[] value) {
+        if (value == null) {
+            return false;
+        } else {
+            if (value.length == 1) {
+                return value[0] != 0x00;
+            }
+            try {
+                String val = new String(value);
+                if ("".equalsIgnoreCase(val)) {
+                    return false;
+                } else {
+                    return !"0".equalsIgnoreCase(val);
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+    }
+
     static @Nullable Boolean boolCast(Void ignoredValue) {
         return null;
     }
