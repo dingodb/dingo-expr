@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Operators
 abstract class DateCastOp extends CastOp {
@@ -44,6 +45,10 @@ abstract class DateCastOp extends CastOp {
 
     static @NonNull Date dateCast(@NonNull Date value) {
         return value;
+    }
+
+    static @NonNull Date dateCast(@NonNull Timestamp value) {
+        return new Date(value.getTime());
     }
 
     static @Nullable Date dateCast(Void ignoredValue) {

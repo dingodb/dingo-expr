@@ -84,6 +84,7 @@ import io.dingodb.expr.runtime.op.date.MillisecondFunFactory;
 import io.dingodb.expr.runtime.op.date.MinuteFunFactory;
 import io.dingodb.expr.runtime.op.date.MinuteSecondFunFactory;
 import io.dingodb.expr.runtime.op.date.MonthFunFactory;
+import io.dingodb.expr.runtime.op.date.QuarterFunFactory;
 import io.dingodb.expr.runtime.op.date.SecondFunFactory;
 import io.dingodb.expr.runtime.op.date.WeekFunFactory;
 import io.dingodb.expr.runtime.op.date.YearFunFactory;
@@ -298,6 +299,7 @@ public final class Exprs {
     // Extract date and time
     public static final YearFunFactory YEAR = YearFunFactory.INSTANCE;
     public static final MonthFunFactory MONTH = MonthFunFactory.INSTANCE;
+    public static final QuarterFunFactory QUARTER = QuarterFunFactory.INSTANCE;
     public static final DayFunFactory DAY = DayFunFactory.INSTANCE;
     public static final WeekFunFactory WEEK = WeekFunFactory.INSTANCE;
     public static final HourFunFactory HOUR = HourFunFactory.INSTANCE;
