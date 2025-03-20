@@ -41,7 +41,9 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
 import java.time.temporal.IsoFields;
+import java.time.temporal.WeekFields;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import static java.time.temporal.ChronoField.DAY_OF_MONTH;
@@ -241,6 +243,11 @@ public final class DateTimeUtils {
         return Instant.ofEpochMilli(milliSeconds).atZone(ZoneOffset.UTC);
     }
 
+    public static @NonNull ZonedDateTime toDefaultTime(long milliSeconds) {
+        TimeZone defaultTimeZone = TimeZone.getDefault();
+        return Instant.ofEpochMilli(milliSeconds).atZone(defaultTimeZone.toZoneId());
+    }
+
     // For testing and debugging
     public static @NonNull String toUtcString(long milliSeconds) {
         final DateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -264,15 +271,34 @@ public final class DateTimeUtils {
     }
 
     public static @NonNull String dateFormat(@NonNull Date value, @NonNull DateTimeFormatter formatter) {
-        return toUtcTime(value.getTime()).format(formatter);
+        return toDefaultTime(value.getTime()).format(formatter);
     }
 
     public static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {
-        return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+        if ("'x-v'".equalsIgnoreCase(format)) {
+            return xy(value, format);
+        } else if (format.contains("'y'")) {
+            format = format.replace("'y'", "yy");
+            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+        } else if (format.contains("'y-'")) {
+            format = format.replace("'y-'", "yy-");
+            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+        } else {
+            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+        }
     }
 
     public static @NonNull String dateFormat(@NonNull Date value) {
         return dateFormat(value, DEFAULT_OUTPUT_DATE_FORMATTER);
+    }
+
+    public static String xy(Date value,  String format) {
+        LocalDate today = value.toLocalDate();
+
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+
+        int weekOfYear = today.get(weekFields.weekOfYear());
+        return today.getYear() + "-" + weekOfYear;
     }
 
     public static @NonNull String timeFormat(@NonNull Time value, @NonNull DateTimeFormatter formatter) {
@@ -501,5 +527,10 @@ public final class DateTimeUtils {
             builder.append('\'');
         }
         return builder.toString();
+    }
+
+    public static int extractQuarter(Object value) {
+        LocalDateTime localDateTime = toLocalDateTime(value);
+        return localDateTime.get(IsoFields.QUARTER_OF_YEAR);
     }
 }
