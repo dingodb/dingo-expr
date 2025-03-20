@@ -45,6 +45,8 @@ public final class OpKeys {
     public static final TertiaryOpKeys STRING_INT_INT = new TertiaryOpKeys(Types.STRING, Types.INT, Types.INT);
     public static final TertiaryOpKeys STRING_STRING_INT = new TertiaryOpKeys(Types.STRING, Types.STRING, Types.INT);
 
+    public static final TertiaryOpKeys BOOL_STRING_STRING = new TertiaryOpKeys(Types.BOOL, Types.STRING, Types.STRING);
+
     public static final TertiaryOpKeys STRING_STRING_STRING
         = new TertiaryOpKeys(Types.STRING, Types.STRING, Types.STRING);
 
