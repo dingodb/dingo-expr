@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Operators
@@ -37,6 +38,10 @@ abstract class TimestampCastOp extends CastOp {
 
     static @NonNull Timestamp timestampCast(long value) {
         return new Timestamp(DateTimeUtils.fromSecond(value));
+    }
+
+    static @NonNull Timestamp timestampCast(Date value) {
+        return new Timestamp(value.getTime());
     }
 
     static @NonNull Timestamp timestampCast(@NonNull BigDecimal value) {
