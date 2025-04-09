@@ -448,7 +448,9 @@ public final class DateTimeUtils {
             return ((Date) value).toLocalDate().atStartOfDay();
         }
         if (value instanceof Time) {
-            return ((Time) value).toLocalTime().atDate(LocalDate.now());
+            java.util.Date date = new java.util.Date(((Time) value).getTime());
+            ZonedDateTime zonedDateTime = date.toInstant().atZone(ZoneId.systemDefault());
+            return zonedDateTime.toLocalDateTime();
         }
         if (value instanceof Timestamp) {
             return ((Timestamp) value).toLocalDateTime();
