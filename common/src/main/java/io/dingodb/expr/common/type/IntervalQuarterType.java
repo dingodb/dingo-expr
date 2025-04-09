@@ -18,15 +18,19 @@ package io.dingodb.expr.common.type;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class IntervalDayTimeType extends IntervalType {
+public class IntervalQuarterType extends IntervalType {
 
-    public static final String NAME = "INTERVAL_DAY_TIME";
+    public static final String NAME = "INTERVAL_QUARTER";
 
-    private static final int CODE = 208;
+    private static final int CODE = 209;
+
+    IntervalQuarterType() {
+        super();
+    }
 
     @Override
     public <R, T> R accept(@NonNull TypeVisitor<R, T> visitor, T obj) {
-        return null;
+        return visitor.visitIntervalQuarterType(this, obj);
     }
 
     @Override
@@ -36,7 +40,7 @@ public class IntervalDayTimeType extends IntervalType {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof IntervalDayTimeType;
+        return obj instanceof IntervalQuarterType;
     }
 
     @Override

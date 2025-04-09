@@ -168,6 +168,7 @@ public final class OpKeys {
             Types.YEAR,
             Types.INTERVAL_MONTH,
             Types.MONTH,
+            Types.INTERVAL_QUARTER,
             Types.INTERVAL_DAY,
             Types.DAY,
             Types.INTERVAL_WEEK,

@@ -123,6 +123,11 @@ public abstract class TypeVisitorBase<R, T> implements TypeVisitor<R, T> {
     }
 
     @Override
+    public R visitIntervalQuarterType(@NonNull IntervalQuarterType type, T obj) {
+        return null;
+    }
+
+    @Override
     public R visitIntervalDayType(@NonNull IntervalDayType type, T obj) {
         return null;
     }

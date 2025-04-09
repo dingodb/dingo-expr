@@ -57,6 +57,8 @@ public interface TypeVisitor<R, T> {
 
     R visitIntervalMonthType(@NonNull IntervalMonthType type, T obj);
 
+    R visitIntervalQuarterType(@NonNull IntervalQuarterType type, T obj);
+
     R visitIntervalDayType(@NonNull IntervalDayType type, T obj);
 
     R visitIntervalWeekType(@NonNull IntervalWeekType type, T obj);

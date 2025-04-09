@@ -48,6 +48,7 @@ public final class Types {
     public static final IntervalYearType.IntervalYear YEAR = new IntervalYearType.IntervalYear();
     public static final IntervalMonthType INTERVAL_MONTH = new IntervalMonthType();
     public static final IntervalMonthType.IntervalMonth MONTH = new IntervalMonthType.IntervalMonth();
+    public static final IntervalQuarterType INTERVAL_QUARTER = new IntervalQuarterType();
     public static final IntervalDayType INTERVAL_DAY = new IntervalDayType();
     public static final IntervalDayType.IntervalDay DAY = new IntervalDayType.IntervalDay();
     public static final IntervalWeekType INTERVAL_WEEK = new IntervalWeekType();

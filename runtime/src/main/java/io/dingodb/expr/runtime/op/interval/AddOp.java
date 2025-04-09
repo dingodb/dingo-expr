@@ -22,6 +22,7 @@ import io.dingodb.expr.common.type.IntervalDayType;
 import io.dingodb.expr.common.type.IntervalHourType;
 import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
+import io.dingodb.expr.common.type.IntervalQuarterType;
 import io.dingodb.expr.common.type.IntervalSecondType;
 import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
@@ -34,6 +35,7 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 @Operators
@@ -42,44 +44,49 @@ public class AddOp extends BinaryIntervalOp {
     private static final long serialVersionUID = -3920946411706267558L;
 
     static Date add(Date value0, IntervalYearType.IntervalYear value1) {
-        LocalDate localDate = value0.toLocalDate();
-        LocalDate resultDate;
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        LocalDateTime t;
         if (value1.elementType instanceof IntervalMonthType) {
-            resultDate = localDate.plusMonths(value1.value.intValue());
+            t = localDateTime.plusMonths(value1.value.longValue());
         } else {
-            resultDate = localDate.plusYears(value1.value.intValue());
+            t = localDateTime.plusYears(value1.value.intValue());
         }
-        return Date.valueOf(resultDate);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     static Date add(Date value0, IntervalMonthType.IntervalMonth value1) {
-        LocalDate localDate = value0.toLocalDate();
-        LocalDate resultDate = localDate.plusMonths(value1.value.intValue());
-        return Date.valueOf(resultDate);
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        LocalDateTime t;
+        if (value1.elementType instanceof IntervalQuarterType) {
+            t = localDateTime.plusMonths(value1.value.longValue() * 3);
+        } else {
+            t = localDateTime.plusMonths(value1.value.intValue());
+        }
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     static Date add(Date value0, IntervalDayType.IntervalDay value1) {
-        LocalDate localDate = value0.toLocalDate();
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long daysToAdd;
         if (value1.elementType instanceof IntervalDayTimeType) {
             daysToAdd = value1.value.longValue() / (24 * 60 * 60 * 1000);
         } else {
             daysToAdd = value1.value.longValue();
         }
-        LocalDate resultDate = localDate.plusDays(daysToAdd);
-        return Date.valueOf(resultDate);
+        LocalDateTime t = localDateTime.plusDays(daysToAdd);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     static Date add(Date value0, IntervalWeekType.IntervalWeek value1) {
-        LocalDate localDate = value0.toLocalDate();
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long week;
         if (value1.elementType instanceof IntervalDayTimeType) {
             week = value1.value.longValue() / (60 * 60 * 1000);
         } else {
             week = value1.value.longValue();
         }
-        LocalDate resultDate = localDate.plusWeeks(week);
-        return Date.valueOf(resultDate);
+        LocalDateTime t = localDateTime.plusWeeks(week);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     static Timestamp add(Timestamp value0, IntervalYearType.IntervalYear value1) {
@@ -95,8 +102,13 @@ public class AddOp extends BinaryIntervalOp {
 
     static Timestamp add(Timestamp value0, IntervalMonthType.IntervalMonth value1) {
         LocalDateTime localDateTime = value0.toLocalDateTime();
-        LocalDateTime resultDateTime = localDateTime.plusMonths(value1.value.longValue());
-        return Timestamp.valueOf(resultDateTime);
+        LocalDateTime t;
+        if (value1.elementType instanceof IntervalQuarterType) {
+            t = localDateTime.plusMonths(value1.value.longValue() * 3);
+        } else {
+            t = localDateTime.plusMonths(value1.value.longValue());
+        }
+        return Timestamp.valueOf(t);
     }
 
     static Timestamp add(Timestamp value0, IntervalDayType.IntervalDay value1) {

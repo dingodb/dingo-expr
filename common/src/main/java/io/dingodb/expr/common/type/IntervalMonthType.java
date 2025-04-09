@@ -28,6 +28,7 @@ public class IntervalMonthType extends IntervalType {
     @AllArgsConstructor
     public static class IntervalMonth extends IntervalMonthType {
         public BigDecimal value;
+        public Type elementType;
 
         @Override
         public boolean equals(Object obj) {
