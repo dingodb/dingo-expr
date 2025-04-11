@@ -147,7 +147,7 @@ public final class DateTimeUtils {
     }
 
     public static @Nullable Date parseDate(@NonNull String value) {
-        return parseDate(value, DEFAULT_PARSE_DATE_FORMATTERS);
+        return parseDate(value, DEFAULT_PARSE_DATE_FORMATTERS, ZoneId.of("UTC"));
     }
 
     /**
@@ -157,9 +157,11 @@ public final class DateTimeUtils {
      * @param dateFormatters date formatters to try
      * @return the date
      */
+
     public static @Nullable Date parseDate(
         @NonNull String value,
-        @NonNull DateTimeFormatter @NonNull [] dateFormatters
+        @NonNull DateTimeFormatter @NonNull [] dateFormatters,
+        ZoneId zoneId
     ) {
         if (value.isEmpty()) {
             return null;
@@ -167,7 +169,7 @@ public final class DateTimeUtils {
         for (DateTimeFormatter dtf : dateFormatters) {
             try {
                 LocalDateTime t = LocalDate.parse(value, dtf).atStartOfDay();
-                return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+                return new Date(t.atZone(zoneId).toInstant().toEpochMilli());
             } catch (DateTimeParseException ignored) {
             }
         }
@@ -175,6 +177,13 @@ public final class DateTimeUtils {
             "Cannot parse date string \"" + value + "\", supported formats are "
             + Arrays.toString(dateFormatters) + "."
         );
+    }
+
+    public static @Nullable Date parseDate(
+        @NonNull String value,
+        @NonNull DateTimeFormatter @NonNull [] dateFormatters
+    ) {
+        return parseDate(value, dateFormatters, ZoneId.of("UTC"));
     }
 
     public static @Nullable Time parseTime(@NonNull String value) {
@@ -272,6 +281,29 @@ public final class DateTimeUtils {
 
     public static @NonNull String dateFormat(@NonNull Date value, @NonNull DateTimeFormatter formatter) {
         return toDefaultTime(value.getTime()).format(formatter);
+    }
+
+    public static @NonNull String dateFormat(
+        @NonNull Date value, @NonNull DateTimeFormatter formatter, TimeZone timeZone) {
+        ZonedDateTime zonedDateTime = Instant.ofEpochMilli(value.getTime()).atZone(timeZone.toZoneId());
+        return zonedDateTime.format(formatter);
+    }
+
+    public static @NonNull String dateFormat(@NonNull Date value, @NonNull String format, TimeZone timeZone) {
+        if ("'x-v'".equalsIgnoreCase(format)) {
+            return xy(value, format);
+        } else if (format.contains("'y'")) {
+            format = format.replace("'y'", "yy");
+            return dateFormat(
+                value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT), timeZone);
+        } else if (format.contains("'y-'")) {
+            format = format.replace("'y-'", "yy-");
+            return dateFormat(
+                value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT), timeZone);
+        } else {
+            return dateFormat(
+                value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT), timeZone);
+        }
     }
 
     public static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {

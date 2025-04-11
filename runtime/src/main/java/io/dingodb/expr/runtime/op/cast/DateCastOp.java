@@ -26,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.TimeZone;
 
 @Operators
 abstract class DateCastOp extends CastOp {
@@ -40,7 +41,12 @@ abstract class DateCastOp extends CastOp {
     }
 
     static @Nullable Date dateCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseDate(value, config.getParseDateFormatters());
+        try {
+            return DateTimeUtils.parseDate(value, config.getParseDateFormatters(), config.getTimeZone().toZoneId());
+        } catch (Exception e) {
+            return DateTimeUtils.parseDate(
+                value, DateTimeUtils.DEFAULT_PARSE_TIMESTAMP_FORMATTERS, config.getTimeZone().toZoneId());
+        }
     }
 
     static @NonNull Date dateCast(@NonNull Date value) {
