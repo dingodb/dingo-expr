@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 
 @Operators
@@ -62,16 +64,30 @@ abstract class EqOp extends RelationalOp {
         return Arrays.equals(value0, value1);
     }
 
-    static boolean eq(@NonNull Date value0, Date value1) {
-        return value0.equals(value1);
+    static boolean eq(@NonNull Date value0, Object value1) {
+        if (value1 instanceof Date) {
+            return value0.equals((Date)value1);
+        } else if (value1 instanceof Timestamp) {
+            LocalDateTime localDateTime = ((Timestamp)value1).toLocalDateTime();
+            Date dateValue1 = new Date(localDateTime.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
+            return value0.equals(dateValue1);
+        }
+        return false;
     }
 
     static boolean eq(@NonNull Time value0, Time value1) {
         return value0.equals(value1);
     }
 
-    static boolean eq(@NonNull Timestamp value0, Timestamp value1) {
-        return value0.equals(value1);
+    static boolean eq(@NonNull Timestamp value0, Object value1) {
+        if (value1 instanceof Timestamp) {
+            return value0.equals((Timestamp)value1);
+        } else if (value1 instanceof Date) {
+            LocalDateTime localDateTime = value0.toLocalDateTime();
+            Date dateValue0 = new Date(localDateTime.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli());
+            return dateValue0.equals(value1);
+        }
+        return false;
     }
 
     @Override

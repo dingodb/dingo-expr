@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime.op;
 
+import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.TimestampType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import lombok.AccessLevel;
@@ -67,6 +69,10 @@ public final class OpKeys {
                 return type0;
             } else if (type0.equals(Types.NULL)) {
                 return type1;
+            } else if (type0 instanceof DateType && !(type1 instanceof DateType)) {
+                return type0;
+            } else if (type0 instanceof TimestampType && !(type1 instanceof TimestampType)) {
+                return type0;
             } else if (!type0.matches(type1)) {
                 return Types.ANY;
             }

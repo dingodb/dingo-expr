@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.TimeZone;
 
 @Operators
 abstract class StringCastOp extends CastOp {
@@ -67,7 +68,7 @@ abstract class StringCastOp extends CastOp {
     }
 
     static @NonNull String stringCast(Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter());
+        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter(), config.getTimeZone());
     }
 
     static @NonNull String stringCast(Time value, @NonNull ExprConfig config) {
