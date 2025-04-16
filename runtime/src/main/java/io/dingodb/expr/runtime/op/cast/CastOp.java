@@ -30,6 +30,6 @@ public abstract class CastOp extends UnaryOp {
 
     @Override
     public final @NonNull String getName() {
-        return getType().toString();
+        return "CAST" + getType().toString();
     }
 }

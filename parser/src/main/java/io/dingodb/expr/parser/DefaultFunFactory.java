@@ -148,6 +148,17 @@ public class DefaultFunFactory implements FunFactory {
         variadicFunMap = new TreeMap<>(String::compareToIgnoreCase);
 
         // Castings
+        registerUnaryFun("CAST" + IntType.NAME, config.withRangeCheck() ? Exprs.TO_INT_C : Exprs.TO_INT);
+        registerUnaryFun("CAST" + LongType.NAME, config.withRangeCheck() ? Exprs.TO_LONG_C : Exprs.TO_LONG);
+        registerUnaryFun("CAST" + FloatType.NAME, Exprs.TO_FLOAT);
+        registerUnaryFun("CAST" + DoubleType.NAME, Exprs.TO_DOUBLE);
+        registerUnaryFun("CAST" + BoolType.NAME, Exprs.TO_BOOL);
+        registerUnaryFun("CAST" + DecimalType.NAME, Exprs.TO_DECIMAL);
+        registerUnaryFun("CAST" + StringType.NAME, Exprs.TO_STRING);
+        registerUnaryFun("CAST" + BytesType.NAME, Exprs.TO_BYTES);
+        registerUnaryFun("CAST" + DateType.NAME, Exprs.TO_DATE);
+        registerUnaryFun("CAST" + TimeType.NAME, Exprs.TO_TIME);
+        registerUnaryFun("CAST" + TimestampType.NAME, Exprs.TO_TIMESTAMP);
         registerUnaryFun(IntType.NAME, config.withRangeCheck() ? Exprs.TO_INT_C : Exprs.TO_INT);
         registerUnaryFun(LongType.NAME, config.withRangeCheck() ? Exprs.TO_LONG_C : Exprs.TO_LONG);
         registerUnaryFun(FloatType.NAME, Exprs.TO_FLOAT);
@@ -181,6 +192,17 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(ListConstructorOpFactory.NAME + "_" + DateType.NAME, Exprs.TO_LIST_DATE);
         registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimeType.NAME, Exprs.TO_LIST_TIME);
         registerUnaryFun(ListConstructorOpFactory.NAME + "_" + TimestampType.NAME, Exprs.TO_LIST_TIMESTAMP);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + IntType.NAME, Exprs.TO_LIST_INT);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + LongType.NAME, Exprs.TO_LIST_LONG);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + FloatType.NAME, Exprs.TO_LIST_FLOAT);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + DoubleType.NAME, Exprs.TO_LIST_DOUBLE);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + BoolType.NAME, Exprs.TO_LIST_BOOL);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + DecimalType.NAME, Exprs.TO_LIST_DECIMAL);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + StringType.NAME, Exprs.TO_LIST_STRING);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + BytesType.NAME, Exprs.TO_LIST_BYTES);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + DateType.NAME, Exprs.TO_LIST_DATE);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + TimeType.NAME, Exprs.TO_LIST_TIME);
+        registerUnaryFun(ListConstructorOpFactory.NAME + "_CAST" + TimestampType.NAME, Exprs.TO_LIST_TIMESTAMP);
 
         // Mathematical
         registerUnaryFun(AbsFunFactory.NAME, config.withRangeCheck() ? Exprs.ABS_C : Exprs.ABS);
