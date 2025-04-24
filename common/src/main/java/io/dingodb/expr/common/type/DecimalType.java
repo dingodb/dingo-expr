@@ -16,12 +16,22 @@
 
 package io.dingodb.expr.common.type;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public final class DecimalType extends ScalarType {
     public static final String NAME = "DECIMAL";
 
     private static final int CODE = 6;
+
+    @Getter
+    @Setter
+    private long precision;
+
+    @Getter
+    @Setter
+    private long scale;
 
     DecimalType() {
         super();
