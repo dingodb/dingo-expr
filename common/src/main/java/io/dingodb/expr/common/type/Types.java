@@ -118,6 +118,10 @@ public final class Types {
         return new ListType(elementType);
     }
 
+    public static DecimalType getDecimalType() {
+        return new DecimalType();
+    }
+
     public static @NonNull MapType map(@NonNull Type keyType, @NonNull Type valueType) {
         if (keyType.equals(STRING) && valueType.isScalar()) {
             return StringMapTypeBuilder.INSTANCE.visit(valueType);
