@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
 public class SubStringIndexFun extends TertiaryStringIntIntFun {
@@ -47,5 +48,10 @@ public class SubStringIndexFun extends TertiaryStringIntIntFun {
             }
             return value0.substring(index + value1.length());
         }
+    }
+
+    @Override
+    public @NonNull String getName() {
+        return NAME;
     }
 }
