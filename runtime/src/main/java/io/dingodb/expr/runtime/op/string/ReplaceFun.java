@@ -19,6 +19,7 @@ package io.dingodb.expr.runtime.op.string;
 import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.op.TertiaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 @Operators
 abstract class ReplaceFun extends TertiaryOp {
@@ -27,10 +28,11 @@ abstract class ReplaceFun extends TertiaryOp {
     private static final long serialVersionUID = 6362623217706254108L;
 
     static String replace(String value0, String value1, String value2) {
-        if (value0 == null || value1 == null || value2 == null) {
-            return null;
-        }
         return value0.replace(value1, value2);
+    }
+
+    static @Nullable Object replace(Void value0, Void value1, Void value2) {
+        return null;
     }
 
     @Override
