@@ -29,6 +29,8 @@ import java.math.RoundingMode;
 abstract class DivOp extends BinaryNumericOp {
     private static final long serialVersionUID = 5716662239372671267L;
 
+    private static final int div_precision_increment = 4;
+
     static @Nullable Double div(int value0, int value1) {
         return (value1 != 0) ? (double)value0 / value1 : null;
     }
@@ -46,7 +48,13 @@ abstract class DivOp extends BinaryNumericOp {
     }
 
     static @Nullable BigDecimal div(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
-        return (value1.compareTo(BigDecimal.ZERO) != 0) ? value0.divide(value1, RoundingMode.HALF_UP) : null;
+        int leftScale = value0.scale() + DivOp.div_precision_increment;
+
+        if (value1.compareTo(BigDecimal.ZERO) != 0) {
+            return value0.divide(value1, leftScale, RoundingMode.HALF_UP);
+        } else {
+            return null;
+        }
     }
 
     @Override

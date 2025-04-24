@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.expr;
 
+import io.dingodb.expr.common.type.DecimalType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
@@ -25,6 +26,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -41,6 +44,18 @@ public class Var implements Expr {
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
+        if (this.type instanceof DecimalType) {
+            BigDecimal obj = (BigDecimal) Objects.requireNonNull(context).get(id);
+            int typeScale = (int)((DecimalType)this.type).getScale();
+
+            if (obj == null) {
+                return null;
+            }
+
+            if (typeScale > 0) {
+                return obj.setScale(typeScale, RoundingMode.HALF_UP);
+            }
+        }
         return Objects.requireNonNull(context).get(id);
     }
 
