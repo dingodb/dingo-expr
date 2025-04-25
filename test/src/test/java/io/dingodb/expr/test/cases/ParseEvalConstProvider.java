@@ -95,7 +95,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("3 * 1.5 + 2.34", new BigDecimal("6.84")),
             arguments("2 * -3.14e2", new BigDecimal("-6.28e2")),
             arguments("5e4 + 3e3", new BigDecimal("5.3e4")),
-            //arguments("1 / 100", 0.01),
+            arguments("1 / 100", 0),
             arguments("1.0 / 100", new BigDecimal("0.0")),
             arguments("double(1.0) / 100", 0.01),
             arguments("1 + (2 * 3-4)", 3),
