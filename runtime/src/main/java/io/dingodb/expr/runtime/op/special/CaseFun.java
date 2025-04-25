@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime.op.special;
 
+import io.dingodb.expr.common.type.DoubleType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
@@ -68,20 +69,20 @@ public class CaseFun extends VariadicOp {
         }
         for (int i = 0; i < types.length - 1; i += 2) {
             if (!Types.BOOL.matches(types[i])) {
-                return null;
+                //return null;
             }
             if (type != null) {
                 if (!type.matches(types[i + 1])) {
-                    return null;
+                    //return null;
                 }
             } else if (!types[i + 1].equals(Types.NULL)) {
                 type = types[i + 1];
             }
         }
         if (type != null) {
-            if (!type.matches(types[len - 1])) {
-                return null;
-            }
+            //if (!type.matches(types[len - 1])) {
+            //    return null;
+            //}
         } else {
             type = types[len - 1];
         }
