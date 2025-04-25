@@ -26,10 +26,7 @@ abstract class ReplaceFun extends TertiaryOp {
 
     private static final long serialVersionUID = 6362623217706254108L;
 
-    static String replace(String value0, String value1, String value2) {
-        if (value0 == null || value1 == null || value2 == null) {
-            return null;
-        }
+    static @NonNull String replace(@NonNull String value0, @NonNull String value1, @NonNull String value2) {
         return value0.replace(value1, value2);
     }
 
