@@ -133,7 +133,12 @@ public final class Val implements Expr {
             return type.equals(Types.NULL) ? NullType.NAME : wrapByFun(type.toString(), NullType.NAME);
         }
         if (obj instanceof String) {
-            return "'" + StringEscapeUtils.escapeJson((String) obj) + "'";
+            String str = obj.toString();
+            if (str.contains("'")) {
+                return "\"" + StringEscapeUtils.escapeJson((String) obj) + "\"";
+            } else {
+                return "'" + StringEscapeUtils.escapeJson((String) obj) + "'";
+            }
         }
         if (obj instanceof Long
             && Integer.MIN_VALUE <= (Long) obj
