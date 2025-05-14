@@ -34,6 +34,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public final class GroupedAggregateOp extends AggregateOp {
 
     @Override
     public synchronized @NonNull Stream<Object[]> get() {
-        if (log.isTraceEnabled()) {
+        if (log.isTraceEnabled() && cache != null) {
             if (cache.isEmpty()) {
                 log.trace("No result in cache.");
             } else {
@@ -101,8 +102,13 @@ public final class GroupedAggregateOp extends AggregateOp {
                 log.trace("Result in cache: {} items, {}", cache.size(), content);
             }
         }
-        return cache.entrySet().stream()
-            .map(e -> ArrayUtils.concat(e.getKey().getTuple(), e.getValue()));
+        if (cache != null) {
+            return cache.entrySet().stream()
+                .map(e -> ArrayUtils.concat(e.getKey().getTuple(), e.getValue()));
+        } else {
+            List<Object[]> list = new ArrayList<>();
+            return list.stream();
+        }
     }
 
     @Override
@@ -114,7 +120,9 @@ public final class GroupedAggregateOp extends AggregateOp {
 
     @Override
     public synchronized void clear() {
-        cache.clear();
+        if (cache != null) {
+            cache.clear();
+        }
         if (log.isTraceEnabled()) {
             log.trace("Cache cleared.");
         }
