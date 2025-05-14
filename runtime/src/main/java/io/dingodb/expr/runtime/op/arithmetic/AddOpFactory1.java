@@ -27,15 +27,15 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddOpFactory extends AddOp {
+public class AddOpFactory1 extends AddOp {
     private static final long serialVersionUID = 8796866975921256156L;
 
-    public static final AddOpFactory INSTANCE = new AddOpFactory();
+    public static final AddOpFactory1 INSTANCE = new AddOpFactory1();
     public static final AddAnyAny addAnyAny = new AddAnyAny();
 
     private final Map<Object, AddOp> opMap = new HashMap<>();
 
-    private AddOpFactory() {
+    private AddOpFactory1() {
         super();
         opMap.put(keyOf(Types.FLOAT, Types.FLOAT), new AddFloatFloat());
         opMap.put(keyOf(Types.DECIMAL, Types.DECIMAL), new AddDecimalDecimal());
@@ -205,6 +205,12 @@ public class AddOpFactory extends AddOp {
             if (value0 instanceof Integer) {
                 if (value1 instanceof Integer) {
                     return (Integer)value0 + (Integer)value1;
+                } else if (value1 instanceof Long) {
+                    return ((Integer) value0).longValue() + (long) value1;
+                } else if (value1 instanceof Double) {
+                    return ((Integer) value0).doubleValue() + (double) value1;
+                } else if (value1 instanceof Float) {
+                    return ((Integer) value0).floatValue() + (float) value1;
                 } else if (value1 instanceof Number) {
                     return new BigDecimal(value0.toString()).add(new BigDecimal(value1.toString()));
                 } else {
@@ -218,6 +224,12 @@ public class AddOpFactory extends AddOp {
             } else if (value0 instanceof Long) {
                 if (value1 instanceof Long) {
                     return (Long)value0 + ((Long) value1);
+                } else if (value1 instanceof Integer) {
+                    return (long)value0 + ((Integer) value1).longValue();
+                } else if (value1 instanceof Double) {
+                    return ((Long) value0).doubleValue() + (double) value1;
+                } else if (value1 instanceof Float) {
+                    return ((Long) value0).floatValue() + (float) value1;
                 } else if (value1 instanceof Number) {
                     return new BigDecimal(value0.toString()).add(new BigDecimal(value1.toString()));
                 } else {
@@ -231,6 +243,12 @@ public class AddOpFactory extends AddOp {
             } else if (value0 instanceof Float) {
                 if (value1 instanceof Float) {
                     return (Float)value0 + ((Float) value1);
+                } else if (value1 instanceof Long) {
+                    return (float)value0 + ((Long) value1).floatValue();
+                } else if (value1 instanceof Integer) {
+                    return (float)value0 + ((Integer) value1).floatValue();
+                } else if (value1 instanceof Double) {
+                    return ((Float) value0).doubleValue() + (double) value1;
                 } else if (value1 instanceof Number) {
                     return new BigDecimal(value0.toString()).add(new BigDecimal(value1.toString()));
                 } else {
@@ -244,6 +262,12 @@ public class AddOpFactory extends AddOp {
             } else if (value0 instanceof Double) {
                 if (value1 instanceof Double) {
                     return (Double)value0 + ((Double) value1);
+                } else if (value1 instanceof Float) {
+                    return (double) value0 + ((Float) value1).doubleValue();
+                } else if (value1 instanceof Long) {
+                    return (double) value0 + ((Long) value1).doubleValue();
+                } else if (value1 instanceof Integer) {
+                    return (double) value0 + ((Integer) value1).doubleValue();
                 } else if (value1 instanceof Number) {
                     return new BigDecimal(value0.toString()).add(new BigDecimal(value1.toString()));
                 } else {
