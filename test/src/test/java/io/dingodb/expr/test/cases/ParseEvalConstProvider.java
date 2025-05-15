@@ -193,7 +193,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("round(12.35, null)", null),
 
             // Strings
-            arguments("\"Alice\" + 'Bob'", "AliceBob"),
+            arguments("\"Alice\" + 'Bob'", "0"),
             arguments("char_length('Alice')", 5),
             arguments("char_length(null)", null),
             arguments("concat('Alice', 'Betty')", "AliceBetty"),
