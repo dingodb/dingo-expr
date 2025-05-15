@@ -25,6 +25,7 @@ import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Operators
 abstract class DateFormat2Fun extends BinaryOp {
@@ -36,14 +37,20 @@ abstract class DateFormat2Fun extends BinaryOp {
         return DateTimeUtils.dateFormat(value, format);
     }
 
+    static @NonNull String dateFormat(@NonNull Timestamp value, @NonNull String format) {
+        return DateTimeUtils.timestampFormat(value, format);
+    }
+
     @Override
     public final OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
-        return OpKeys.DATE_STRING.keyOf(type0, type1);
+        OpKey opKey = OpKeys.DATE_STRING.keyOf(type0, type1);
+        return opKey == null ? OpKeys.TIMESTAMP_STRING.keyOf(type0, type1) : opKey;
     }
 
     @Override
     public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
-        return OpKeys.DATE_STRING.bestKeyOf(types);
+        OpKey opKey = OpKeys.DATE_STRING.bestKeyOf(types);
+        return opKey == null ? OpKeys.TIMESTAMP_STRING.bestKeyOf(types) : opKey;
     }
 
     @Override

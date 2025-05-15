@@ -40,7 +40,8 @@ abstract class DateCastOp extends CastOp {
     }
 
     static @Nullable Date dateCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseDate(value, config.getParseDateFormatters());
+        return DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        // return DateTimeUtils.parseTimestamp(value, config.getParseTimestampFormatters());
     }
 
     static @NonNull Date dateCast(@NonNull Date value) {
