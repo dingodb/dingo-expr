@@ -65,6 +65,10 @@ public interface ExprConfig {
         return DateTimeUtils.DEFAULT_PARSE_TIMESTAMP_FORMATTERS;
     }
 
+    default DateTimeFormatter[] getParseDateAndTimestampFormatters() {
+        return DateTimeUtils.DEFAULT_PARSE_DATE_AND_TIMESTAMP_FORMATTERS;
+    }
+
     default DateTimeFormatter getOutputDateFormatter() {
         return DateTimeUtils.DEFAULT_OUTPUT_DATE_FORMATTER;
     }
