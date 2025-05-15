@@ -49,7 +49,7 @@ abstract class TimestampCastOp extends CastOp {
     }
 
     static @Nullable Timestamp timestampCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseTimestamp(value, config.getParseTimestampFormatters());
+        return DateTimeUtils.parseTimestamp(value, config.getParseDateAndTimestampFormatters());
     }
 
     static @NonNull Timestamp timestampCast(@NonNull Timestamp value) {

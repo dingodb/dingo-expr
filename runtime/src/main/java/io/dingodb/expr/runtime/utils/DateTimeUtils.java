@@ -111,6 +111,16 @@ public final class DateTimeUtils {
         DateTimeUtils.TIME_SEP_BY_COLON,
         DateTimeUtils.TIME_NO_SEP,
     };
+    public static final DateTimeFormatter[] DEFAULT_PARSE_DATE_AND_TIMESTAMP_FORMATTERS = new DateTimeFormatter[]{
+        DateTimeUtils.DATE_TIME_SEP_BY_HYPHEN_COLON,
+        DateTimeUtils.DATE_TIME_SEP_BY_SLASH_COLON,
+        DateTimeUtils.DATE_TIME_SEP_BY_DOT_COLON,
+        DateTimeUtils.DATE_TIME_NO_SEP,
+        DateTimeUtils.DATE_SEP_BY_HYPHEN,
+        DateTimeUtils.DATE_SEP_BY_SLASH,
+        DateTimeUtils.DATE_SEP_BY_DOT,
+        DateTimeUtils.DATE_NO_SEP,
+    };
     public static final DateTimeFormatter DEFAULT_OUTPUT_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
     public static final DateTimeFormatter DEFAULT_OUTPUT_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
     public static final DateTimeFormatter DEFAULT_OUTPUT_TIMESTAMP_FORMATTER =
@@ -169,6 +179,14 @@ public final class DateTimeUtils {
                 LocalDateTime t = LocalDate.parse(value, dtf).atStartOfDay();
                 return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
             } catch (DateTimeParseException ignored) {
+                try {
+                    LocalDateTime t = LocalDateTime.parse(value, dtf);
+                    ZonedDateTime zonedDateTime = ZonedDateTime.of(t, ZoneOffset.UTC);
+                    LocalDate localDate = zonedDateTime.toLocalDate();
+                    return Date.valueOf(localDate);
+                } catch (DateTimeParseException ignore) {
+                    // ignored
+                }
             }
         }
         throw new IllegalArgumentException(
@@ -231,6 +249,17 @@ public final class DateTimeUtils {
                 LocalDateTime t = LocalDateTime.parse(value, dtf);
                 return Timestamp.valueOf(t);
             } catch (DateTimeParseException ignored) {
+                try {
+                    LocalDate l = LocalDate.parse(value, dtf);
+                    LocalTime localTime = LocalTime.MIDNIGHT;
+                    ZoneId zoneId = ZoneId.systemDefault();
+                    ZonedDateTime zonedDateTime = ZonedDateTime.of(l, localTime, zoneId);
+                    Instant instant = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toInstant();
+
+                    return Timestamp.from(instant);
+                } catch (DateTimeParseException ignore) {
+                    // ignored
+                }
             }
         }
         throw new IllegalArgumentException(
