@@ -87,7 +87,7 @@ import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
 import io.dingodb.expr.runtime.op.string.CharLengthFunFactory;
-import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
+import io.dingodb.expr.runtime.op.string.ConcatFun;
 import io.dingodb.expr.runtime.op.string.ConvertPattern1FunFactory;
 import io.dingodb.expr.runtime.op.string.ConvertPattern2FunFactory;
 import io.dingodb.expr.runtime.op.string.ConvertTimeFormatFunFactory;
@@ -237,7 +237,7 @@ public class DefaultFunFactory implements FunFactory {
 
         // String functions
         registerUnaryFun(CharLengthFunFactory.NAME, Exprs.CHAR_LENGTH);
-        registerBinaryFun(ConcatFunFactory.NAME, Exprs.CONCAT);
+        registerBinaryFun(ConcatFun.NAME, Exprs.CONCAT);
         registerUnaryFun(LowerFunFactory.NAME, Exprs.LOWER);
         registerUnaryFun(UpperFunFactory.NAME, Exprs.UPPER);
         registerBinaryFun(LeftFunFactory.NAME, Exprs.LEFT);

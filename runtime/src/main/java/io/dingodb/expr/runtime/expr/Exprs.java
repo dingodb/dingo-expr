@@ -127,7 +127,7 @@ import io.dingodb.expr.runtime.op.special.IsFalseFunFactory;
 import io.dingodb.expr.runtime.op.special.IsNullFunFactory;
 import io.dingodb.expr.runtime.op.special.IsTrueFunFactory;
 import io.dingodb.expr.runtime.op.string.CharLengthFunFactory;
-import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
+import io.dingodb.expr.runtime.op.string.ConcatFun;
 import io.dingodb.expr.runtime.op.string.ConvertPattern1FunFactory;
 import io.dingodb.expr.runtime.op.string.ConvertPattern2FunFactory;
 import io.dingodb.expr.runtime.op.string.ConvertTimeFormatFunFactory;
@@ -249,7 +249,7 @@ public final class Exprs {
 
     // Strings
     public static final CharLengthFunFactory CHAR_LENGTH = CharLengthFunFactory.INSTANCE;
-    public static final ConcatFunFactory CONCAT = ConcatFunFactory.INSTANCE;
+    public static final ConcatFun CONCAT = ConcatFun.INSTANCE;
     public static final LowerFunFactory LOWER = LowerFunFactory.INSTANCE;
     public static final UpperFunFactory UPPER = UpperFunFactory.INSTANCE;
     public static final LeftFunFactory LEFT = LeftFunFactory.INSTANCE;

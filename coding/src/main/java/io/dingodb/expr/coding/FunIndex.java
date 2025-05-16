@@ -33,7 +33,7 @@ import io.dingodb.expr.runtime.op.mathematical.SinFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanhFunFactory;
-import io.dingodb.expr.runtime.op.string.ConcatFunFactory;
+import io.dingodb.expr.runtime.op.string.ConcatFun;
 import io.dingodb.expr.runtime.op.string.LTrim1FunFactory;
 import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
@@ -127,7 +127,7 @@ final class FunIndex {
         String funName = op.getName();
         int funIndex = -1;
         switch (funName) {
-            case ConcatFunFactory.NAME:
+            case ConcatFun.NAME:
                 funIndex = 0x21;
                 break;
             case LeftFunFactory.NAME:
