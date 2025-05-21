@@ -30,7 +30,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-@Operators
+//@Operators
 abstract class StringCastOp extends CastOp {
     private static final long serialVersionUID = 5530720608036585479L;
 
