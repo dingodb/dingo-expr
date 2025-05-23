@@ -24,7 +24,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-@Operators(nullable = true)
+//@Operators(nullable = true)
 abstract class IsNullFun extends SpecialFun {
     public static final String NAME = "IS_NULL";
 
