@@ -377,6 +377,14 @@ public final class DateTimeUtils {
         return new Timestamp(millis);
     }
 
+    public static @NonNull Timestamp currentTimestamp(TimeZone timeZone) {
+        ZoneId zoneId = timeZone.toZoneId();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+        Instant instant = zonedDateTime.toInstant();
+        Timestamp timestamp = Timestamp.from(instant);
+        return timestamp;
+    }
+
     public static int extractYear(Object value) {
         LocalDateTime localDateTime = toLocalDateTime(value);
         return localDateTime.getYear();
@@ -478,13 +486,17 @@ public final class DateTimeUtils {
         }
         if (value instanceof Time) {
             java.util.Date date = new java.util.Date(((Time) value).getTime());
-            ZonedDateTime zonedDateTime = date.toInstant().atZone(ZoneId.systemDefault());
+            ZonedDateTime zonedDateTime = date.toInstant().atZone(ZoneId.of("UTC"));
             return zonedDateTime.toLocalDateTime();
         }
         if (value instanceof Timestamp) {
             return ((Timestamp) value).toLocalDateTime();
         }
         return null;
+    }
+
+    private static LocalDateTime toLocalDateTime(Timestamp value) {
+        return value.toLocalDateTime();
     }
 
     private static LocalDate localDateOf(@NonNull Date value) {

@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -36,7 +37,7 @@ abstract class DayFun extends UnaryOp {
     }
 
     static int extractDay(@NonNull Timestamp value, @NonNull ExprConfig config) {
-        return DateTimeUtils.extractDay(value);
+        return TimestampUtils.extractDay(value);
     }
 
     @Override

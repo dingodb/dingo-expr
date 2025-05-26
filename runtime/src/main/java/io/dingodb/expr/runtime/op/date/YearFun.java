@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -35,7 +36,7 @@ abstract class YearFun extends UnaryOp {
     }
 
     static int extractYear(@NonNull Timestamp value, @NonNull ExprConfig config) {
-        return DateTimeUtils.extractYear(value);
+        return TimestampUtils.extractYear(value);
     }
 
     @Override
