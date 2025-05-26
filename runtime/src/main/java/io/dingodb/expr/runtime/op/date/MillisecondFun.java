@@ -20,6 +20,7 @@ import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -35,7 +36,7 @@ public class MillisecondFun extends UnaryOp {
     }
 
     static int extractMillisecond(@NonNull Timestamp value, ExprConfig config) {
-        return DateTimeUtils.extractMinuteSecond(value);
+        return TimestampUtils.extractMinuteSecond(value);
     }
 
     @Override

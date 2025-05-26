@@ -27,6 +27,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.TimeZone;
+
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CurrentTimestampFun extends NullaryOp {
     public static final CurrentTimestampFun INSTANCE = new CurrentTimestampFun();
@@ -35,7 +37,8 @@ public class CurrentTimestampFun extends NullaryOp {
 
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
-        return DateTimeUtils.currentTimestamp();
+        TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
+        return DateTimeUtils.currentTimestamp(timeZone);
     }
 
     @Override
