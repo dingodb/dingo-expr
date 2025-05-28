@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -85,6 +86,78 @@ public abstract class SubOp extends BinaryIntervalOp {
         }
         LocalDateTime t = localDateTime.minusWeeks(week);
         return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date sub(Date value0, IntervalHourType.IntervalHour value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long hours;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            hours = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            hours = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusHours(hours);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date sub(Date value0, IntervalMinuteType.IntervalMinute value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long minute;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            minute = value1.value.longValue() / (60 * 1000);
+        } else {
+            minute = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusMinutes(minute);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date sub(Date value0, IntervalSecondType.IntervalSecond value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long second;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            second = value1.value.longValue() / 1000;
+        } else {
+            second = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusSeconds(second);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Time sub(Time value0, IntervalHourType.IntervalHour value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long hours;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            hours = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            hours = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusHours(hours);
+        return new Time(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Time sub(Time value0, IntervalMinuteType.IntervalMinute value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long minute;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            minute = value1.value.longValue() / (60 * 1000);
+        } else {
+            minute = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusMinutes(minute);
+        return new Time(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Time sub(Time value0, IntervalSecondType.IntervalSecond value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long second;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            second = value1.value.longValue() / 1000;
+        } else {
+            second = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.minusSeconds(second);
+        return new Time(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
     static Timestamp sub(Timestamp value0, IntervalYearType.IntervalYear value1) {
