@@ -29,12 +29,12 @@ import java.math.RoundingMode;
 abstract class DivOp extends BinaryNumericOp {
     private static final long serialVersionUID = 5716662239372671267L;
 
-    static @Nullable Integer div(int value0, int value1) {
-        return (value1 != 0) ? value0 / value1 : null;
+    static @Nullable Double div(int value0, int value1) {
+        return (value1 != 0) ? (double)value0 / value1 : null;
     }
 
-    static @Nullable Long div(long value0, long value1) {
-        return (value1 != 0L) ? value0 / value1 : null;
+    static @Nullable Double div(long value0, long value1) {
+        return (value1 != 0L) ? (double)value0 / value1 : null;
     }
 
     static @Nullable Float div(float value0, float value1) {
