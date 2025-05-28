@@ -49,8 +49,7 @@ abstract class DateFormat2Fun extends BinaryOp {
 
     @Override
     public final OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
-        OpKey opKey = OpKeys.DATE_STRING.bestKeyOf(types);
-        return opKey == null ? OpKeys.TIMESTAMP_STRING.bestKeyOf(types) : opKey;
+        return OpKeys.DATE_STRING.bestKeyOf(types);
     }
 
     @Override

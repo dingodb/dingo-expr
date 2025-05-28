@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -87,6 +88,78 @@ public class AddOp extends BinaryIntervalOp {
         }
         LocalDateTime t = localDateTime.plusWeeks(week);
         return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date add(Date value0, IntervalHourType.IntervalHour value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long hours;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            hours = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            hours = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusHours(hours);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date add(Date value0, IntervalMinuteType.IntervalMinute value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long minute;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            minute = value1.value.longValue() / (60 * 1000);
+        } else {
+            minute = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusMinutes(minute);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Date add(Date value0, IntervalSecondType.IntervalSecond value1) {
+        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
+        long second;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            second = value1.value.longValue() / 1000;
+        } else {
+            second = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusSeconds(second);
+        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+    }
+
+    static Time add(Time value0, IntervalHourType.IntervalHour value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long hours;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            hours = value1.value.longValue() / (60 * 60 * 1000);
+        } else {
+            hours = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusHours(hours);
+        return Time.valueOf(t.toLocalTime());
+    }
+
+    static Time add(Time value0, IntervalMinuteType.IntervalMinute value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long minute;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            minute = value1.value.longValue() / (60 * 1000);
+        } else {
+            minute = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusMinutes(minute);
+        return Time.valueOf(t.toLocalTime());
+    }
+
+    static Time add(Time value0, IntervalSecondType.IntervalSecond value1) {
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        long second;
+        if (value1.elementType instanceof IntervalDayTimeType) {
+            second = value1.value.longValue() / 1000;
+        } else {
+            second = value1.value.longValue();
+        }
+        LocalDateTime t = localDateTime.plusSeconds(second);
+        return Time.valueOf(t.toLocalTime());
     }
 
     static Timestamp add(Timestamp value0, IntervalYearType.IntervalYear value1) {

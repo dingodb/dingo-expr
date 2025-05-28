@@ -176,6 +176,9 @@ public final class DateTimeUtils {
         }
         for (DateTimeFormatter dtf : dateFormatters) {
             try {
+                if (Arrays.stream(DEFAULT_PARSE_TIMESTAMP_FORMATTERS).anyMatch(__ -> __ == dtf)) {
+                    throw new DateTimeParseException("ignored", value, 0);
+                }
                 LocalDateTime t = LocalDate.parse(value, dtf).atStartOfDay();
                 return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
             } catch (DateTimeParseException ignored) {
@@ -189,10 +192,7 @@ public final class DateTimeUtils {
                 }
             }
         }
-        throw new IllegalArgumentException(
-            "Cannot parse date string \"" + value + "\", supported formats are "
-            + Arrays.toString(dateFormatters) + "."
-        );
+        return null;
     }
 
     public static @Nullable Time parseTime(@NonNull String value) {
@@ -220,10 +220,7 @@ public final class DateTimeUtils {
             } catch (DateTimeParseException ignored) {
             }
         }
-        throw new IllegalArgumentException(
-            "Cannot parse time string \"" + value + "\", supported formats are "
-            + Arrays.toString(timeFormatters) + "."
-        );
+        return null;
     }
 
     public static Timestamp parseTimestamp(@NonNull String value) {
@@ -262,10 +259,7 @@ public final class DateTimeUtils {
                 }
             }
         }
-        throw new IllegalArgumentException(
-            "Cannot parse timestamp string \"" + value + "\", supported formats are "
-            + Arrays.toString(timestampFormatters) + "."
-        );
+        return null;
     }
 
     public static @NonNull ZonedDateTime toUtcTime(long milliSeconds) {
