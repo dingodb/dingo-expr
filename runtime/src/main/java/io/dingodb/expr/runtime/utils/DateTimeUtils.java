@@ -185,8 +185,8 @@ public final class DateTimeUtils {
                 try {
                     LocalDateTime t = LocalDateTime.parse(value, dtf);
                     ZonedDateTime zonedDateTime = ZonedDateTime.of(t, ZoneOffset.UTC);
-                    LocalDate localDate = zonedDateTime.toLocalDate();
-                    return Date.valueOf(localDate);
+                    LocalDateTime localDateTime = zonedDateTime.toLocalDate().atStartOfDay();
+                    return new Date(localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
                 } catch (DateTimeParseException ignore) {
                     // ignored
                 }
