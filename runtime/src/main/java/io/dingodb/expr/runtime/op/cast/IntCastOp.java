@@ -25,7 +25,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Operators
+//@Operators
 abstract class IntCastOp extends CastOp {
     private static final long serialVersionUID = 6934382536298574928L;
 

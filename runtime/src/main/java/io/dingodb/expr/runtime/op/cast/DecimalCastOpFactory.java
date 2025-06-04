@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
     public static final DecimalCastOpFactory INSTANCE = new DecimalCastOpFactory();
 
     private final Map<Object, DecimalCastOp> opMap = new HashMap<>();
+    private static final DecimalCastAny decimalCastAny = new DecimalCastAny();
 
     private DecimalCastOpFactory() {
         super();
@@ -57,7 +59,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Float) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -71,7 +73,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((byte[]) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -85,7 +87,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Void) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -99,17 +101,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            if (value instanceof BigDecimal) {
-                return decimalCast((BigDecimal) value);
-            } else if (value instanceof Integer) {
-                return decimalCast((Integer) value);
-            } else {
-                try {
-                    return new BigDecimal(value.toString());
-                } catch (Exception e) {
-                    return new BigDecimal(0);
-                }
-            }
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -123,7 +115,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Boolean) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -137,7 +129,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Long) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -151,7 +143,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((String) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -165,7 +157,7 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Double) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
@@ -179,12 +171,46 @@ public class DecimalCastOpFactory extends DecimalCastOp {
 
         @Override
         protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
-            return decimalCast((Integer) value);
+            return decimalCastAny.evalNonNullValue(value, config);
         }
 
         @Override
         public OpKey getKey() {
             return keyOf(Types.INT);
+        }
+    }
+
+    public static final class DecimalCastAny extends DecimalCastOp {
+
+        @Serial
+        private static final long serialVersionUID = 4003400676770665072L;
+
+        @Override
+        protected BigDecimal evalNonNullValue(@NonNull Object value, ExprConfig config) {
+            if (value instanceof Integer) {
+                return decimalCast((Integer) value);
+            } else if (value instanceof Long) {
+                return decimalCast((Long) value);
+            } else if (value instanceof BigDecimal) {
+                return decimalCast((BigDecimal) value);
+            } else if (value instanceof Float) {
+                return decimalCast((Float) value);
+            } else if (value instanceof Double) {
+                return decimalCast((Double) value);
+            } else if (value instanceof String) {
+                return decimalCast((String) value);
+            } else if (value instanceof Boolean) {
+                return decimalCast((Boolean) value);
+            } else if (value instanceof byte[]) {
+                return decimalCast((byte[]) value);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public OpKey getKey() {
+            return keyOf(Types.ANY);
         }
     }
 }
