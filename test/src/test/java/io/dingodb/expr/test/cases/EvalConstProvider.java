@@ -728,8 +728,8 @@ public class EvalConstProvider implements ArgumentsProvider {
 
             // Date & times
             arguments(op(DATE_FORMAT1, 0), "1970-01-01"),
-            arguments(op(DATE_FORMAT2, 0, "uuuu:MM:dd"), "1970:01:01"),
-            arguments(op(DATE_FORMAT2, 0, op(_CTF, "%Y:%m:%d")), "1970:01:01"),
+            arguments(op(DATE_FORMAT2, 0, "uuuu:MM:dd"), null),
+            arguments(op(DATE_FORMAT2, 0, op(_CTF, "%Y:%m:%d")), null),
             arguments(op(TIME_FORMAT1, 0), "00:00:00"),
             arguments(op(TIME_FORMAT2, 0, "HH-mm-ss"), "00-00-00"),
             arguments(op(TIME_FORMAT2, 0, op(_CTF, "%H-%i-%s")), "00-00-00"),

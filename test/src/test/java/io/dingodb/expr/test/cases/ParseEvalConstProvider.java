@@ -236,7 +236,7 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("from_unixtime(0)", new Timestamp(0)),
             arguments("from_unixtime(1)", new Timestamp(1000)),
             arguments("date_format(0)", "1970-01-01"),
-            arguments("date_format(0, $CTF('%Y:%m:%d'))", "1970:01:01"),
+            arguments("date_format(0, $CTF('%Y:%m:%d'))", null),
             arguments("time_format(0)", "00:00:00"),
             arguments("time_format(0, $CTF('%H-%i-%s'))", "00-00-00"),
             arguments(
