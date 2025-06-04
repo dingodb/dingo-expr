@@ -45,6 +45,10 @@ public class Var implements Expr {
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
         if (this.type instanceof DecimalType) {
+            Object objVal = Objects.requireNonNull(context).get(id);
+            if (!(objVal instanceof BigDecimal)) {
+                return objVal;
+            }
             BigDecimal obj = (BigDecimal) Objects.requireNonNull(context).get(id);
             int typeScale = (int)((DecimalType)this.type).getScale();
 
