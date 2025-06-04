@@ -41,6 +41,10 @@ abstract class DateFormat2Fun extends BinaryOp {
         return DateTimeUtils.timestampFormat(value, format);
     }
 
+    static String dateFormat(Number value, @NonNull String format) {
+        return null;
+    }
+
     @Override
     public final OpKey keyOf(@NonNull Type type0, @NonNull Type type1) {
         OpKey opKey = OpKeys.DATE_STRING.keyOf(type0, type1);
