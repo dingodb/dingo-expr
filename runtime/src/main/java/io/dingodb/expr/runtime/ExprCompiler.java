@@ -50,6 +50,14 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Getter
     private final ExprConfig config;
 
+    public void setExprContet(ExprContext ctx) {
+        this.config.setExprContext(ctx);
+    }
+
+    public ExprContext getExprContext() {
+        return this.config.getExprContext();
+    }
+
     public static @NonNull ExprCompiler of(ExprConfig config) {
         return new ExprCompiler(config);
     }
