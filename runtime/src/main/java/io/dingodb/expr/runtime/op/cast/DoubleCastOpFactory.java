@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 package io.dingodb.expr.runtime.op.cast;
 
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -196,6 +197,9 @@ public final class DoubleCastOpFactory extends DoubleCastOp {
             } else if (value instanceof Long) {
                 return doubleCast((Long)value);
             } else if (value instanceof String) {
+                if (config.getExprContext() != ExprContext.CALC_VALUE) {
+                    return doubleCastWithStringCompat((String)value);
+                }
                 return doubleCast((String)value);
             } else if (value instanceof Boolean) {
                 return doubleCast((Boolean) value);

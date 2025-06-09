@@ -26,6 +26,8 @@ public interface ExprConfig {
     };
 
     ExprConfig ADVANCED = new ExprConfig() {
+        ExprContext exprContext = ExprContext.INVALID;
+
         @Override
         public boolean withSimplification() {
             return true;
@@ -35,7 +37,23 @@ public interface ExprConfig {
         public boolean withRangeCheck() {
             return true;
         }
+
+        public ExprContext getExprContext() {
+            return exprContext;
+        }
+
+        public void setExprContext(ExprContext exprContext) {
+            this.exprContext = exprContext;
+        }
     };
+
+    default void setExprContext(ExprContext exprContext) {
+        return;
+    }
+
+    default ExprContext getExprContext() {
+        return ExprContext.INVALID;
+    }
 
     default boolean withSimplification() {
         return false;

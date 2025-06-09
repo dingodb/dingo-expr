@@ -73,6 +73,32 @@ abstract class DoubleCastOp extends CastOp {
         return null;
     }
 
+    static double doubleCastWithStringCompat(String value) {
+        double result = 0;
+        try {
+            //For efficiency.
+            result = Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            int lastNumberPos = 0;
+            if (value != null) {
+                //find the last digit position.
+                for (int i = value.length() - 1; i >= 0; i-- ) {
+                    if (Character.isDigit(value.charAt(i))) {
+                        lastNumberPos = i;
+                        break;
+                    }
+                }
+                String v = value.substring(0, lastNumberPos + 1);
+                try {
+                    result = Double.parseDouble(v);
+                } catch (NumberFormatException e1) {
+                    result = 0;
+                }
+            }
+        }
+        return result;
+    }
+
     @Override
     public final Type getType() {
         return Types.DOUBLE;
