@@ -33,11 +33,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 
 @Operators
 public class AddOp extends BinaryIntervalOp {
@@ -90,7 +88,7 @@ public class AddOp extends BinaryIntervalOp {
         return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
-    static Date add(Date value0, IntervalHourType.IntervalHour value1) {
+    static Timestamp add(Date value0, IntervalHourType.IntervalHour value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long hours;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -99,10 +97,10 @@ public class AddOp extends BinaryIntervalOp {
             hours = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusHours(hours);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
-    static Date add(Date value0, IntervalMinuteType.IntervalMinute value1) {
+    static Timestamp add(Date value0, IntervalMinuteType.IntervalMinute value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long minute;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -111,10 +109,10 @@ public class AddOp extends BinaryIntervalOp {
             minute = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusMinutes(minute);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
-    static Date add(Date value0, IntervalSecondType.IntervalSecond value1) {
+    static Timestamp add(Date value0, IntervalSecondType.IntervalSecond value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long second;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -123,7 +121,7 @@ public class AddOp extends BinaryIntervalOp {
             second = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusSeconds(second);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
     static Time add(Time value0, IntervalHourType.IntervalHour value1) {

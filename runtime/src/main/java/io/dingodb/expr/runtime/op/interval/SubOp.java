@@ -88,7 +88,7 @@ public abstract class SubOp extends BinaryIntervalOp {
         return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
     }
 
-    static Date sub(Date value0, IntervalHourType.IntervalHour value1) {
+    static Timestamp sub(Date value0, IntervalHourType.IntervalHour value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long hours;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -97,10 +97,10 @@ public abstract class SubOp extends BinaryIntervalOp {
             hours = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.minusHours(hours);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
-    static Date sub(Date value0, IntervalMinuteType.IntervalMinute value1) {
+    static Timestamp sub(Date value0, IntervalMinuteType.IntervalMinute value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long minute;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -109,10 +109,10 @@ public abstract class SubOp extends BinaryIntervalOp {
             minute = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.minusMinutes(minute);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
-    static Date sub(Date value0, IntervalSecondType.IntervalSecond value1) {
+    static Timestamp sub(Date value0, IntervalSecondType.IntervalSecond value1) {
         LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
         long second;
         if (value1.elementType instanceof IntervalDayTimeType) {
@@ -121,7 +121,7 @@ public abstract class SubOp extends BinaryIntervalOp {
             second = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.minusSeconds(second);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        return Timestamp.valueOf(t);
     }
 
     static Time sub(Time value0, IntervalHourType.IntervalHour value1) {
