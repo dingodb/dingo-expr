@@ -43,6 +43,8 @@ public final class TimeCastOpFactory extends TimeCastOp {
         opMap.put(keyOf(Types.TIME), new TimeCastTime());
         opMap.put(keyOf(Types.STRING), new TimeCastString());
         opMap.put(keyOf(Types.INT), new TimeCastInt());
+        opMap.put(keyOf(Types.DATE), new TimeCastAny());
+        opMap.put(keyOf(Types.TIMESTAMP), new TimeCastAny());
     }
 
     @Override
