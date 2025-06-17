@@ -44,6 +44,14 @@ abstract class SecondFun extends UnaryOp {
         return TimestampUtils.extractSecond(value);
     }
 
+    static int extractSecond(String value, @NonNull ExprConfig config) {
+        Time time = DateTimeUtils.parseTime(value, config.getParseTimeAndTimestampFormatters());
+        if (time == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractSecond(time);
+    }
+
     @Override
     public @NonNull String getName() {
         return NAME;

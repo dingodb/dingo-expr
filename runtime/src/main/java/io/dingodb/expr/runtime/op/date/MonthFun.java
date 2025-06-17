@@ -40,6 +40,14 @@ abstract class MonthFun extends UnaryOp {
         return TimestampUtils.extractMonth(value);
     }
 
+    static int extractMonth(String value, @NonNull ExprConfig config) {
+        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        if (date == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractMonth(date);
+    }
+
     @Override
     public @NonNull String getName() {
         return NAME;

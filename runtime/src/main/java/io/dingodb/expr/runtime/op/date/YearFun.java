@@ -39,6 +39,14 @@ abstract class YearFun extends UnaryOp {
         return TimestampUtils.extractYear(value);
     }
 
+    static int extractYear(String value, @NonNull ExprConfig config) {
+        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        if (date == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractYear(date);
+    }
+
     @Override
     public @NonNull String getName() {
         return NAME;

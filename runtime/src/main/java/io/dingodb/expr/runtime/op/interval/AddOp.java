@@ -35,7 +35,9 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Calendar;
 
 @Operators
 public class AddOp extends BinaryIntervalOp {
@@ -125,7 +127,13 @@ public class AddOp extends BinaryIntervalOp {
     }
 
     static Time add(Time value0, IntervalHourType.IntervalHour value1) {
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date(value0.getTime()));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
         long hours;
         if (value1.elementType instanceof IntervalDayTimeType) {
             hours = value1.value.longValue() / (60 * 60 * 1000);
@@ -133,11 +141,17 @@ public class AddOp extends BinaryIntervalOp {
             hours = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusHours(hours);
-        return Time.valueOf(t.toLocalTime());
+        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     static Time add(Time value0, IntervalMinuteType.IntervalMinute value1) {
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date(value0.getTime()));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
         long minute;
         if (value1.elementType instanceof IntervalDayTimeType) {
             minute = value1.value.longValue() / (60 * 1000);
@@ -145,11 +159,17 @@ public class AddOp extends BinaryIntervalOp {
             minute = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusMinutes(minute);
-        return Time.valueOf(t.toLocalTime());
+        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     static Time add(Time value0, IntervalSecondType.IntervalSecond value1) {
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(1970, 1, 1));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date(value0.getTime()));
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
         long second;
         if (value1.elementType instanceof IntervalDayTimeType) {
             second = value1.value.longValue() / 1000;
@@ -157,7 +177,7 @@ public class AddOp extends BinaryIntervalOp {
             second = value1.value.longValue();
         }
         LocalDateTime t = localDateTime.plusSeconds(second);
-        return Time.valueOf(t.toLocalTime());
+        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     static Timestamp add(Timestamp value0, IntervalYearType.IntervalYear value1) {

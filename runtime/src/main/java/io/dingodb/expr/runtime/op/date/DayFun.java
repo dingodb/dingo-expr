@@ -37,7 +37,16 @@ abstract class DayFun extends UnaryOp {
     }
 
     static int extractDay(@NonNull Timestamp value, @NonNull ExprConfig config) {
-        return TimestampUtils.extractDay(value);
+        // return TimestampUtils.extractDay(value);
+        return DateTimeUtils.extractDay(value);
+    }
+
+    static int extractDay(String value, @NonNull ExprConfig config) {
+        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        if (date == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractDay(date);
     }
 
     @Override
