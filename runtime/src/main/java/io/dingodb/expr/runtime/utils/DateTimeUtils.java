@@ -121,6 +121,14 @@ public final class DateTimeUtils {
         DateTimeUtils.DATE_SEP_BY_DOT,
         DateTimeUtils.DATE_NO_SEP,
     };
+    public static final DateTimeFormatter[] DEFAULT_PARSE_TIME_AND_TIMESTAMP_FORMATTERS = new DateTimeFormatter[]{
+        DateTimeUtils.TIME_SEP_BY_COLON,
+        DateTimeUtils.TIME_NO_SEP,
+        DateTimeUtils.DATE_TIME_SEP_BY_HYPHEN_COLON,
+        DateTimeUtils.DATE_TIME_SEP_BY_SLASH_COLON,
+        DateTimeUtils.DATE_TIME_SEP_BY_DOT_COLON,
+        DateTimeUtils.DATE_TIME_NO_SEP,
+    };
     public static final DateTimeFormatter DEFAULT_OUTPUT_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
     public static final DateTimeFormatter DEFAULT_OUTPUT_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
     public static final DateTimeFormatter DEFAULT_OUTPUT_TIMESTAMP_FORMATTER =
@@ -218,6 +226,14 @@ public final class DateTimeUtils {
                 LocalDateTime t = LocalTime.parse(value, dtf).atDate(LocalDate.of(1970, 1, 1));
                 return new Time(t.toInstant(ZoneOffset.UTC).toEpochMilli());
             } catch (DateTimeParseException ignored) {
+                try {
+                    LocalDateTime t = LocalDateTime.parse(value, dtf);
+                    ZonedDateTime zonedDateTime = ZonedDateTime.of(t, ZoneOffset.UTC);
+                    LocalDateTime localDateTime = zonedDateTime.toLocalDate().atStartOfDay();
+                    return new Time(localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli());
+                } catch (DateTimeParseException ignore) {
+                    // ignored
+                }
             }
         }
         return null;

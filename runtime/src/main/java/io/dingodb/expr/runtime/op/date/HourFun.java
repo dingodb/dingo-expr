@@ -45,6 +45,14 @@ abstract class HourFun extends UnaryOp {
         return TimestampUtils.extractHour(value);
     }
 
+    static int extractHour(String value, @NonNull ExprConfig config) {
+        Time time = DateTimeUtils.parseTime(value, config.getParseTimeAndTimestampFormatters());
+        if (time == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractHour(time);
+    }
+
     @Override
     public @NonNull String getName() {
         return NAME;

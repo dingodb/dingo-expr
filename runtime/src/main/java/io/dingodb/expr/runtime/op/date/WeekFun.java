@@ -40,6 +40,14 @@ abstract class WeekFun extends UnaryOp {
         return TimestampUtils.extractWeek(value0);
     }
 
+    static int extractWeek(String value, @NonNull ExprConfig config) {
+        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        if (date == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractWeek(date);
+    }
+
     @Override
     public @NonNull String getName() {
         return NAME;
