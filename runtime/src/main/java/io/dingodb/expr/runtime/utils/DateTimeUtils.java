@@ -314,17 +314,21 @@ public final class DateTimeUtils {
     }
 
     public static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {
-        if ("'x-v'".equalsIgnoreCase(format)) {
-            return xy(value, format);
-        } else if (format.contains("'y'")) {
+        ZonedDateTime zonedDateTime = toDefaultTime(value.getTime());
+        if (format.contains("x")) {
+            Integer isoYear = zonedDateTime.get(IsoFields.WEEK_BASED_YEAR);
+            format = format.replace("x", isoYear.toString());
+        }
+        if (format.contains("v")) {
+            Integer isoWeek = zonedDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            format = format.replace("v", isoWeek.toString());
+        }
+        if (format.contains("'y'")) {
             format = format.replace("'y'", "yy");
-            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
         } else if (format.contains("'y-'")) {
             format = format.replace("'y-'", "yy-");
-            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
-        } else {
-            return dateFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
         }
+        return zonedDateTime.format(DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
     }
 
     public static @NonNull String dateFormat(@NonNull Date value) {
