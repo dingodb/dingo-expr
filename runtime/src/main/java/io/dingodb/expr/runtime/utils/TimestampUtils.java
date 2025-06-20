@@ -78,8 +78,8 @@ public final class TimestampUtils {
      * @param value    the Timestamp value
      * @return         hour
      */
-    public static int extractHour(Timestamp value) {
-        return toZonedDateTime(value).getHour();
+    public static int extractHour(Timestamp value, ZoneId zoneId) {
+        return toZonedDateTime(value).toInstant().atZone(zoneId).getHour();
     }
 
     /**
