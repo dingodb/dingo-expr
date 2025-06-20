@@ -26,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.ZoneId;
 
 @Operators
 abstract class HourFun extends UnaryOp {
@@ -42,7 +43,8 @@ abstract class HourFun extends UnaryOp {
     }
 
     static int extractHour(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractHour(value);
+        ZoneId zoneId = config != null ? config.getTimeZone().toZoneId() : ZoneId.systemDefault();
+        return TimestampUtils.extractHour(value, zoneId);
     }
 
     static int extractHour(String value, @NonNull ExprConfig config) {
