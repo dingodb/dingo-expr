@@ -18,6 +18,7 @@ package io.dingodb.expr.rel;
 
 import io.dingodb.expr.parser.ExprParser;
 import io.dingodb.expr.runtime.ExprCompiler;
+import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.TupleEvalContextImpl;
 
@@ -30,7 +31,9 @@ public interface RelConfig {
     }
 
     default ExprCompiler getExprCompiler() {
-        return ExprCompiler.ADVANCED;
+        ExprCompiler ret = ExprCompiler.ADVANCED;
+        ret.setExprContext(ExprContext.INVALID);
+        return ret;
     }
 
     /**
