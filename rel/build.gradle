@@ -38,6 +38,10 @@ dependencies {
     testRuntimeOnly group: 'ch.qos.logback', name: 'logback-core', version: 'logback'.v()
 }
 
+tasks.withType(Jar).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 publishing {
     publications {
         rel(MavenPublication) {
@@ -49,9 +53,6 @@ publishing {
             }
             gradle.setPom(it)
         }
-    }
-    repositories {
-        gradle.setOssrhRepo(it, project)
     }
 }
 
