@@ -29,22 +29,6 @@ gradle.ext.gitPropertiesKeys = [
     'git.total.commit.count',
 ]
 
-gradle.ext.setOssrhRepo = { handler, project ->
-    handler.maven {
-        name = "OSSRH"
-        def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-        def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-        url = (project.version as String).endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-        credentials {
-            username = System.getenv("MAVEN_USERNAME") != null
-                ? System.getenv("MAVEN_USERNAME")
-                : project.findProperty("ossrhUsername")
-            password = System.getenv("MAVEN_TOKEN") != null
-                ? System.getenv("MAVEN_TOKEN")
-                : project.findProperty("ossrhPassword")
-        }
-    }
-}
 
 gradle.ext.setPom = {
     it.pom {

@@ -29,6 +29,10 @@ dependencies {
 
 }
 
+tasks.withType(Jar).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 publishing {
     publications {
         common(MavenPublication) {
@@ -40,9 +44,6 @@ publishing {
             }
             gradle.setPom(it)
         }
-    }
-    repositories {
-        gradle.setOssrhRepo(it, project)
     }
 }
 
