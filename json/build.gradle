@@ -19,6 +19,7 @@ plugins {
     id 'java-library'
     id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
     id 'maven-publish'
+    id "com.vanniktech.maven.publish"
 }
 
 gitProperties {
@@ -38,6 +39,23 @@ tasks.withType(Jar).configureEach {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('JavadocJar') || task.name.contains('SourcesJar')) {
+        task.enabled = false
+    }
+}
+
+afterEvaluate {
+    tasks.named("generateMetadataFileForMavenPublication") {
+        dependsOn tasks.named("plainJavadocJar")
+    }
+}
+
+mavenPublishing {
+    coordinates(GROUP, "dingo-expr-json", VERSION)
+    publishToMavenCentral()
+}
+
 publishing {
     publications {
         json(MavenPublication) {
@@ -49,6 +67,10 @@ publishing {
             }
             gradle.setPom(it)
         }
+    }
+
+    repositories {
+        gradle.setCentralRepo(it, project)
     }
 }
 
