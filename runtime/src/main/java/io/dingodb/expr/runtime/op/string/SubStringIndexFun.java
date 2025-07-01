@@ -17,10 +17,14 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
+import io.dingodb.expr.runtime.op.TertiaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators
-public class SubStringIndexFun extends TertiaryStringIntIntFun {
+abstract class SubStringIndexFun extends TertiaryOp {
     public static final String NAME = "SUBSTRING_INDEX";
     private static final long serialVersionUID = 2403329900389855640L;
 
@@ -53,5 +57,15 @@ public class SubStringIndexFun extends TertiaryStringIntIntFun {
     @Override
     public @NonNull String getName() {
         return NAME;
+    }
+
+    @Override
+    public OpKey keyOf(@NonNull Type type0, @NonNull Type type1, @NonNull Type type2) {
+        return OpKeys.STRING_STRING_INT.keyOf(type0, type1, type2);
+    }
+
+    @Override
+    public OpKey bestKeyOf(@NonNull Type @NonNull [] types) {
+        return OpKeys.STRING_STRING_INT.bestKeyOf(types);
     }
 }
