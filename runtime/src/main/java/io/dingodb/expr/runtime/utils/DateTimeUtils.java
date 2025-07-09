@@ -40,6 +40,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.time.format.SignStyle;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
 import java.util.Arrays;
@@ -395,6 +396,15 @@ public final class DateTimeUtils {
         ZoneId zoneId = timeZone.toZoneId();
         ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
         Instant instant = zonedDateTime.toInstant();
+        Timestamp timestamp = Timestamp.from(instant);
+        return timestamp;
+    }
+
+    public static @NonNull Timestamp currentTimestampSecond(TimeZone timeZone) {
+        ZoneId zoneId = timeZone.toZoneId();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+        ZonedDateTime truncated = zonedDateTime.truncatedTo(ChronoUnit.SECONDS);
+        Instant instant = truncated.toInstant();
         Timestamp timestamp = Timestamp.from(instant);
         return timestamp;
     }
