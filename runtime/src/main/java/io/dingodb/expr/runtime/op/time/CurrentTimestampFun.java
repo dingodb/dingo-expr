@@ -38,7 +38,7 @@ public class CurrentTimestampFun extends NullaryOp {
     @Override
     public Object eval(EvalContext context, ExprConfig config) {
         TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
-        return DateTimeUtils.currentTimestamp(timeZone);
+        return DateTimeUtils.currentTimestampSecond(timeZone);
     }
 
     @Override
