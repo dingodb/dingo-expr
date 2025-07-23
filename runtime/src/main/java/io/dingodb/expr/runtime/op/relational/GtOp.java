@@ -25,7 +25,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-@Operators
+//@Operators
 abstract class GtOp extends RelationalOp {
     private static final long serialVersionUID = -743665850736586356L;
 
