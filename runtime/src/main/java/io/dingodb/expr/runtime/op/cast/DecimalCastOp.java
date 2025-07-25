@@ -53,7 +53,30 @@ abstract class DecimalCastOp extends CastOp {
     }
 
     static @NonNull BigDecimal decimalCast(@NonNull String value) {
-        return new BigDecimal(value);
+        BigDecimal result = null;
+        String val = value.trim();
+        try {
+            result = new BigDecimal(val);
+        } catch (NumberFormatException e) {
+            int lastNumberPos = 0;
+            if (value != null) {
+                //find the last digit position.
+                for (int i = value.length() - 1; i >= 0; i-- ) {
+                    if (Character.isDigit(value.charAt(i))) {
+                        lastNumberPos = i;
+                        break;
+                    }
+                }
+                String v = value.substring(0, lastNumberPos + 1);
+                try {
+                    result = new BigDecimal(v);
+                } catch (NumberFormatException e1) {
+                    result = new BigDecimal(0);
+                }
+            }
+        }
+
+        return result;
     }
 
     static BigDecimal decimalCast(byte[] value) {

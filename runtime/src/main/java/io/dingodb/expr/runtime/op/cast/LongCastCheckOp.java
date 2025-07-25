@@ -69,7 +69,30 @@ abstract class LongCastCheckOp extends CastOp {
     }
 
     static long longCast(@NonNull String value) {
-        return Long.parseLong(value);
+        long result = 0;
+        String val = value.trim();
+        try {
+            result = Long.parseLong(val);
+        } catch (NumberFormatException e) {
+            int lastNumberPos = 0;
+            if (value != null) {
+                //find the last digit position.
+                for (int i = value.length() - 1; i >= 0; i-- ) {
+                    if (Character.isDigit(value.charAt(i))) {
+                        lastNumberPos = i;
+                        break;
+                    }
+                }
+                String v = value.substring(0, lastNumberPos + 1);
+                try {
+                    result = Long.parseLong(value.trim());
+                } catch (NumberFormatException e1) {
+                    result = 0;
+                }
+            }
+        }
+
+        return result;
     }
 
     static @Nullable Long longCast(Void ignoredValue) {

@@ -73,7 +73,30 @@ abstract class IntCastCheckOp extends CastOp {
     }
 
     static int intCast(@NonNull String value) {
-        return Integer.parseInt(value);
+        int result = 0;
+        String val = value.trim();
+        try {
+            result = Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            int lastNumberPos = 0;
+            if (value != null) {
+                //find the last digit position.
+                for (int i = value.length() - 1; i >= 0; i-- ) {
+                    if (Character.isDigit(value.charAt(i))) {
+                        lastNumberPos = i;
+                        break;
+                    }
+                }
+                String v = value.substring(0, lastNumberPos + 1);
+                try {
+                    result = Integer.parseInt(value.trim());
+                } catch (NumberFormatException e1) {
+                    result = 0;
+                }
+            }
+        }
+
+        return result;
     }
 
     static @Nullable Integer intCast(Void ignoredValue) {

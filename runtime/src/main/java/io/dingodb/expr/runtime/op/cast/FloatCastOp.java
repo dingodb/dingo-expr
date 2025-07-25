@@ -53,7 +53,30 @@ abstract class FloatCastOp extends CastOp {
     }
 
     static float floatCast(@NonNull String value) {
-        return Float.parseFloat(value);
+        float result = 0;
+        String val = value.trim();
+        try {
+            result = Float.parseFloat(val);
+        } catch (NumberFormatException e) {
+            int lastNumberPos = 0;
+            if (value != null) {
+                //find the last digit position.
+                for (int i = value.length() - 1; i >= 0; i-- ) {
+                    if (Character.isDigit(value.charAt(i))) {
+                        lastNumberPos = i;
+                        break;
+                    }
+                }
+                String v = value.substring(0, lastNumberPos + 1);
+                try {
+                    result = Float.parseFloat(value.trim());
+                } catch (NumberFormatException e1) {
+                    result = 0;
+                }
+            }
+        }
+
+        return result;
     }
 
     static float floatCast(byte[] value) {
