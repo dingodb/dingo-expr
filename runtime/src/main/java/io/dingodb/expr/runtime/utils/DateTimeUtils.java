@@ -362,7 +362,21 @@ public final class DateTimeUtils {
     }
 
     public static @NonNull String timestampFormat(@NonNull Timestamp value, @NonNull String format) {
-        return timestampFormat(value, DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
+        LocalDateTime localDateTime = value.toLocalDateTime();
+        if (format.contains("x")) {
+            Integer isoYear = localDateTime.get(IsoFields.WEEK_BASED_YEAR);
+            format = format.replace("x", isoYear.toString());
+        }
+        if (format.contains("v")) {
+            Integer isoWeek = localDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            format = format.replace("v", isoWeek.toString());
+        }
+        if (format.contains("'y'")) {
+            format = format.replace("'y'", "yy");
+        } else if (format.contains("'y-'")) {
+            format = format.replace("'y-'", "yy-");
+        }
+        return localDateTime.format(DateTimeFormatter.ofPattern(format).withResolverStyle(ResolverStyle.STRICT));
     }
 
     public static @NonNull String timestampFormat(@NonNull Timestamp value) {
