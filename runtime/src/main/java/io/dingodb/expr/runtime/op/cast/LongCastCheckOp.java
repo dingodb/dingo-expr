@@ -69,6 +69,24 @@ abstract class LongCastCheckOp extends CastOp {
     }
 
     static long longCast(@NonNull String value) {
+        return Long.parseLong(value);
+    }
+
+    static @Nullable Long longCast(Void ignoredValue) {
+        return null;
+    }
+
+    @Override
+    public final Type getType() {
+        return Types.LONG;
+    }
+
+    @Override
+    public boolean doRangeChecking() {
+        return true;
+    }
+
+    static long longCastWithStringCompat(@NonNull String value) {
         long result = 0;
         String val = value.trim();
         try {
@@ -93,19 +111,5 @@ abstract class LongCastCheckOp extends CastOp {
         }
 
         return result;
-    }
-
-    static @Nullable Long longCast(Void ignoredValue) {
-        return null;
-    }
-
-    @Override
-    public final Type getType() {
-        return Types.LONG;
-    }
-
-    @Override
-    public boolean doRangeChecking() {
-        return true;
     }
 }

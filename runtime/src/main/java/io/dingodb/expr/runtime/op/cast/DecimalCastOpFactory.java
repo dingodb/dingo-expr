@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.op.cast;
 
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -198,6 +199,9 @@ public class DecimalCastOpFactory extends DecimalCastOp {
             } else if (value instanceof Double) {
                 return decimalCast((Double) value);
             } else if (value instanceof String) {
+                if (config.getExprContext() != ExprContext.CALC_VALUE) {
+                    return decimalCastWithStringCompat((String)value);
+                }
                 return decimalCast((String) value);
             } else if (value instanceof Boolean) {
                 return decimalCast((Boolean) value);
