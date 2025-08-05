@@ -18,6 +18,7 @@ package io.dingodb.expr.runtime.op.cast;
 
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.UnaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -183,6 +184,9 @@ public final class LongCastCheckOpFactory extends LongCastCheckOp {
             } else if (value instanceof BigDecimal) {
                 return longCast((BigDecimal) value);
             } else if (value instanceof String) {
+                if (config.getExprContext() != ExprContext.CALC_VALUE) {
+                    return longCastWithStringCompat((String)value);
+                }
                 return longCast((String) value);
             } else if (value instanceof Boolean) {
                 return longCast((Boolean) value);

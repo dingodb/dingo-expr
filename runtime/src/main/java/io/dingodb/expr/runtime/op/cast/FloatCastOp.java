@@ -53,6 +53,32 @@ abstract class FloatCastOp extends CastOp {
     }
 
     static float floatCast(@NonNull String value) {
+        return Float.parseFloat(value);
+    }
+
+    static float floatCast(byte[] value) {
+        if (value == null) {
+            return 0;
+        } else {
+            try {
+                String val = new String(value);
+                return Float.parseFloat(val);
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+    }
+
+    static @Nullable Float floatCast(Void ignoredValue) {
+        return null;
+    }
+
+    @Override
+    public final Type getType() {
+        return Types.FLOAT;
+    }
+
+    static float floatCastWithStringCompat(@NonNull String value) {
         float result = 0;
         String val = value.trim();
         try {
@@ -77,27 +103,5 @@ abstract class FloatCastOp extends CastOp {
         }
 
         return result;
-    }
-
-    static float floatCast(byte[] value) {
-        if (value == null) {
-            return 0;
-        } else {
-            try {
-                String val = new String(value);
-                return Float.parseFloat(val);
-            } catch (Exception e) {
-                return 0;
-            }
-        }
-    }
-
-    static @Nullable Float floatCast(Void ignoredValue) {
-        return null;
-    }
-
-    @Override
-    public final Type getType() {
-        return Types.FLOAT;
     }
 }

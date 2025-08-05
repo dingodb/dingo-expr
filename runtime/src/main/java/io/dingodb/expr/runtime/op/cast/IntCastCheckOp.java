@@ -73,6 +73,24 @@ abstract class IntCastCheckOp extends CastOp {
     }
 
     static int intCast(@NonNull String value) {
+        return Integer.parseInt(value);
+    }
+
+    static @Nullable Integer intCast(Void ignoredValue) {
+        return null;
+    }
+
+    @Override
+    public final Type getType() {
+        return Types.INT;
+    }
+
+    @Override
+    public boolean doRangeChecking() {
+        return true;
+    }
+
+    static int intCastWithStringCompat(@NonNull String value) {
         int result = 0;
         String val = value.trim();
         try {
@@ -97,19 +115,5 @@ abstract class IntCastCheckOp extends CastOp {
         }
 
         return result;
-    }
-
-    static @Nullable Integer intCast(Void ignoredValue) {
-        return null;
-    }
-
-    @Override
-    public final Type getType() {
-        return Types.INT;
-    }
-
-    @Override
-    public boolean doRangeChecking() {
-        return true;
     }
 }
