@@ -46,4 +46,8 @@ public interface CompileContext {
     default CompileContext getChild(Object index) {
         return null;
     }
+
+    default ExprContext getExprContext() {
+        return null;
+    }
 }

@@ -19,6 +19,7 @@ package io.dingodb.expr.rel;
 import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.CompileContext;
+import io.dingodb.expr.runtime.ExprContext;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class TupleCompileContextImpl implements TupleCompileContext {
     @Getter
     private final TupleType type;
+
+    private ExprContext exprContext;
 
     @Override
     public CompileContext getChild(Object index) {
@@ -46,5 +49,15 @@ public class TupleCompileContextImpl implements TupleCompileContext {
     @Override
     public TupleCompileContext withType(TupleType type) {
         return new TupleCompileContextImpl(type);
+    }
+
+    @Override
+    public ExprContext getExprContext() {
+        return exprContext;
+    }
+
+    @Override
+    public void setExprContext(ExprContext exprContext) {
+        this.exprContext = exprContext;
     }
 }

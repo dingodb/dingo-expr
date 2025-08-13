@@ -103,6 +103,11 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Override
     public Expr visitUnaryOpExpr(@NonNull UnaryOpExpr expr, CompileContext obj) {
         Expr operand = visit(expr.getOperand(), obj);
+
+        if (obj != null && obj.getExprContext() != null) {
+            config.setExprContext(obj.getExprContext());
+        }
+
         return expr.getOp().compile(operand, config);
     }
 

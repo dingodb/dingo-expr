@@ -32,4 +32,21 @@ public abstract class CastOp extends UnaryOp {
     public final @NonNull String getName() {
         return "CAST" + getType().toString();
     }
+
+    public static String trimDigitString(String value) {
+        int lastNumberPos = 0;
+
+        for (int i = 0; i < value.length(); i++) {
+            if (Character.isDigit(value.charAt(i))
+                || value.charAt(i) == '.'
+                || value.charAt(i) == 'e'
+                || value.charAt(i) == 'E') {
+                lastNumberPos++;
+            } else {
+                break;
+            }
+        }
+
+        return value.substring(0, lastNumberPos);
+    }
 }
