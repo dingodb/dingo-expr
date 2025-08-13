@@ -18,10 +18,16 @@ package io.dingodb.expr.rel;
 
 import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.runtime.CompileContext;
+import io.dingodb.expr.runtime.ExprContext;
 
 public interface TupleCompileContext extends CompileContext {
     @Override
     TupleType getType();
 
+    @Override
+    public ExprContext getExprContext();
+
     TupleCompileContext withType(TupleType type);
+
+    public void setExprContext(ExprContext exprContext);
 }

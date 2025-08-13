@@ -26,7 +26,7 @@ public abstract class AbstractRelOp extends TypedRelOp {
     private static final long serialVersionUID = -7066415039209226040L;
 
     protected final transient TupleEvalContext evalContext;
-    protected final transient ExprConfig exprConfig;
+    protected transient ExprConfig exprConfig;
 
     protected AbstractRelOp(
         TupleType type,
@@ -36,5 +36,13 @@ public abstract class AbstractRelOp extends TypedRelOp {
         super(type);
         this.evalContext = evalContext;
         this.exprConfig = exprConfig;
+    }
+
+    public void setExprConfig(ExprConfig cfg) {
+        this.exprConfig = cfg;
+    }
+
+    public ExprConfig getExprConfig() {
+        return exprConfig;
     }
 }

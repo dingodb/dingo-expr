@@ -87,15 +87,9 @@ abstract class FloatCastOp extends CastOp {
             int lastNumberPos = 0;
             if (value != null) {
                 //find the last digit position.
-                for (int i = value.length() - 1; i >= 0; i-- ) {
-                    if (Character.isDigit(value.charAt(i))) {
-                        lastNumberPos = i;
-                        break;
-                    }
-                }
-                String v = value.substring(0, lastNumberPos + 1);
+                String v = trimDigitString(value);
                 try {
-                    result = Float.parseFloat(value.trim());
+                    result = Float.parseFloat(v);
                 } catch (NumberFormatException e1) {
                     result = 0;
                 }
