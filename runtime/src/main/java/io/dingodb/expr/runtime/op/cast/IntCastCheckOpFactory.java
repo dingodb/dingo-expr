@@ -185,7 +185,7 @@ public final class IntCastCheckOpFactory extends IntCastCheckOp {
                 if (config.getExprContext() != ExprContext.CALC_VALUE) {
                     return intCastWithStringCompat((String)value);
                 }
-                return intCast((String) value);
+                return intCast(Double.parseDouble((String) value));
             } else if (value instanceof BigDecimal) {
                 return intCast((BigDecimal) value);
             } else if (value instanceof Boolean) {
