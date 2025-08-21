@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
 
-@Operators
+//@Operators
 abstract class MulOp extends BinaryNumericOp {
     private static final long serialVersionUID = 4677892788590745542L;
 
