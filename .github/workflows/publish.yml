@@ -1,0 +1,64 @@
+name: Publish Package
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+    on:
+      branches:
+        - main
+      pull_requests:
+        - merged
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+        settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+    - name: Configure libexpr
+      working-directory: ${{github.workspace}}/libexpr
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=OFF
+
+    - name: Build libexpr
+      working-directory: ${{github.workspace}}/libexpr
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
+
+    - name: Config jni
+      working-directory: ${{github.workspace}}/jni/src/main/cpp
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build jni
+      working-directory: ${{github.workspace}}/jni/src/main/cpp
+      run: cmake --build build --config ${{env.BUILD_TYPE}}
+
+    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+    # the publishing section of your build.gradle
+    - name: Publish Packages to Maven Central
+      run: ./gradlew publishToMavenCentral --stacktrace
+      env:
+        ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
+        ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+        ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
