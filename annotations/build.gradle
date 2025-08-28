@@ -18,7 +18,6 @@ plugins {
     id 'java-conventions'
     id 'java-library'
     id 'com.gorylenko.gradle-git-properties' version "${gradleGitPropertiesVersion}"
-    id 'maven-publish'
     id "com.vanniktech.maven.publish"
 }
 
@@ -51,23 +50,35 @@ afterEvaluate {
 }
 
 mavenPublishing {
-    coordinates(GROUP, "dingo-expr-annotations", VERSION)
-    publishToMavenCentral()
-}
-
-publishing {
-    publications {
-        annotations(MavenPublication) {
-            artifactId = 'dingo-expr-annotations'
-            from components.java
-            pom {
-                name = 'dingo-expr-annotations'
-                description = 'Annotation processors for Dingo Expression.'
+    coordinates(project.property("GROUP") as String, "dingo-expr-annotations", project.property("VERSION") as String)
+    
+    pom {
+        name = "dingo-expr-annotations" 
+        description = "Annotation processors for Dingo Expression."
+        url= "https://www.dingodb.com/"
+        
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
             }
-            gradle.setPom(it)
+        }
+        
+        developers {
+            developer {
+                id = "dingodb"
+                name = "DingoDB develop team"
+                email = "dingodb@zetyun.com"
+            }
+        }
+        
+        scm {
+            connection = "scm:git:git://github.com/dingodb/dingo-expr.git"
+            developerConnection = "scm:git:ssh://github.com/dingodb/dingo-expr.git"
+            url = "https://github.com/dingodb/dingo-expr"
         }
     }
-    repositories {
-        gradle.setCentralRepo(it, project)
-    }
+    
+    publishToMavenCentral()
+    signAllPublications()
 }
