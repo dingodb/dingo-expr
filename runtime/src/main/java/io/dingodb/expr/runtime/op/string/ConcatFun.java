@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime.op.string;
 
+import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -38,4 +40,10 @@ public class ConcatFun extends BinaryOp {
     public @NonNull String getName() {
         return NAME;
     }
+
+    @Override
+    public Type getType() {
+        return Types.STRING;
+    }
+
 }
