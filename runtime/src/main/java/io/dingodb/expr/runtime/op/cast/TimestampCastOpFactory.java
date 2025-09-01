@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,7 @@ public final class TimestampCastOpFactory extends TimestampCastOp {
         opMap.put(keyOf(Types.TIMESTAMP), new TimestampCastTimestamp());
         opMap.put(keyOf(Types.INT), new TimestampCastInt());
         opMap.put(keyOf(Types.DATE), new TimestampCastDate());
+        opMap.put(keyOf(Types.TIME), new TimestampCastTime());
     }
 
     @Override
@@ -152,6 +154,20 @@ public final class TimestampCastOpFactory extends TimestampCastOp {
         }
     }
 
+    public static final class TimestampCastTime extends TimestampCastOp {
+        private static final long serialVersionUID = 6942116289893890527L;
+
+        @Override
+        protected Timestamp evalNonNullValue(@NonNull Object value, ExprConfig config) {
+            return timestampCastAny.evalNonNullValue(value, config);
+        }
+
+        @Override
+        public OpKey getKey() {
+            return keyOf(Types.TIME);
+        }
+    }
+
     public static final class TimestampCastAny extends TimestampCastOp {
 
         @Serial
@@ -171,6 +187,8 @@ public final class TimestampCastOpFactory extends TimestampCastOp {
                 return timestampCast((Long) value);
             } else if (value instanceof BigDecimal) {
                 return timestampCast((BigDecimal) value);
+            } else if (value instanceof Time) {
+                return timestampCast((Time) value);
             } else {
                 return null;
             }

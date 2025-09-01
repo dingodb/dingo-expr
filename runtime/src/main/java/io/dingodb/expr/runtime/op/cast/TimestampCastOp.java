@@ -26,7 +26,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 //@Operators
 abstract class TimestampCastOp extends CastOp {
@@ -46,6 +49,14 @@ abstract class TimestampCastOp extends CastOp {
 
     static @NonNull Timestamp timestampCast(@NonNull BigDecimal value) {
         return new Timestamp(DateTimeUtils.fromSecond(value));
+    }
+
+    static @NonNull Timestamp timestampCast(@NonNull Time value) {
+        int hours = value.toLocalTime().getHour();
+        int minutes = value.toLocalTime().getMinute();
+        int seconds = value.toLocalTime().getSecond();
+        LocalDateTime localDatetime = LocalDate.now().atTime(hours,minutes,seconds);
+        return Timestamp.valueOf(localDatetime);
     }
 
     static @Nullable Timestamp timestampCast(String value, @NonNull ExprConfig config) {

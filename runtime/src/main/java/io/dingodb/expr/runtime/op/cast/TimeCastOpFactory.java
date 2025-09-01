@@ -24,6 +24,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.Serial;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,6 +142,15 @@ public final class TimeCastOpFactory extends TimeCastOp {
                 return timeCast((Time) value);
             } else if (value instanceof Long) {
                 return timeCast((Long) value);
+            } else if (value instanceof Timestamp) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(((Timestamp) value).getTime());
+
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+                int second = calendar.get(Calendar.SECOND);
+
+                return new Time(hour, minute, second);
             } else {
                 return null;
             }
