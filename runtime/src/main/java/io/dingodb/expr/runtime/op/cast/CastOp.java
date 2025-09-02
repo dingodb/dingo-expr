@@ -36,6 +36,7 @@ public abstract class CastOp extends UnaryOp {
     public static String trimDigitString(String value) {
         int lastNumberPos = 0;
 
+        value = value.trim();
         for (int i = 0; i < value.length(); i++) {
             if (Character.isDigit(value.charAt(i))
                 || value.charAt(i) == '.'
