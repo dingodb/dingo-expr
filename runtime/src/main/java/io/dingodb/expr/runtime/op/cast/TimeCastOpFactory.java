@@ -26,7 +26,9 @@ import java.io.Serial;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -143,14 +145,9 @@ public final class TimeCastOpFactory extends TimeCastOp {
             } else if (value instanceof Long) {
                 return timeCast((Long) value);
             } else if (value instanceof Timestamp) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(((Timestamp) value).getTime());
-
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int minute = calendar.get(Calendar.MINUTE);
-                int second = calendar.get(Calendar.SECOND);
-
-                return new Time(hour, minute, second);
+                LocalDateTime t = ((Timestamp) value).toLocalDateTime();
+                ZonedDateTime zonedDateTime = ZonedDateTime.of(t, ZoneOffset.UTC);
+                return new Time(zonedDateTime.toLocalDateTime().toInstant(ZoneOffset.UTC).toEpochMilli());
             } else {
                 return null;
             }
