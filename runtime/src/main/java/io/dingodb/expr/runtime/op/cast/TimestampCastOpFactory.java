@@ -176,7 +176,7 @@ public final class TimestampCastOpFactory extends TimestampCastOp {
         @Override
         protected Timestamp evalNonNullValue(@NonNull Object value, ExprConfig config) {
             if (value instanceof Date) {
-                return timestampCast((Date) value);
+                return timestampCast((Date) value, config);
             } else if (value instanceof Integer) {
                 return timestampCast((Integer) value);
             } else if (value instanceof Timestamp) {

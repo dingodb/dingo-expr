@@ -30,6 +30,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
 
 //@Operators
 abstract class TimestampCastOp extends CastOp {
@@ -43,8 +47,14 @@ abstract class TimestampCastOp extends CastOp {
         return new Timestamp(DateTimeUtils.fromSecond(value));
     }
 
-    static @NonNull Timestamp timestampCast(Date value) {
-        return new Timestamp(value.getTime());
+    static @NonNull Timestamp timestampCast(Date value, ExprConfig config) {
+        LocalDateTime ts =  new Timestamp(value.getTime()).toLocalDateTime();
+        TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
+        ZonedDateTime zonedDateTime = ts.atZone(timeZone.toZoneId());
+
+        java.time.ZoneOffset zoneOffset = zonedDateTime.getOffset();
+        ZonedDateTime targetZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        return new Timestamp(targetZonedDateTime.toLocalDateTime().toInstant(zoneOffset).toEpochMilli());
     }
 
     static @NonNull Timestamp timestampCast(@NonNull BigDecimal value) {
