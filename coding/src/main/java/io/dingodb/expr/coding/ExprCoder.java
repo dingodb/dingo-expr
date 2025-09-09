@@ -353,7 +353,8 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
         if (operand instanceof Var) {
             Object index = ((Var) operand).getId();
             Byte typeCode = TypeCoder.INSTANCE.visit(operand.getType());
-            if (index instanceof Integer) {
+
+            if (typeCode != null && index instanceof Integer) {
                 switch (expr.getOp().getName()) {
                     case CountAgg.NAME:
                         obj.write(AGG_COUNT | typeCode);
