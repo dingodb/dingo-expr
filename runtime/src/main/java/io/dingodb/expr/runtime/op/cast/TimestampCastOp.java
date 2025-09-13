@@ -30,6 +30,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -61,12 +62,24 @@ abstract class TimestampCastOp extends CastOp {
         return new Timestamp(DateTimeUtils.fromSecond(value));
     }
 
-    static @NonNull Timestamp timestampCast(@NonNull Time value) {
+    static @NonNull Timestamp timestampCast(@NonNull Time value, ExprConfig config) {
         int hours = value.toLocalTime().getHour();
         int minutes = value.toLocalTime().getMinute();
         int seconds = value.toLocalTime().getSecond();
+
         LocalDateTime localDatetime = LocalDate.now().atTime(hours,minutes,seconds);
-        return Timestamp.valueOf(localDatetime);
+        TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
+        ZonedDateTime zonedDateTime = localDatetime.atZone(timeZone.toZoneId());
+
+        java.time.ZoneOffset zoneOffset = zonedDateTime.getOffset();
+        ZonedDateTime targetZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        int zonedDayOfMonth = targetZonedDateTime.getDayOfMonth();
+        int localDayofMonth = localDatetime.getDayOfMonth();
+        if (zonedDayOfMonth != localDayofMonth) {
+            targetZonedDateTime = targetZonedDateTime.plusDays(localDayofMonth - zonedDayOfMonth);
+        }
+
+        return new Timestamp(targetZonedDateTime.toLocalDateTime().toInstant(zoneOffset).toEpochMilli());
     }
 
     static @Nullable Timestamp timestampCast(String value, @NonNull ExprConfig config) {
