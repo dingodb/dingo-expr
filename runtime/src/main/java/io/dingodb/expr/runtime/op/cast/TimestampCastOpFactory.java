@@ -188,7 +188,7 @@ public final class TimestampCastOpFactory extends TimestampCastOp {
             } else if (value instanceof BigDecimal) {
                 return timestampCast((BigDecimal) value);
             } else if (value instanceof Time) {
-                return timestampCast((Time) value);
+                return timestampCast((Time) value, config);
             } else {
                 return null;
             }
