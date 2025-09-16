@@ -24,6 +24,7 @@ import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.IntType;
 import io.dingodb.expr.common.type.LongType;
 import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimestampType;
 import io.dingodb.expr.common.type.TypeVisitorBase;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ class TypeCoder extends TypeVisitorBase<Byte, Void> {
     public static final byte TYPE_DECIMAL = (byte) 0x06;
     public static final byte TYPE_STRING = (byte) 0x07;
     public static final byte TYPE_DATE = (byte) 0x08;
+    public static final byte TYPE_TIMESTAMP = (byte) 0x09;
     static final TypeCoder INSTANCE = new TypeCoder();
 
     @Override
@@ -80,5 +82,10 @@ class TypeCoder extends TypeVisitorBase<Byte, Void> {
     @Override
     public Byte visitDateType(@NonNull DateType type, Void obj) {
         return TYPE_DATE;
+    }
+
+    @Override
+    public Byte visitTimestampType(@NonNull TimestampType type, Void obj) {
+        return TYPE_TIMESTAMP;
     }
 }

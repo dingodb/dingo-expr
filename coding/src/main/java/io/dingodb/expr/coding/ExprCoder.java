@@ -182,7 +182,8 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                     Byte dstType = TypeCoder.INSTANCE.visit(expr.getType());
                     Byte srcType = TypeCoder.INSTANCE.visit((Type) expr.getOp().getKey());
                     if (dstType != null && srcType != null
-                        && dstType != TypeCoder.TYPE_DATE && srcType != TypeCoder.TYPE_DATE) {
+                        && dstType != TypeCoder.TYPE_DATE && srcType != TypeCoder.TYPE_DATE
+                        && dstType != TypeCoder.TYPE_TIMESTAMP && srcType != TypeCoder.TYPE_TIMESTAMP) {
                         obj.write(expr.getOp().doRangeChecking() ? CAST_C : CAST);
                         obj.write(dstType << 4 | srcType);
                         success = true;
