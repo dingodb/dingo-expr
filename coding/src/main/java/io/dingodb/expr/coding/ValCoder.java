@@ -24,6 +24,7 @@ import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.IntType;
 import io.dingodb.expr.common.type.LongType;
 import io.dingodb.expr.common.type.StringType;
+import io.dingodb.expr.common.type.TimestampType;
 import io.dingodb.expr.common.type.TypeVisitorBase;
 import io.dingodb.expr.runtime.expr.Val;
 import io.dingodb.expr.runtime.utils.CodecUtils;
@@ -35,6 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
@@ -90,6 +92,20 @@ class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
             CodecUtils.encodeVarInt(obj, milliseconds);
         } else {
             obj.write(NULL | TypeCoder.TYPE_DATE);
+        }
+        return CodingFlag.OK;
+    }
+
+    @SneakyThrows
+    @Override
+    public CodingFlag visitTimestampType(@NonNull TimestampType type, OutputStream obj) {
+        Timestamp value = (Timestamp) val.getValue();
+        if (value != null) {
+            long milliseconds = value.getTime();
+            obj.write(CONST | TypeCoder.TYPE_TIMESTAMP);
+            CodecUtils.encodeVarInt(obj, milliseconds);
+        } else {
+            obj.write(NULL | TypeCoder.TYPE_TIMESTAMP);
         }
         return CodingFlag.OK;
     }
