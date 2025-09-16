@@ -46,12 +46,11 @@ if(DEFINED ENV{JAVA_HOME})
     if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         include_directories(${JAVA_HOME}/include/linux)
     endif()
-    set(JNI_HEADER libexpr_jni.h)
+    set(JNI_HEADER io_dingodb_expr_jni_LibExprJni.h)
     set(JNI_LIB_NAME expr_jni)
     add_custom_command(
         OUTPUT ${JNI_HEADER}
-        COMMAND javah -cp ${CMAKE_SOURCE_DIR}/../java -o ${JNI_HEADER} io.dingodb.expr.jni.LibExprJni
-        DEPENDS ${CMAKE_SOURCE_DIR}/../java/io/dingodb/expr/jni/LibExprJni.java
+        COMMAND javac -h ./ ${CMAKE_SOURCE_DIR}/../java/io/dingodb/expr/jni/LibExprJni.java
     )
     add_library(${JNI_LIB_NAME} SHARED libexpr_jni.cc ${JNI_HEADER})
     target_include_directories(${JNI_LIB_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

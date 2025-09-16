@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "libexpr_jni.h"
+#include "io_dingodb_expr_jni_LibExprJni.h"
 
 #include <jni.h>
 
