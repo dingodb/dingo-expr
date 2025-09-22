@@ -35,19 +35,29 @@ public abstract class CastOp extends UnaryOp {
 
     public static String trimDigitString(String value) {
         int lastNumberPos = 0;
+        int ePos = -1;
 
         value = value.trim();
         for (int i = 0; i < value.length(); i++) {
-            if (Character.isDigit(value.charAt(i))
-                || value.charAt(i) == '.'
+            if (Character.isDigit(value.charAt(i))) {
+                lastNumberPos++;
+            } else if (value.charAt(i) == '.'
                 || value.charAt(i) == 'e'
                 || value.charAt(i) == 'E') {
+                if (ePos != -1) {
+                    break;
+                } else {
+                    ePos = i;
+                }
                 lastNumberPos++;
             } else {
                 break;
             }
         }
 
+        if (lastNumberPos > 0 && lastNumberPos == ePos + 1) {
+            lastNumberPos--;
+        }
         return value.substring(0, lastNumberPos);
     }
 }
