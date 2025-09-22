@@ -34,6 +34,7 @@ import io.dingodb.expr.runtime.op.mathematical.SinhFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanFunFactory;
 import io.dingodb.expr.runtime.op.mathematical.TanhFunFactory;
 import io.dingodb.expr.runtime.op.string.ConcatFun;
+import io.dingodb.expr.runtime.op.string.InstrFun;
 import io.dingodb.expr.runtime.op.string.LTrim1FunFactory;
 import io.dingodb.expr.runtime.op.string.LeftFunFactory;
 import io.dingodb.expr.runtime.op.string.LowerFunFactory;
@@ -141,6 +142,9 @@ final class FunIndex {
                 break;
             case Mid2FunFactory.NAME:
                 funIndex = 0x2F;
+                break;
+            case InstrFun.NAME:
+                funIndex = 0x30;
                 break;
             default:
                 break;
