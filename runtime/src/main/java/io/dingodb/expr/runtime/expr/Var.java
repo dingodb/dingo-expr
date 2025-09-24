@@ -56,7 +56,7 @@ public class Var implements Expr {
                 return null;
             }
 
-            if (typeScale > 0) {
+            if (typeScale >= 0) {
                 return obj.setScale(typeScale, RoundingMode.HALF_UP);
             }
         }
