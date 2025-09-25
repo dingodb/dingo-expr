@@ -33,7 +33,7 @@ public final class DecimalType extends ScalarType {
     @Setter
     private long scale;
 
-    DecimalType() {
+    public DecimalType() {
         super();
     }
 
