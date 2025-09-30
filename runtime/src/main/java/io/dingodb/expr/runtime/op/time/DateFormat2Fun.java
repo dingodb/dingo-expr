@@ -27,7 +27,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-@Operators
+//@Operators
 abstract class DateFormat2Fun extends BinaryOp {
     public static final String NAME = "DATE_FORMAT";
 
