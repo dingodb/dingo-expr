@@ -36,6 +36,7 @@ import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import io.dingodb.expr.runtime.op.aggregation.CountAgg;
 import io.dingodb.expr.runtime.op.aggregation.CountAllAgg;
+import io.dingodb.expr.runtime.op.aggregation.FirstValueAgg;
 import io.dingodb.expr.runtime.op.aggregation.MaxAgg;
 import io.dingodb.expr.runtime.op.aggregation.MinAgg;
 import io.dingodb.expr.runtime.op.aggregation.SingleValueAgg;
@@ -311,6 +312,7 @@ public class DefaultFunFactory implements FunFactory {
         registerUnaryFun(SumAgg.NAME, Exprs.SUM_AGG);
         registerUnaryFun(Sum0Agg.NAME, Exprs.SUM0_AGG);
         registerUnaryFun(SingleValueAgg.NAME, Exprs.SINGLE_VALUE_AGG);
+        registerUnaryFun(FirstValueAgg.NAME, Exprs.FIRST_VALUE_AGG);
     }
 
     @Override
