@@ -47,6 +47,7 @@ public final class IntCastCheckOpFactory extends IntCastCheckOp {
         opMap.put(keyOf(Types.STRING), new IntCastString());
         opMap.put(keyOf(Types.DOUBLE), new IntCastDouble());
         opMap.put(keyOf(Types.INT), new IntCastInt());
+        opMap.put(keyOf(Types.BYTES), new IntCastBytes());
     }
 
     @Override
@@ -166,6 +167,22 @@ public final class IntCastCheckOpFactory extends IntCastCheckOp {
         }
     }
 
+    public static final class IntCastBytes extends IntCastCheckOp {
+
+        @Serial
+        private static final long serialVersionUID = -3226282053385258209L;
+
+        @Override
+        protected Integer evalNonNullValue(@NonNull Object value, ExprConfig config) {
+            return intCastAny.evalNonNullValue(value, config);
+        }
+
+        @Override
+        public OpKey getKey() {
+            return keyOf(Types.STRING);
+        }
+    }
+
     public static final class IntCastAny extends IntCastCheckOp {
 
         @Serial
@@ -190,6 +207,12 @@ public final class IntCastCheckOpFactory extends IntCastCheckOp {
                 return intCast((BigDecimal) value);
             } else if (value instanceof Boolean) {
                 return intCast((Boolean) value);
+            } else if (value instanceof byte[]) {
+                try {
+                    return Integer.parseInt(new String((byte[]) value));
+                } catch (Exception e) {
+                    return null;
+                }
             } else {
                 return null;
             }
