@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serial;
 import java.sql.Date;
@@ -39,6 +40,18 @@ public class QuarterFun extends UnaryOp {
 
     static int extractQuarter(@NonNull Timestamp value, ExprConfig config) {
         return TimestampUtils.extractQuarter(value);
+    }
+
+    static int extractQuarter(String value, @NonNull ExprConfig config) {
+        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
+        if (date == null) {
+            return 0;
+        }
+        return DateTimeUtils.extractQuarter(date);
+    }
+
+    static @Nullable Object extractQuarter(Void value, @NonNull ExprConfig config) {
+        return null;
     }
 
     @Override

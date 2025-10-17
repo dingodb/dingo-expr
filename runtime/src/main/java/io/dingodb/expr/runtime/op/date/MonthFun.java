@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -46,6 +47,10 @@ abstract class MonthFun extends UnaryOp {
             return 0;
         }
         return DateTimeUtils.extractMonth(date);
+    }
+
+    static @Nullable Object extractMonth(Void value, @NonNull ExprConfig config) {
+        return null;
     }
 
     @Override

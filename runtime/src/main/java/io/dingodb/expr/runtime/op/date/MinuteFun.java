@@ -22,6 +22,7 @@ import io.dingodb.expr.runtime.op.UnaryOp;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -50,6 +51,10 @@ abstract class MinuteFun extends UnaryOp {
             return 0;
         }
         return DateTimeUtils.extractMinute(time);
+    }
+
+    static @Nullable Object extractMinute(Void value, @NonNull ExprConfig config) {
+        return null;
     }
 
     @Override
