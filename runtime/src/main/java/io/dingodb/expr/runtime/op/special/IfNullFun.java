@@ -76,6 +76,9 @@ abstract class IfNullFun extends BinarySpecialOp {
     }
 
     static Object ifNull(Object value0, Object value1) {
+        if (value0 instanceof Float && (value1 instanceof Double || value1 instanceof BigDecimal)) {
+            return new BigDecimal(value0.toString()).doubleValue();
+        }
         return value0 == null ? value1 : value0;
     }
 
