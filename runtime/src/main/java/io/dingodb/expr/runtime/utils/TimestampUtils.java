@@ -177,7 +177,7 @@ public final class TimestampUtils {
     }
 
     private static ZonedDateTime toZonedDateTime(Timestamp value) {
-        return value.toInstant().atZone(ZoneId.of("UTC"));
+        return value.toInstant().atZone(ZoneId.systemDefault());
     }
 
 

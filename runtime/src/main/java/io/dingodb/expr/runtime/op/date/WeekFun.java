@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Operators
@@ -41,12 +42,16 @@ abstract class WeekFun extends UnaryOp {
         return TimestampUtils.extractWeek(value0);
     }
 
-    static int extractWeek(String value, @NonNull ExprConfig config) {
+    static Integer extractWeek(String value, @NonNull ExprConfig config) {
         Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
         if (date == null) {
-            return 0;
+            return null;
         }
         return DateTimeUtils.extractWeek(date);
+    }
+
+    static @Nullable Integer extractWeek(Time value, @NonNull ExprConfig config) {
+        return null;
     }
 
     static @Nullable Object extractWeek(Void value, @NonNull ExprConfig config) {

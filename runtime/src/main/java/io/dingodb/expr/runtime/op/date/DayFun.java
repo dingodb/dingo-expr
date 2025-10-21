@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Operators
@@ -42,12 +43,16 @@ abstract class DayFun extends UnaryOp {
         return DateTimeUtils.extractDay(value);
     }
 
-    static int extractDay(String value, @NonNull ExprConfig config) {
+    static Integer extractDay(String value, @NonNull ExprConfig config) {
         Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
         if (date == null) {
-            return 0;
+            return null;
         }
         return DateTimeUtils.extractDay(date);
+    }
+
+    static @Nullable Integer extractDay(Time value, @NonNull ExprConfig config) {
+        return null;
     }
 
     static @Nullable Object extractDay(Void value, @NonNull ExprConfig config) {

@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Operators
@@ -41,12 +42,16 @@ abstract class MonthFun extends UnaryOp {
         return TimestampUtils.extractMonth(value);
     }
 
-    static int extractMonth(String value, @NonNull ExprConfig config) {
+    static Integer extractMonth(String value, @NonNull ExprConfig config) {
         Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
         if (date == null) {
-            return 0;
+            return null;
         }
         return DateTimeUtils.extractMonth(date);
+    }
+
+    static @Nullable Integer extractMonth(Time value, @NonNull ExprConfig config) {
+        return null;
     }
 
     static @Nullable Object extractMonth(Void value, @NonNull ExprConfig config) {
