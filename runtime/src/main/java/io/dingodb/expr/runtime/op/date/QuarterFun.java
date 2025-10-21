@@ -26,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serial;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Operators
@@ -42,12 +43,16 @@ public class QuarterFun extends UnaryOp {
         return TimestampUtils.extractQuarter(value);
     }
 
-    static int extractQuarter(String value, @NonNull ExprConfig config) {
+    static Integer extractQuarter(String value, @NonNull ExprConfig config) {
         Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
         if (date == null) {
-            return 0;
+            return null;
         }
         return DateTimeUtils.extractQuarter(date);
+    }
+
+    static @Nullable Integer extractQuarter(Time value, @NonNull ExprConfig config) {
+        return null;
     }
 
     static @Nullable Object extractQuarter(Void value, @NonNull ExprConfig config) {

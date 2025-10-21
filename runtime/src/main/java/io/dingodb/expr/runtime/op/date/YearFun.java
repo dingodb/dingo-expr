@@ -25,6 +25,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Operators
@@ -40,12 +41,16 @@ abstract class YearFun extends UnaryOp {
         return TimestampUtils.extractYear(value);
     }
 
-    static int extractYear(String value, @NonNull ExprConfig config) {
+    static Integer extractYear(String value, @NonNull ExprConfig config) {
         Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
         if (date == null) {
-            return 0;
+            return null;
         }
         return DateTimeUtils.extractYear(date);
+    }
+
+    static @Nullable Integer extractYear(Time value, @NonNull ExprConfig config) {
+        return null;
     }
 
     static @Nullable Object extractYear(Void value, @NonNull ExprConfig config) {
