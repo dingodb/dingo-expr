@@ -48,7 +48,7 @@ abstract class MinuteFun extends UnaryOp {
     static Integer extractMinute(String value, @NonNull ExprConfig config) {
         Time time = DateTimeUtils.parseTime(value, config.getParseTimeAndTimestampFormatters());
         if (time == null) {
-            return null;
+            return 0;
         }
         return DateTimeUtils.extractMinute(time);
     }
