@@ -24,16 +24,6 @@ version VERSION
 subprojects {
     group GROUP
     version VERSION
-
-    project.gradle.taskGraph.whenReady { graph ->
-        if ((version as String).endsWith("SNAPSHOT")) {
-            project.tasks.findAll().forEach { task ->
-                if (task.name.startsWith("sign")) {
-                    task.enabled = false
-                }
-            }
-        }
-    }
 }
 
 tasks.withType(Jar).configureEach {
