@@ -81,5 +81,8 @@ mavenPublishing {
     }
     
     publishToMavenCentral()
-    signAllPublications()
+    // Conditionally enable signing only for Central tasks
+    if (gradle.startParameter.taskNames.any { it.contains('MavenCentral') || it.contains('publishToMavenCentral') }) {
+        signAllPublications()
+    }
 }
