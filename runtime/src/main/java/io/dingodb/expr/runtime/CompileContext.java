@@ -50,4 +50,20 @@ public interface CompileContext {
     default ExprContext getExprContext() {
         return null;
     }
+
+    default ExprPushdownCond getExprPushdownCond() {
+        return null;
+    }
+
+    default void setExprPushdownCond( ExprPushdownCond exprPushdownCond ) {
+        return;
+    }
+
+    default boolean getNotPushdown() {
+        return false;
+    }
+
+    default void setNotPushdown( boolean needPushdown ) {
+        return;
+    }
 }

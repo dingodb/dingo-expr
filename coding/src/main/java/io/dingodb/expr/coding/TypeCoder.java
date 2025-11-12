@@ -70,8 +70,7 @@ class TypeCoder extends TypeVisitorBase<Byte, Void> {
 
     @Override
     public Byte visitDecimalType(@NonNull DecimalType type, Void obj) {
-        // TODO: Decimal is not supported in libexpr.
-        return null;
+        return TYPE_DECIMAL;
     }
 
     @Override

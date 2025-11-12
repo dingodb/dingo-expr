@@ -19,6 +19,7 @@ package io.dingodb.expr.coding;
 import io.dingodb.expr.common.type.ArrayType;
 import io.dingodb.expr.common.type.BoolType;
 import io.dingodb.expr.common.type.DateType;
+import io.dingodb.expr.common.type.DecimalType;
 import io.dingodb.expr.common.type.DoubleType;
 import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.IntType;
@@ -34,6 +35,7 @@ import lombok.SneakyThrows;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -159,6 +161,21 @@ class ValCoder extends TypeVisitorBase<CodingFlag, OutputStream> {
             obj.write(bytes);
         } else {
             obj.write(NULL | TypeCoder.TYPE_STRING);
+        }
+        return CodingFlag.OK;
+    }
+
+    @SneakyThrows
+    @Override
+    public CodingFlag visitDecimalType(@NonNull DecimalType type, OutputStream obj) {
+        BigDecimal value = (BigDecimal) val.getValue();
+        if (value != null) {
+            obj.write(CONST | TypeCoder.TYPE_DECIMAL);
+            byte[] bytes = value.toString().getBytes(StandardCharsets.UTF_8);
+            CodecUtils.encodeVarInt(obj, bytes.length);
+            obj.write(bytes);
+        } else {
+            obj.write(NULL | TypeCoder.TYPE_DECIMAL);
         }
         return CodingFlag.OK;
     }

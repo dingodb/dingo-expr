@@ -20,6 +20,7 @@ import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.runtime.CompileContext;
 import io.dingodb.expr.runtime.ExprContext;
+import io.dingodb.expr.runtime.ExprPushdownCond;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,9 @@ public class TupleCompileContextImpl implements TupleCompileContext {
     private final TupleType type;
 
     private ExprContext exprContext;
+
+    private ExprPushdownCond exprPushdownCond;
+    private boolean notPushdown;
 
     @Override
     public CompileContext getChild(Object index) {
@@ -59,5 +63,25 @@ public class TupleCompileContextImpl implements TupleCompileContext {
     @Override
     public void setExprContext(ExprContext exprContext) {
         this.exprContext = exprContext;
+    }
+
+    @Override
+    public ExprPushdownCond getExprPushdownCond() {
+        return exprPushdownCond;
+    }
+
+    @Override
+    public void setExprPushdownCond(ExprPushdownCond exprPushdownCond) {
+        this.exprPushdownCond = exprPushdownCond;
+    }
+
+    @Override
+    public boolean getNotPushdown() {
+        return notPushdown;
+    }
+
+    @Override
+    public void setNotPushdown(boolean notPushdown) {
+        this.notPushdown = notPushdown;
     }
 }
