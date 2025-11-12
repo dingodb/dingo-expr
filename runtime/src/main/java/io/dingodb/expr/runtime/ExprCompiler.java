@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime;
 
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.compiler.CastingFactory;
@@ -50,6 +52,20 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Getter
     private final ExprConfig config;
 
+    private void setPushdownFlag(Type type, CompileContext obj) {
+        if ( type instanceof DecimalType ) {
+            if (obj != null && obj.getExprPushdownCond() == ExprPushdownCond.NOT_PUSHDOWN_DECIMAL) {
+                obj.setNotPushdown(true);
+            }
+        } else if (type instanceof TupleType) {
+            for ( Type t : ((TupleType) type).getTypes() ) {
+                if (obj != null && obj.getExprPushdownCond() == ExprPushdownCond.NOT_PUSHDOWN_DECIMAL) {
+                    obj.setNotPushdown(true);
+                }
+            }
+        }
+    }
+
     public void setExprContext(ExprContext ctx) {
         this.config.setExprContext(ctx);
     }
@@ -65,6 +81,8 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     @Override
     public Expr visitVal(@NonNull Val expr, CompileContext obj) {
         Type type = expr.getType();
+        setPushdownFlag(type, obj);
+
         // Do not touch non-scalar type for there's no casting for them.
         if (type.isScalar()) {
             Object value = expr.getValue();
@@ -84,20 +102,27 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
             if (id instanceof String) {
                 Val val = ConstFactory.INSTANCE.getConst((String) id);
                 if (val != null) {
+                    setPushdownFlag(val.getType(), obj);
                     return val;
                 }
             }
             if (obj != null) {
-                return VarFactory.of(id, obj);
+                Expr expr1 = VarFactory.of(id, obj);
+                setPushdownFlag(expr1.getType(), obj);
+                return expr1;
             }
             throw new ExprCompileException("Compile of vars requires a valid compiling context.");
         }
+        setPushdownFlag(expr.getType(), obj);
+
         return expr;
     }
 
     @Override
     public Expr visitNullaryOpExpr(@NonNull NullaryOpExpr expr, CompileContext obj) {
-        return config.withSimplification() ? expr.simplify(config) : expr;
+        Expr expr1 = config.withSimplification() ? expr.simplify(config) : expr;
+        setPushdownFlag(expr1.getType(), obj);
+        return expr1;
     }
 
     @Override
@@ -108,14 +133,21 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
             config.setExprContext(obj.getExprContext());
         }
 
-        return expr.getOp().compile(operand, config);
+        Expr expr1 = expr.getOp().compile(operand, config);
+        setPushdownFlag(expr1.getType(), obj);
+        return expr1;
     }
 
     @Override
     public Expr visitBinaryOpExpr(@NonNull BinaryOpExpr expr, CompileContext obj) {
         Expr operand0 = visit(expr.getOperand0(), obj);
         Expr operand1 = visit(expr.getOperand1(), obj);
-        return expr.getOp().compile(operand0, operand1, config);
+        Expr result = expr.getOp().compile(operand0, operand1, config);
+
+        setPushdownFlag(operand0.getType(), obj);
+        setPushdownFlag(operand1.getType(), obj);
+        setPushdownFlag(result.getType(), obj);
+        return result;
     }
 
     @Override
@@ -123,7 +155,15 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
         Expr operand0 = visit(expr.getOperand0(), obj);
         Expr operand1 = visit(expr.getOperand1(), obj);
         Expr operand2 = visit(expr.getOperand2(), obj);
-        return expr.getOp().compile(operand0, operand1, operand2, config);
+
+        setPushdownFlag(operand0.getType(), obj);
+        setPushdownFlag(operand1.getType(), obj);
+        setPushdownFlag(operand2.getType(), obj);
+
+        Expr result = expr.getOp().compile(operand0, operand1, operand2, config);
+        setPushdownFlag(result.getType(), obj);
+
+        return result;
     }
 
     @Override
@@ -131,6 +171,11 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
         Expr[] operands = Arrays.stream(expr.getOperands())
             .map(o -> visit(o, obj))
             .toArray(Expr[]::new);
+
+        for ( Expr operand : operands ) {
+            setPushdownFlag(operand.getType(), obj);
+        }
+
         return expr.getOp().compile(operands, config);
     }
 
@@ -138,14 +183,24 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     public Expr visitIndexOpExpr(@NonNull IndexOpExpr expr, CompileContext obj) {
         Expr operand0 = visit(expr.getOperand0(), obj);
         Expr operand1 = visit(expr.getOperand1(), obj);
+
+        setPushdownFlag(operand0.getType(), obj);
+        setPushdownFlag(operand1.getType(), obj);
+
         if (operand0 instanceof VarStub) {
             try {
                 Object index = operand1.eval(null, config);
-                return ((VarStub) operand0).getElement(index);
+                Expr expr1 = ((VarStub) operand0).getElement(index);
+                setPushdownFlag(expr1.getType(), obj);
+                return expr1;
             } catch (ExprEvaluatingException e) {
                 throw new ExprCompileException("Not a valid var index: " + operand1);
             }
         }
-        return expr.getOp().compile(operand0, operand1, config);
+
+        Expr result = expr.getOp().compile(operand0, operand1, config);
+        setPushdownFlag(result.getType(), obj);
+
+        return result;
     }
 }

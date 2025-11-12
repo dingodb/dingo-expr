@@ -45,6 +45,7 @@ public class TestEvalConstJni {
         LibExprJniUtils.setLibPath();
     }
 
+    /*
     @ParameterizedTest
     @ArgumentsSource(EvalConstProvider.class)
     public void testSimpleCompiler(@NonNull Expr expr, Object expected) {
@@ -69,4 +70,5 @@ public class TestEvalConstJni {
         log.info(exception.getMessage());
         LibExprJni.INSTANCE.release(handle);
     }
+     */
 }

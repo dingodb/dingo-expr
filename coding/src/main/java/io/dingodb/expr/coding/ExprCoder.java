@@ -16,7 +16,9 @@
 
 package io.dingodb.expr.coding;
 
+import io.dingodb.expr.common.type.DecimalType;
 import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.ExprVisitorBase;
@@ -227,18 +229,39 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
     public CodingFlag visitBinaryOpExpr(@NonNull BinaryOpExpr expr, OutputStream obj) {
         if (visit(expr.getOperand0(), obj) == CodingFlag.OK && visit(expr.getOperand1(), obj) == CodingFlag.OK) {
             boolean success = false;
+            Type t;
             switch (expr.getOpType()) {
                 case ADD:
-                    success = writeOpWithType(obj, ADD, (Type) expr.getOp().getKey());
+                    t = (Type) expr.getOp().getKey();
+                    if (t instanceof DecimalType) {
+                        success = false;
+                    } else {
+                        success = writeOpWithType(obj, ADD, (Type) expr.getOp().getKey());
+                    }
                     break;
                 case SUB:
-                    success = writeOpWithType(obj, SUB, (Type) expr.getOp().getKey());
+                    t = (Type) expr.getOp().getKey();
+                    if (t instanceof DecimalType) {
+                        success = false;
+                    } else {
+                        success = writeOpWithType(obj, SUB, (Type) expr.getOp().getKey());
+                    }
                     break;
                 case MUL:
-                    success = writeOpWithType(obj, MUL, (Type) expr.getOp().getKey());
+                    t = (Type) expr.getOp().getKey();
+                    if (t instanceof DecimalType) {
+                        success = false;
+                    } else {
+                        success = writeOpWithType(obj, MUL, (Type) expr.getOp().getKey());
+                    }
                     break;
                 case DIV:
-                    success = writeOpWithType(obj, DIV, (Type) expr.getOp().getKey());
+                    t = (Type) expr.getOp().getKey();
+                    if (t instanceof DecimalType) {
+                        success = false;
+                    } else {
+                        success = writeOpWithType(obj, DIV, (Type) expr.getOp().getKey());
+                    }
                     break;
                 case EQ:
                     success = writeOpWithType(obj, EQ, (Type) expr.getOp().getKey());
@@ -275,6 +298,13 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                             success = writeOpWithType(obj, MAX, (Type) expr.getOp().getKey());
                             break;
                         case ModFunFactory.NAME:
+                            t = (Type) expr.getOp().getKey();
+                            if (t instanceof DecimalType) {
+                                //decimal type does not support pushing down.
+                                success = false;
+                                break;
+                            }
+
                             success = writeOpWithType(obj, MOD, (Type) expr.getOp().getKey());
                             break;
                         default:
@@ -358,10 +388,16 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
             if (typeCode != null && index instanceof Integer) {
                 switch (expr.getOp().getName()) {
                     case CountAgg.NAME:
+                        if ( typeCode == 6) {  //Dont support decimal type now.
+                            return null;
+                        }
                         obj.write(AGG_COUNT | typeCode);
                         break;
                     case SumAgg.NAME:
                     case Sum0Agg.NAME:
+                        if ( typeCode == 6) {  //Dont support decimal type now.
+                            return null;
+                        }
                         obj.write(AGG_SUM | typeCode);
                         break;
                     case MaxAgg.NAME:

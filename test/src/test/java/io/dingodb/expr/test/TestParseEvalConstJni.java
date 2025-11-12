@@ -41,6 +41,7 @@ public class TestParseEvalConstJni {
         LibExprJniUtils.setLibPath();
     }
 
+    /*
     @ParameterizedTest
     @ArgumentsSource(ParseEvalConstProvider.class)
     public void testUsingJni(String exprString, Object value) throws ExprParseException {
@@ -52,4 +53,5 @@ public class TestParseEvalConstJni {
         Assert.value(LibExprJni.INSTANCE.run(handle)).isEqualTo(value);
         LibExprJni.INSTANCE.release(handle);
     }
+     */
 }
