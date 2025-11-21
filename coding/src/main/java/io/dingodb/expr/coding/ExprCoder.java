@@ -233,35 +233,19 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
             switch (expr.getOpType()) {
                 case ADD:
                     t = (Type) expr.getOp().getKey();
-                    if (t instanceof DecimalType) {
-                        success = false;
-                    } else {
-                        success = writeOpWithType(obj, ADD, (Type) expr.getOp().getKey());
-                    }
+                    success = writeOpWithType(obj, ADD, (Type) expr.getOp().getKey());
                     break;
                 case SUB:
                     t = (Type) expr.getOp().getKey();
-                    if (t instanceof DecimalType) {
-                        success = false;
-                    } else {
-                        success = writeOpWithType(obj, SUB, (Type) expr.getOp().getKey());
-                    }
+                    success = writeOpWithType(obj, SUB, (Type) expr.getOp().getKey());
                     break;
                 case MUL:
                     t = (Type) expr.getOp().getKey();
-                    if (t instanceof DecimalType) {
-                        success = false;
-                    } else {
-                        success = writeOpWithType(obj, MUL, (Type) expr.getOp().getKey());
-                    }
+                    success = writeOpWithType(obj, MUL, (Type) expr.getOp().getKey());
                     break;
                 case DIV:
                     t = (Type) expr.getOp().getKey();
-                    if (t instanceof DecimalType) {
-                        success = false;
-                    } else {
-                        success = writeOpWithType(obj, DIV, (Type) expr.getOp().getKey());
-                    }
+                    success = writeOpWithType(obj, DIV, (Type) expr.getOp().getKey());
                     break;
                 case EQ:
                     success = writeOpWithType(obj, EQ, (Type) expr.getOp().getKey());
