@@ -97,7 +97,7 @@ public class CaseFun extends VariadicOp {
             Expr operand = expr.getOperands()[i];
             Expr operand1 = expr.getOperands()[i + 1];
             if (operand instanceof Val) {
-                Object v = expr.eval(null, config);
+                Object v = operand.eval(null, config);
                 if (v != null && (Boolean) v) {
                     return operand1;
                 }
