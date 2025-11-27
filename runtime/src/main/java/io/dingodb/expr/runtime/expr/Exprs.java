@@ -55,6 +55,7 @@ import io.dingodb.expr.runtime.op.arithmetic.MulOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.NegOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.PosOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.SubOpFactory;
+import io.dingodb.expr.runtime.op.binary.BinaryFunFactory;
 import io.dingodb.expr.runtime.op.cast.BoolCastOpFactory;
 import io.dingodb.expr.runtime.op.cast.BytesCastOpFactory;
 import io.dingodb.expr.runtime.op.cast.DateCastOpFactory;
@@ -271,6 +272,7 @@ public final class Exprs {
     public static final Locate2FunFactory LOCATE2 = Locate2FunFactory.INSTANCE;
     public static final Locate3FunFactory LOCATE3 = Locate3FunFactory.INSTANCE;
     public static final HexFunFactory HEX = HexFunFactory.INSTANCE;
+    public static final BinaryFunFactory BINARY = BinaryFunFactory.INSTANCE;
     public static final NumberFormatFunFactory FORMAT = NumberFormatFunFactory.INSTANCE;
     public static final MatchesFunFactory MATCHES = MatchesFunFactory.INSTANCE;
     public static final MatchesIgnoreCaseFunFactory MATCHES_NC = MatchesIgnoreCaseFunFactory.INSTANCE;
