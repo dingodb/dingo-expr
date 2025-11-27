@@ -29,6 +29,7 @@ import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprConfig;
+import io.dingodb.expr.runtime.op.binary.BinaryFunFactory;
 import io.dingodb.expr.runtime.op.string.HexFunFactory;
 import io.dingodb.expr.runtime.utils.CodecUtils;
 import lombok.EqualsAndHashCode;
@@ -169,7 +170,7 @@ public final class Val implements Expr {
             return wrapByFun(TimestampType.NAME, toSecond(((Timestamp) obj).getTime(), 3).toString());
         }
         if (obj instanceof byte[]) {
-            return wrapByFun(HexFunFactory.NAME, "'" + CodecUtils.bytesToHexString((byte[]) obj) + "'");
+            return wrapByFun(BinaryFunFactory.NAME, "'" + CodecUtils.bytesToHexString((byte[]) obj) + "'");
         }
         return obj.toString();
     }
