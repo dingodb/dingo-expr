@@ -122,7 +122,7 @@ public class TestToString {
             arguments("or(false, null, false)", "BOOL(NULL)"),
             arguments("or(null, c, null)", "BOOL(NULL) || $[2]"),
             arguments("or(false, null, a, b, c)", "OR(BOOL(NULL), CASTBOOL($[0]), CASTBOOL($[1]), $[2])"),
-            arguments("bytes('abc')", "HEX('616263')"),
+            arguments("bytes('abc')", "BINARY('616263')"),
             arguments("case(100)", "100"),
             arguments("case(true, 1, 100)", "1"),
             arguments("case(false, 1, true, 2, 100)", "2")

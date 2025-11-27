@@ -42,6 +42,7 @@ import io.dingodb.expr.runtime.op.aggregation.MinAgg;
 import io.dingodb.expr.runtime.op.aggregation.SingleValueAgg;
 import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
 import io.dingodb.expr.runtime.op.aggregation.SumAgg;
+import io.dingodb.expr.runtime.op.binary.BinaryFunFactory;
 import io.dingodb.expr.runtime.op.collection.ArrayConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.ListConstructorOpFactory;
 import io.dingodb.expr.runtime.op.collection.MapConstructorOpFactory;
@@ -259,6 +260,7 @@ public class DefaultFunFactory implements FunFactory {
         registerBinaryFun(Locate2FunFactory.NAME, Exprs.LOCATE2);
         registerTertiaryFun(Locate3FunFactory.NAME, Exprs.LOCATE3);
         registerUnaryFun(HexFunFactory.NAME, Exprs.HEX);
+        registerUnaryFun(BinaryFunFactory.NAME, Exprs.BINARY);
         registerBinaryFun(NumberFormatFunFactory.NAME, Exprs.FORMAT);
         registerBinaryFun(MatchesFunFactory.NAME, Exprs.MATCHES);
         registerBinaryFun(MatchesIgnoreCaseFunFactory.NAME, Exprs.MATCHES_NC);
