@@ -61,9 +61,10 @@ public class TestToString {
 
     private static @NonNull Stream<Arguments> getParameters1() {
         return Stream.of(
-            arguments("1 + 2", "1 + 2"),
-            arguments("1 + 2*3", "1 + 2*3"),
-            arguments("1*(2 + 3)", "1*(2 + 3)"),
+            arguments("1 + 2", "CASTLONG(1) + CASTLONG(2)"),
+            arguments("1 + 2*3", "1 + CASTLONG(2)*CASTLONG(3)"),
+            arguments("1*(2 + 3)",
+                "CASTLONG(1)*(CASTLONG(2) + CASTLONG(3))"),
             arguments("1 < 2 && 3 < 4 || false", "1 < 2 && 3 < 4 || false"),
             //arguments("5 + a*3.2 - 1.0", "CASTDECIMAL(5) + CASTDECIMAL($[0])*3.2 - 1.0"),
             //arguments("(a + (c + b)) * max(a, b)",
@@ -91,9 +92,9 @@ public class TestToString {
 
     private static @NonNull Stream<Arguments> getParameters2() {
         return Stream.of(
-            arguments("1 + 2", "3"),
-            arguments("1 + 2*3", "7"),
-            arguments("1*(2 + 3)", "5"),
+            arguments("1 + 2", "LONG(3)"),
+            arguments("1 + 2*3", "LONG(7)"),
+            arguments("1*(2 + 3)", "LONG(5)"),
             arguments("1 < 2 && 3 < 4 or false", "true"),
             //arguments("5 + a*3.2 - 1.0", "DECIMAL(5) + CASTDECIMAL($[0])*3.2 - 1.0"),
             //arguments("(a + (c + b)) * max(a, b)",

@@ -89,18 +89,18 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             // Arithmetics
             arguments("+ null", null),
             arguments("- null", null),
-            arguments("1 + 2", 3),
+            arguments("1 + 2", 3L),
             arguments("null + null", null),
-            arguments("1 + 2 * 3", 7),
-            arguments("(1 + 2) * 3", 9),
-            arguments("(1 + 2) * (5 - (3 + 4))", -6),
+            arguments("1 + 2 * 3", 7L),
+            arguments("(1 + 2) * 3", 9L),
+            arguments("(1 + 2) * (5 - (3 + 4))", -6L),
             arguments("3 * 1.5 + 2.34", new BigDecimal("6.84")),
             arguments("2 * -3.14e2", new BigDecimal("-6.28e2")),
             arguments("5e4 + 3e3", new BigDecimal("5.3e4")),
             //arguments("1 / 100", 0.01),
             arguments("1.0 / 100", new BigDecimal("0.01000")),
             arguments("double(1.0) / 100", 0.01),
-            arguments("1 + (2 * 3-4)", 3),
+            arguments("1 + (2 * 3-4)", 3L),
 
             // Relations & logics
             arguments("3 < 4", true),

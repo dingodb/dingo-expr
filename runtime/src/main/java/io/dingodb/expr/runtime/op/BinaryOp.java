@@ -16,7 +16,10 @@
 
 package io.dingodb.expr.runtime.op;
 
+import io.dingodb.expr.common.type.FloatType;
+import io.dingodb.expr.common.type.IntType;
 import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.EvalContext;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.exception.EvalNotImplemented;
@@ -63,10 +66,33 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp, BinaryOpExpr> {
         Type type0 = operand0.getType();
         Type type1 = operand1.getType();
         BinaryOp op = getOp(keyOf(type0, type1));
-        if (op != null) {
+        boolean needCast = false;
+
+        if (op != null && type0 instanceof IntType && type1 instanceof IntType
+            && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB
+                || op.getOpType() == OpType.MUL || op.getOpType() == OpType.DIV)) {
+            needCast = true;
+        } else if (op != null && type0 instanceof FloatType && type1 instanceof FloatType
+            && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB
+                || op.getOpType() == OpType.MUL || op.getOpType() == OpType.DIV)) {
+            needCast = true;
+        }
+
+        if (op != null && !needCast) {
             result = op.createExpr(operand0, operand1);
         } else {
-            Type[] types = new Type[]{type0, type1};
+            Type[] types;
+            if (op != null && type0 instanceof IntType && type1 instanceof IntType
+                && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB || op.getOpType() == OpType.MUL)) {
+                types = new Type[]{Types.LONG, Types.LONG};
+            } else if (op != null && type0 instanceof FloatType && type1 instanceof FloatType
+                && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB
+                    || op.getOpType() == OpType.MUL || op.getOpType() == OpType.DIV)) {
+                types = new Type[]{Types.DOUBLE, Types.DOUBLE};
+            } else {
+                types = new Type[]{type0, type1};
+            }
+
             BinaryOp op1 = getOp(bestKeyOf(types));
             if (op1 != null) {
                 result = op1.createExpr(doCast(operand0, types[0], config), doCast(operand1, types[1], config));

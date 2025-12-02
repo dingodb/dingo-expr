@@ -57,16 +57,21 @@ public class TestExprCoder {
             arguments(val(3.1415926), "15400921FB4D12D84A"),
             arguments(val(3E8), "1541B1E1A300000000"),
             arguments(val("abc"), "1703616263"),
-            arguments(op(ADD, val(1), val(1)), "110111018301"),
-            arguments(op(ADD, val(2), val(3)), "110211038301"),
+
+            //{CAST{ CONST{1} -> BIGINT}} BIGINT_ADD {CAST{ CONST{1} -> BIGINT}}
+            arguments(op(ADD, val(1), val(1)), "1101F0211101F0218302"),
+
+            //{CAST{{CONST INT} 2 -> BIGINT} BIGINT_ADD CAST{{CONST INT} 3 -> BIGINT}}
+            arguments(op(ADD, val(2), val(3)), "1102f0211103f0218302"),
+
             arguments(op(ADD, val(1L), val(1L)), "120112018302"),
             arguments(op(ADD, val(2L), val(3L)), "120212038302"),
-            arguments(op(ADD, val(3), op(MUL, val(4), val(6))), "11031104110685018301"),
-            arguments(op(EQ, op(ADD, val(5), val(6)), val(11)), "110511068301110B9101"),
+            arguments(op(ADD, val(3), op(MUL, val(4), val(6))), "11031104F0211106F0218502"),
+            arguments(op(EQ, op(ADD, val(5), val(6)), val(11)), "1105F0211106F0218302110BF0219102"),
             arguments(op(GT, val("abc"), val("a")), "17036162631701619307"),
             arguments(
                 op(AND, op(GT, op(ADD, val(7), val(8)), val(14)), op(LT, val(6), val(5))),
-                "110711088301110E930111061105950152"
+                "1107F0211108F0218302110EF021930211061105950152"
             ),
             arguments(op(TO_LONG, val(21)), "1115F021"),
             arguments(op(AND, val(false), val(null, Types.BOOL)), "230352"),
