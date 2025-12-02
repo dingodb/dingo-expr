@@ -47,9 +47,24 @@ public class TestToDebugString {
 
     private static @NonNull Stream<Arguments> getParameters1() {
         return Stream.of(
-            arguments("1 + 2", "AddIntInt[ADD](Val[1, INT], Val[2, INT])"),
-            arguments("1 + 2*3", "AddIntInt[ADD](Val[1, INT], MulIntInt[MUL](Val[2, INT], Val[3, INT]))"),
-            arguments("1*(2 + 3)", "MulIntInt[MUL](Val[1, INT], AddIntInt[ADD](Val[2, INT], Val[3, INT]))")
+            arguments("1 + 2",
+                "AddLongLong[ADD]("
+                +
+                "LongCastInt[CASTLONG](Val[1, INT]), "
+                +
+                "LongCastInt[CASTLONG](Val[2, INT]))"),
+            arguments("1 + 2*3",
+                "AddAnyAny[ADD]("
+                +
+                "Val[1, INT], MulLongLong[MUL](LongCastInt[CASTLONG](Val[2, INT]), "
+                +
+                "LongCastInt[CASTLONG](Val[3, INT])))"),
+            arguments("1*(2 + 3)",
+                "MulLongLong[MUL]("
+                +
+                "LongCastInt[CASTLONG](Val[1, INT]), "
+                +
+                "AddLongLong[ADD](LongCastInt[CASTLONG](Val[2, INT]), LongCastInt[CASTLONG](Val[3, INT])))")
         );
     }
 
