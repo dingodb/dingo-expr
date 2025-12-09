@@ -17,10 +17,11 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.core.DingoDateTime;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -34,23 +35,32 @@ abstract class MinuteFun extends UnaryOp {
     private static final long serialVersionUID = 5813236374446762801L;
 
     static int extractMinute(@NonNull Date value, ExprConfig config) {
-        return DateTimeUtils.extractMinute(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIMESTAMP);
+
+        return processor.extractMinute(dateTime);
     }
 
     static int extractMinute(@NonNull Time value, ExprConfig config) {
-        return DateTimeUtils.extractMinute(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMinute(value);
     }
 
     static int extractMinute(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractMinute(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMinute(value);
     }
 
     static Integer extractMinute(String value, @NonNull ExprConfig config) {
-        Time time = DateTimeUtils.parseTime(value, config.getParseTimeAndTimestampFormatters());
-        if (time == null) {
-            return 0;
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIMESTAMP);
+        if (dateTime == null) {
+            dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIME);
         }
-        return DateTimeUtils.extractMinute(time);
+
+        return processor.extractMinute(dateTime);
     }
 
     static @Nullable Object extractMinute(Void value, @NonNull ExprConfig config) {

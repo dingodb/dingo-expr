@@ -22,7 +22,6 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -34,7 +33,7 @@ abstract class DateFormat1Fun extends UnaryOp {
     private static final long serialVersionUID = -4619878639287876160L;
 
     static @NonNull String dateFormat(@NonNull Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter());
+        return config.getProcessor().formatDateTime(value, config.getOutputDateFormatter());
     }
 
     @Override

@@ -16,30 +16,36 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 //@Operators
 abstract class TimeCastOp extends CastOp {
     private static final long serialVersionUID = -7175316466368557014L;
 
     static @NonNull Time timeCast(int value) {
-        return new Time(DateTimeUtils.fromSecond(value));
+        LocalTime localTime = LocalTime.ofSecondOfDay(value);
+        return Time.valueOf(localTime);
     }
 
     static @NonNull Time timeCast(long value) {
-        return new Time(DateTimeUtils.fromSecond(value));
+        LocalTime localTime = LocalTime.ofSecondOfDay(value);
+        return Time.valueOf(localTime);
     }
 
     static @Nullable Time timeCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseTime(value, config.getParseTimeFormatters());
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        Object dateTime = processor.processDateTime(value, DateTimeType.TIME);
+        return dateTime == null ? null : (Time) dateTime;
     }
 
     static @NonNull Time timeCast(@NonNull Time value) {

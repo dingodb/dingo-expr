@@ -17,6 +17,9 @@
 package io.dingodb.expr.runtime.op.interval;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.core.DingoDateTime;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.IntervalDayTimeType;
 import io.dingodb.expr.common.type.IntervalDayType;
 import io.dingodb.expr.common.type.IntervalHourType;
@@ -26,6 +29,7 @@ import io.dingodb.expr.common.type.IntervalQuarterType;
 import io.dingodb.expr.common.type.IntervalSecondType;
 import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryIntervalOp;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -33,233 +37,270 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Calendar;
+import java.time.temporal.ChronoUnit;
 
 @Operators
 public abstract class SubOp extends BinaryIntervalOp {
 
     private static final long serialVersionUID = 5390298840584347195L;
 
-    static Date sub(Date value0, IntervalYearType.IntervalYear value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        LocalDateTime t;
+    static Date sub(Date value0, IntervalYearType.IntervalYear value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.DATE);
+
+        long amount;
+        ChronoUnit unit;
         if (value1.elementType instanceof IntervalMonthType) {
-            t = localDateTime.minusMonths(value1.value.intValue());
+            amount = value1.value.longValue();
+            unit = ChronoUnit.MONTHS;
         } else {
-            t = localDateTime.minusYears(value1.value.intValue());
+            amount = value1.value.intValue();
+            unit = ChronoUnit.YEARS;
         }
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
     }
 
-    static Date sub(Date value0, IntervalMonthType.IntervalMonth value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        LocalDateTime t;
+    static Date sub(Date value0, IntervalMonthType.IntervalMonth value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.DATE);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.MONTHS;
         if (value1.elementType instanceof IntervalQuarterType) {
-            t = localDateTime.minusMonths(value1.value.longValue() * 3);
+            amount = value1.value.longValue() * 3;
         } else {
-            t = localDateTime.minusMonths(value1.value.intValue());
+            amount = value1.value.intValue();
         }
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
     }
 
-    static Date sub(Date value0, IntervalDayType.IntervalDay value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        long daysToSubtract;
+    static Date sub(Date value0, IntervalDayType.IntervalDay value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.DATE);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.DAYS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            daysToSubtract = value1.value.longValue() / (24 * 60 * 60 * 1000);
+            amount = value1.value.longValue() / (24 * 60 * 60 * 1000);
         } else {
-            daysToSubtract = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusDays(daysToSubtract);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
     }
 
-    static Date sub(Date value0, IntervalWeekType.IntervalWeek value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        long week;
+    static Date sub(Date value0, IntervalWeekType.IntervalWeek value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.DATE);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.WEEKS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            week = value1.value.longValue() / (60 * 60 * 1000);
+            amount = value1.value.longValue() / (60 * 60 * 1000);
         } else {
-            week = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusWeeks(week);
-        return new Date(t.toInstant(ZoneOffset.UTC).toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
     }
 
-    static Timestamp sub(Date value0, IntervalHourType.IntervalHour value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        long hours;
+    static Timestamp sub(Date value0, IntervalHourType.IntervalHour value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.HOURS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            hours = value1.value.longValue() / (60 * 60 * 1000);
+            amount = value1.value.longValue() / (60 * 60 * 1000);
         } else {
-            hours = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusHours(hours);
-        return Timestamp.valueOf(t);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Date value0, IntervalMinuteType.IntervalMinute value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        long minute;
+    static Timestamp sub(Date value0, IntervalMinuteType.IntervalMinute value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.MINUTES;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            minute = value1.value.longValue() / (60 * 1000);
+            amount = value1.value.longValue() / (60 * 1000);
         } else {
-            minute = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusMinutes(minute);
-        return Timestamp.valueOf(t);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Date value0, IntervalSecondType.IntervalSecond value1) {
-        LocalDateTime localDateTime = value0.toLocalDate().atStartOfDay();
-        long second;
+    static Timestamp sub(Date value0, IntervalSecondType.IntervalSecond value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.SECONDS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            second = value1.value.longValue() / 1000;
+            amount = value1.value.longValue() / 1000;
         } else {
-            second = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusSeconds(second);
-        return Timestamp.valueOf(t);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Time sub(Time value0, IntervalHourType.IntervalHour value1) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new java.util.Date(value0.getTime()));
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    static Time sub(Time value0, IntervalHourType.IntervalHour value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIME);
 
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
-        long hours;
+        long amount;
+        ChronoUnit unit = ChronoUnit.HOURS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            hours = value1.value.longValue() / (60 * 60 * 1000);
+            amount = value1.value.longValue() / (60 * 60 * 1000);
         } else {
-            hours = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusHours(hours);
-        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Time) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIME);
     }
 
-    static Time sub(Time value0, IntervalMinuteType.IntervalMinute value1) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new java.util.Date(value0.getTime()));
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    static Time sub(Time value0, IntervalMinuteType.IntervalMinute value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIME);
 
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
-        long minute;
+        long amount;
+        ChronoUnit unit = ChronoUnit.MINUTES;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            minute = value1.value.longValue() / (60 * 1000);
+            amount = value1.value.longValue() / (60 * 1000);
         } else {
-            minute = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusMinutes(minute);
-        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Time) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIME);
     }
 
-    static Time sub(Time value0, IntervalSecondType.IntervalSecond value1) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new java.util.Date(value0.getTime()));
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+    static Time sub(Time value0, IntervalSecondType.IntervalSecond value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIME);
 
-        LocalDateTime localDateTime = value0.toLocalTime().atDate(LocalDate.of(year, month, day));
-        long second;
+        long amount;
+        ChronoUnit unit = ChronoUnit.SECONDS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            second = value1.value.longValue() / 1000;
+            amount = value1.value.longValue() / 1000;
         } else {
-            second = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime t = localDateTime.minusSeconds(second);
-        return new Time(t.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Time) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIME);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalYearType.IntervalYear value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        LocalDateTime resultDateTime;
+    static Timestamp sub(Timestamp value0, IntervalYearType.IntervalYear value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit;
         if (value1.elementType instanceof IntervalMonthType) {
-            resultDateTime = localDateTime.minusMonths(value1.value.longValue());
+            unit = ChronoUnit.MONTHS;
+            amount = value1.value.longValue();
         } else {
-            resultDateTime = localDateTime.minusYears(value1.value.longValue());
+            unit = ChronoUnit.YEARS;
+            amount = value1.value.longValue();
         }
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalMonthType.IntervalMonth value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        LocalDateTime t;
+    static Timestamp sub(Timestamp value0, IntervalMonthType.IntervalMonth value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.MONTHS;
         if (value1.elementType instanceof IntervalQuarterType) {
-            t = localDateTime.minusMonths(value1.value.longValue() * 3);
+            amount = value1.value.longValue() * 3;
         } else {
-            t = localDateTime.minusMonths(value1.value.longValue());
+            amount = value1.value.longValue();
         }
-        return Timestamp.valueOf(t);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalDayType.IntervalDay value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        long daysToSubtract;
+    static Timestamp sub(Timestamp value0, IntervalDayType.IntervalDay value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.DAYS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            daysToSubtract = value1.value.longValue() / (24 * 60 * 60 * 1000);
+            amount = value1.value.longValue() / (24 * 60 * 60 * 1000);
         } else {
-            daysToSubtract = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime resultDateTime = localDateTime.minusDays(daysToSubtract);
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalWeekType.IntervalWeek value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        long week;
+    static Timestamp sub(Timestamp value0, IntervalWeekType.IntervalWeek value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.WEEKS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            week = value1.value.longValue() / (60 * 60 * 1000);
+            amount = value1.value.longValue() / (60 * 60 * 1000);
         } else {
-            week = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime resultDateTime = localDateTime.minusWeeks(week);
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalHourType.IntervalHour value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        long hours;
+    static Timestamp sub(Timestamp value0, IntervalHourType.IntervalHour value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.HOURS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            hours = value1.value.longValue() / (60 * 60 * 1000);
+            amount = value1.value.longValue() / (60 * 60 * 1000);
         } else {
-            hours = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime resultDateTime = localDateTime.minusHours(hours);
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalMinuteType.IntervalMinute value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        long minute;
+    static Timestamp sub(Timestamp value0, IntervalMinuteType.IntervalMinute value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.MINUTES;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            minute = value1.value.longValue() / (60 * 1000);
+            amount = value1.value.longValue() / (60 * 1000);
         } else {
-            minute = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime resultDateTime = localDateTime.minusMinutes(minute);
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
-    static Timestamp sub(Timestamp value0, IntervalSecondType.IntervalSecond value1) {
-        LocalDateTime localDateTime = value0.toLocalDateTime();
-        long second;
+    static Timestamp sub(Timestamp value0, IntervalSecondType.IntervalSecond value1, ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.TIMESTAMP);
+
+        long amount;
+        ChronoUnit unit = ChronoUnit.SECONDS;
         if (value1.elementType instanceof IntervalDayTimeType) {
-            second = value1.value.longValue() / 1000;
+            amount = value1.value.longValue() / 1000;
         } else {
-            second = value1.value.longValue();
+            amount = value1.value.longValue();
         }
-        LocalDateTime resultDateTime = localDateTime.minusSeconds(second);
-        return Timestamp.valueOf(resultDateTime);
+        DingoDateTime dateTime = processor.dateSubtract(input, amount, unit);
+        return (Timestamp) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.TIMESTAMP);
     }
 
     @Override

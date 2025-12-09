@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -34,19 +33,21 @@ abstract class YearFun extends UnaryOp {
     private static final long serialVersionUID = 3443110114993243173L;
 
     static int extractYear(@NonNull Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.extractYear(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractYear(value);
     }
 
     static int extractYear(@NonNull Timestamp value, @NonNull ExprConfig config) {
-        return TimestampUtils.extractYear(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractYear(value);
     }
 
     static Integer extractYear(String value, @NonNull ExprConfig config) {
-        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        if (date == null) {
-            return null;
-        }
-        return DateTimeUtils.extractYear(date);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractYear(value);
     }
 
     static @Nullable Integer extractYear(Time value, @NonNull ExprConfig config) {

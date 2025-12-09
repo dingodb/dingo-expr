@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpKey;
@@ -145,9 +147,10 @@ public final class TimeCastOpFactory extends TimeCastOp {
             } else if (value instanceof Long) {
                 return timeCast((Long) value);
             } else if (value instanceof Timestamp) {
-                LocalDateTime t = ((Timestamp) value).toLocalDateTime();
-                ZonedDateTime zonedDateTime = ZonedDateTime.of(t, ZoneOffset.UTC);
-                return new Time(zonedDateTime.toLocalDateTime().toInstant(ZoneOffset.UTC).toEpochMilli());
+                DingoTimeZoneProcessor processor = config.getProcessor();
+
+                Object dateTime = processor.processDateTime(value, DateTimeType.TIMESTAMP, DateTimeType.TIME);
+                return dateTime == null ? null : (Time) dateTime;
             } else {
                 return null;
             }

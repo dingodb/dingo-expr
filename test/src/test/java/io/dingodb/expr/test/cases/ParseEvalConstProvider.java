@@ -26,6 +26,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -222,8 +224,8 @@ public class ParseEvalConstProvider implements ArgumentsProvider {
             arguments("$cp('%')", ".*"),
 
             // Date & time
-            arguments("date('1970-1-1')", new Date(0)),
-            arguments("time('00:00:00')", new Time(0)),
+            arguments("date('1970-1-1')", Date.valueOf(LocalDate.of(1970, 1, 1))),
+            arguments("time('00:00:00')", Time.valueOf(LocalTime.MIDNIGHT)),
             arguments("timestamp('1970-1-1 00:00:00')", Timestamp.valueOf("1970-01-01 00:00:00")),
             arguments("timestamp('2022-04-14 00:00:00')", Timestamp.valueOf("2022-04-14 00:00:00")),
             arguments("timestamp('20220414180215')", Timestamp.valueOf("2022-04-14 18:02:15")),

@@ -56,9 +56,9 @@ public final class DateFormat2FunFactory extends DateFormat2Fun {
             if (value0 instanceof Number) {
                 return dateFormat((Number) value0, (String) value1);
             } else if (value0 instanceof Timestamp) {
-                return dateFormat((Timestamp) value0, (String) value1);
+                return dateFormat((Timestamp) value0, (String) value1, config);
             } else if (value0 instanceof Date) {
-                return dateFormat((Date) value0, (String) value1);
+                return dateFormat((Date) value0, (String) value1, config);
             } else {
                 return null;
             }
@@ -84,9 +84,9 @@ public final class DateFormat2FunFactory extends DateFormat2Fun {
             if (value0 instanceof Number) {
                 return dateFormat((Number) value0, (String) value1);
             } else if (value0 instanceof Timestamp) {
-                return dateFormat((Timestamp) value0, (String) value1);
+                return dateFormat((Timestamp) value0, (String) value1, config);
             } else if (value0 instanceof Date) {
-                return dateFormat((Date) value0, (String) value1);
+                return dateFormat((Date) value0, (String) value1, config);
             } else {
                 return null;
             }
@@ -112,9 +112,9 @@ public final class DateFormat2FunFactory extends DateFormat2Fun {
             if (value0 instanceof Number) {
                 return dateFormat((Number) value0, (String) value1);
             } else if (value0 instanceof Timestamp) {
-                return dateFormat((Timestamp) value0, (String) value1);
+                return dateFormat((Timestamp) value0, (String) value1, config);
             } else if (value0 instanceof Date) {
-                return dateFormat((Date) value0, (String) value1);
+                return dateFormat((Date) value0, (String) value1, config);
             } else {
                 return null;
             }

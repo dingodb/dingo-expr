@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.runtime.CompileContext;
 import io.dingodb.expr.runtime.ExprContext;
@@ -30,4 +31,6 @@ public interface TupleCompileContext extends CompileContext {
     TupleCompileContext withType(TupleType type);
 
     public void setExprContext(ExprContext exprContext);
+
+    void setProcessor(DingoTimeZoneProcessor processor);
 }

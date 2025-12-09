@@ -17,6 +17,8 @@
 package io.dingodb.expr.runtime.op.relational;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -57,15 +59,24 @@ abstract class LeOp extends RelationalOp {
         return value0.compareTo(value1) <= 0;
     }
 
-    static boolean le(@NonNull Date value0, Date value1) {
+    static boolean le(@NonNull Date value0, Date value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isBefore(value0, value1);*/
         return !value0.after(value1);
     }
 
-    static boolean le(@NonNull Time value0, Time value1) {
+    static boolean le(@NonNull Time value0, Time value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isBefore(value0, value1);*/
         return !value0.after(value1);
     }
 
-    static boolean le(@NonNull Timestamp value0, Timestamp value1) {
+    static boolean le(@NonNull Timestamp value0, Timestamp value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isBefore(value0, value1);*/
         return !value0.after(value1);
     }
 
