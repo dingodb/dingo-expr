@@ -17,10 +17,11 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.core.DingoDateTime;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -33,11 +34,16 @@ public class MillisecondFun extends UnaryOp {
     private static final long serialVersionUID = 775941464332334782L;
 
     static int extractMillisecond(@NonNull Date value, ExprConfig config) {
-        return DateTimeUtils.extractMillisecond(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIMESTAMP);
+
+        return processor.extractMillisecond(dateTime);
     }
 
     static int extractMillisecond(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractMinuteSecond(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMillisecond(value);
     }
 
     static @Nullable Object extractMillisecond(Void value, @NonNull ExprConfig config) {

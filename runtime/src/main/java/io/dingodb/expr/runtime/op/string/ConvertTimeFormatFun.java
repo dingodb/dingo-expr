@@ -17,7 +17,7 @@
 package io.dingodb.expr.runtime.op.string;
 
 import io.dingodb.expr.annotations.Operators;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
+import io.dingodb.expr.common.timezone.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Operators

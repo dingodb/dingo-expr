@@ -16,11 +16,14 @@
 
 package io.dingodb.expr.rel;
 
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.parser.ExprParser;
 import io.dingodb.expr.runtime.ExprCompiler;
 import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.TupleEvalContext;
 import io.dingodb.expr.runtime.TupleEvalContextImpl;
+
+import java.time.ZoneId;
 
 public interface RelConfig {
     RelConfig DEFAULT = new RelConfig() {
@@ -33,6 +36,7 @@ public interface RelConfig {
     default ExprCompiler getExprCompiler() {
         ExprCompiler ret = ExprCompiler.ADVANCED;
         ret.setExprContext(ExprContext.INVALID);
+        ret.setProcessor(new DingoTimeZoneProcessor(ZoneId.systemDefault()));
         return ret;
     }
 

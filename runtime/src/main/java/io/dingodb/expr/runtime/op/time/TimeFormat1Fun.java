@@ -22,7 +22,6 @@ import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Time;
@@ -34,7 +33,7 @@ abstract class TimeFormat1Fun extends UnaryOp {
     private static final long serialVersionUID = 203325750133458266L;
 
     static @NonNull String timeFormat(@NonNull Time value, @NonNull ExprConfig config) {
-        return DateTimeUtils.timeFormat(value, config.getOutputTimeFormatter());
+        return config.getProcessor().formatDateTime(value, config.getOutputTimeFormatter());
     }
 
     @Override

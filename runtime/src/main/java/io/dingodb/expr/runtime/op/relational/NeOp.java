@@ -17,6 +17,8 @@
 package io.dingodb.expr.runtime.op.relational;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -62,15 +64,24 @@ abstract class NeOp extends RelationalOp {
         return value0.compareTo(value1) != 0;
     }
 
-    static boolean ne(@NonNull Date value0, Date value1) {
+    static boolean ne(@NonNull Date value0, Date value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isEqual(value0, value1);*/
         return !value0.equals(value1);
     }
 
-    static boolean ne(@NonNull Time value0, Time value1) {
+    static boolean ne(@NonNull Time value0, Time value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isEqual(value0, value1);*/
         return !value0.equals(value1);
     }
 
-    static boolean ne(@NonNull Timestamp value0, Timestamp value1) {
+    static boolean ne(@NonNull Timestamp value0, Timestamp value1, ExprConfig config) {
+        /*DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return !processor.isEqual(value0, value1);*/
         return !value0.equals(value1);
     }
 

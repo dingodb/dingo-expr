@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -36,19 +35,21 @@ public class QuarterFun extends UnaryOp {
     private static final long serialVersionUID = -5306012511147355441L;
 
     static int extractQuarter(@NonNull Date value, ExprConfig config) {
-        return DateTimeUtils.extractQuarter(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractQuarter(value);
     }
 
     static int extractQuarter(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractQuarter(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractQuarter(value);
     }
 
     static Integer extractQuarter(String value, @NonNull ExprConfig config) {
-        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        if (date == null) {
-            return null;
-        }
-        return DateTimeUtils.extractQuarter(date);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractQuarter(value);
     }
 
     static @Nullable Integer extractQuarter(Time value, @NonNull ExprConfig config) {

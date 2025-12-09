@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime;
 
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.DecimalType;
 import io.dingodb.expr.common.type.TupleType;
 import io.dingodb.expr.common.type.Type;
@@ -72,6 +73,10 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
 
     public ExprContext getExprContext() {
         return this.config.getExprContext();
+    }
+
+    public void setProcessor(DingoTimeZoneProcessor processor) {
+        this.config.setProcessor(processor);
     }
 
     public static @NonNull ExprCompiler of(ExprConfig config) {
@@ -131,6 +136,7 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
 
         if (obj != null && obj.getExprContext() != null) {
             config.setExprContext(obj.getExprContext());
+            config.setProcessor(obj.getProcessor());
         }
 
         Expr expr1 = expr.getOp().compile(operand, config);

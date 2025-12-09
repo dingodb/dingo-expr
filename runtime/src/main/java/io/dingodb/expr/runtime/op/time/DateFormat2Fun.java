@@ -16,12 +16,12 @@
 
 package io.dingodb.expr.runtime.op.time;
 
-import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.DateTimeUtils;
 import io.dingodb.expr.common.type.Type;
+import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpKey;
 import io.dingodb.expr.runtime.op.OpKeys;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -33,11 +33,13 @@ abstract class DateFormat2Fun extends BinaryOp {
 
     private static final long serialVersionUID = -5201676038056246158L;
 
-    static @NonNull String dateFormat(@NonNull Date value, @NonNull String format) {
+    static @NonNull String dateFormat(@NonNull Date value, @NonNull String format, ExprConfig config) {
+        // return config.getProcessor().formatDateTime(value, DateTimeFormatter.ofPattern(format));
         return DateTimeUtils.dateFormat(value, format);
     }
 
-    static @NonNull String dateFormat(@NonNull Timestamp value, @NonNull String format) {
+    static @NonNull String dateFormat(@NonNull Timestamp value, @NonNull String format, ExprConfig config) {
+        // return config.getProcessor().formatDateTime(value, DateTimeFormatter.ofPattern(format));
         return DateTimeUtils.timestampFormat(value, format);
     }
 

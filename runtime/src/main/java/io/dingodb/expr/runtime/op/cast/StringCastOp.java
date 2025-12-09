@@ -16,11 +16,9 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -67,15 +65,15 @@ abstract class StringCastOp extends CastOp {
     }
 
     static @NonNull String stringCast(Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.dateFormat(value, config.getOutputDateFormatter());
+        return config.getProcessor().formatDateTime(value, config.getOutputDateFormatter());
     }
 
     static @NonNull String stringCast(Time value, @NonNull ExprConfig config) {
-        return DateTimeUtils.timeFormat(value, config.getOutputTimeFormatter());
+        return config.getProcessor().formatDateTime(value, config.getOutputTimeFormatter());
     }
 
     static @NonNull String stringCast(Timestamp value, @NonNull ExprConfig config) {
-        return DateTimeUtils.timestampFormat(value, config.getOutputTimestampFormatter());
+        return config.getProcessor().formatDateTime(value, config.getOutputTimestampFormatter());
     }
 
     static @Nullable String stringCast(Void ignoredValue) {

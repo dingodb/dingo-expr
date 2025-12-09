@@ -28,6 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -193,7 +195,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(val("abc"), "abc"),
             arguments(bytes("123"), "123".getBytes(StandardCharsets.UTF_8)),
             arguments(date(1L), new Date(sec(1L))),
-            arguments(time(2L), new Time(sec(2L))),
+            arguments(time(2L), Time.valueOf(LocalTime.ofSecondOfDay(2L))),
             arguments(ts(3L), new Timestamp(sec(3L))),
             arguments(val(null), null),
 
@@ -275,12 +277,12 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_BYTES, "abc"), "abc".getBytes(StandardCharsets.UTF_8)),
             arguments(op(TO_DATE, 1), new Date(sec(1L))),
             arguments(op(TO_DATE, 1L), new Date(sec(1L))),
-            arguments(op(TO_DATE, "1970-01-01"), new Date(sec(0L))),
+            arguments(op(TO_DATE, "1970-01-01"), Date.valueOf(LocalDate.of(1970, 1, 1))),
             arguments(op(TO_DATE, date(1L)), new Date(sec(1L))),
-            arguments(op(TO_TIME, 1), new Time(sec(1L))),
-            arguments(op(TO_TIME, 1L), new Time(sec(1L))),
-            arguments(op(TO_TIME, "00:00:00"), new Time(sec(0L))),
-            arguments(op(TO_TIME, time(1L)), new Time(sec(1L))),
+            arguments(op(TO_TIME, 1), Time.valueOf(LocalTime.ofSecondOfDay(1))),
+            arguments(op(TO_TIME, 1L), Time.valueOf(LocalTime.ofSecondOfDay(1L))),
+            arguments(op(TO_TIME, "00:00:00"), Time.valueOf(LocalTime.MIDNIGHT)),
+            arguments(op(TO_TIME, time(1L)), Time.valueOf(LocalTime.ofSecondOfDay(1L))),
             arguments(op(TO_TIMESTAMP, 1), new Timestamp(sec(1L))),
             arguments(op(TO_TIMESTAMP, 1L), new Timestamp(sec(1L))),
             arguments(
@@ -548,7 +550,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(MIN, dec(1.1), dec(2.2)), BigDecimal.valueOf(1.1)),
             arguments(op(MIN, "abc", "def"), "abc"),
             arguments(op(MIN, date(1L), date(2L)), new Date(sec(1L))),
-            arguments(op(MIN, time(1L), time(2L)), new Time(sec(1L))),
+            arguments(op(MIN, time(1L), time(2L)), Time.valueOf(LocalTime.ofSecondOfDay(1L))),
             arguments(op(MIN, ts(1L), ts(2L)), new Timestamp(sec(1L))),
             arguments(op(MAX, 1, 2), 2),
             arguments(op(MAX, 1L, 2L), 2L),
@@ -557,7 +559,7 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(MAX, dec(1.1), dec(2.2)), BigDecimal.valueOf(2.2)),
             arguments(op(MAX, "abc", "def"), "def"),
             arguments(op(MAX, date(1L), date(2L)), new Date(sec(2L))),
-            arguments(op(MAX, time(1L), time(2L)), new Time(sec(2L))),
+            arguments(op(MAX, time(1L), time(2L)), Time.valueOf(LocalTime.ofSecondOfDay(2L))),
             arguments(op(MAX, ts(1L), ts(2L)), new Timestamp(sec(2L))),
             arguments(op(MOD, 4, 3), 1),
             arguments(op(MOD, -4, 3), -1),
@@ -774,7 +776,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_ARRAY_STRING, op(ARRAY, 1, 2, 3)), new String[]{"1", "2", "3"}),
             arguments(op(TO_ARRAY_BYTES, op(ARRAY, "a", "b")), new byte[][]{"a".getBytes(), "b".getBytes()}),
             arguments(op(TO_ARRAY_DATE, op(ARRAY, 1, 2)), new Date[]{new Date(sec(1L)), new Date(sec(2L))}),
-            arguments(op(TO_ARRAY_TIME, op(ARRAY, 1, 2)), new Time[]{new Time(sec(1L)), new Time(sec(2L))}),
+            arguments(op(TO_ARRAY_TIME, op(ARRAY, 1, 2)),
+                new Time[]{Time.valueOf(LocalTime.ofSecondOfDay(1L)), Time.valueOf(LocalTime.ofSecondOfDay(2L))}),
             arguments(op(TO_ARRAY_TIMESTAMP, op(ARRAY, 1, 2)),
                 new Timestamp[]{new Timestamp(sec(1L)), new Timestamp(sec(2L))}),
             arguments(op(TO_ARRAY_INT, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), new int[]{1, 2, 3, 4, 6}),
@@ -788,7 +791,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_ARRAY_STRING, op(LIST, 1, 2, 3)), new String[]{"1", "2", "3"}),
             arguments(op(TO_ARRAY_BYTES, op(LIST, "a", "b")), new byte[][]{"a".getBytes(), "b".getBytes()}),
             arguments(op(TO_ARRAY_DATE, op(LIST, 1, 2)), new Date[]{new Date(sec(1L)), new Date(sec(2L))}),
-            arguments(op(TO_ARRAY_TIME, op(LIST, 1, 2)), new Time[]{new Time(sec(1L)), new Time(sec(2L))}),
+            arguments(op(TO_ARRAY_TIME, op(LIST, 1, 2)),
+                new Time[]{Time.valueOf(LocalTime.ofSecondOfDay(1L)), Time.valueOf(LocalTime.ofSecondOfDay(2L))}),
             arguments(op(TO_ARRAY_TIMESTAMP, op(LIST, 1, 2)),
                 new Timestamp[]{new Timestamp(sec(1L)), new Timestamp(sec(2L))}),
             arguments(op(TO_LIST_INT, op(ARRAY, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
@@ -802,7 +806,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_LIST_STRING, op(ARRAY, 1, 2, 3)), Arrays.asList("1", "2", "3")),
             arguments(op(TO_LIST_BYTES, op(ARRAY, "a", "b")), Arrays.asList("a".getBytes(), "b".getBytes())),
             arguments(op(TO_LIST_DATE, op(ARRAY, 1, 2)), Arrays.asList(new Date(sec(1L)), new Date(sec(2L)))),
-            arguments(op(TO_LIST_TIME, op(ARRAY, 1, 2)), Arrays.asList(new Time(sec(1L)), new Time(sec(2L)))),
+            arguments(op(TO_LIST_TIME, op(ARRAY, 1, 2)),
+                Arrays.asList(Time.valueOf(LocalTime.ofSecondOfDay(1L)), Time.valueOf(LocalTime.ofSecondOfDay(2L)))),
             arguments(op(TO_LIST_TIMESTAMP, op(ARRAY, 1, 2)),
                 Arrays.asList(new Timestamp(sec(1L)), new Timestamp(sec(2L)))),
             arguments(op(TO_LIST_INT, op(LIST, 1.1, 2.2, 3.3, 4.4, 5.5)), Arrays.asList(1, 2, 3, 4, 6)),
@@ -816,7 +821,8 @@ public class EvalConstProvider implements ArgumentsProvider {
             arguments(op(TO_LIST_STRING, op(LIST, 1, 2, 3)), Arrays.asList("1", "2", "3")),
             arguments(op(TO_LIST_BYTES, op(LIST, "a", "b")), Arrays.asList("a".getBytes(), "b".getBytes())),
             arguments(op(TO_LIST_DATE, op(LIST, 1, 2)), Arrays.asList(new Date(sec(1L)), new Date(sec(2L)))),
-            arguments(op(TO_LIST_TIME, op(LIST, 1, 2)), Arrays.asList(new Time(sec(1L)), new Time(sec(2L)))),
+            arguments(op(TO_LIST_TIME, op(LIST, 1, 2)),
+                Arrays.asList(Time.valueOf(LocalTime.ofSecondOfDay(1L)), Time.valueOf(LocalTime.ofSecondOfDay(2L)))),
             arguments(op(TO_LIST_TIMESTAMP, op(LIST, 1, 2)),
                 Arrays.asList(new Timestamp(sec(1L)), new Timestamp(sec(2L)))),
             arguments(op(SLICE, new int[][]{new int[]{1, 2}, new int[]{3, 4}, new int[]{5, 6}}, 0), new int[]{1, 3, 5}),

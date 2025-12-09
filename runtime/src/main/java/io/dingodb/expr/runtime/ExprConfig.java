@@ -16,8 +16,10 @@
 
 package io.dingodb.expr.runtime;
 
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.utils.DateTimeUtils;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
@@ -27,6 +29,7 @@ public interface ExprConfig {
 
     ExprConfig ADVANCED = new ExprConfig() {
         ExprContext exprContext = ExprContext.INVALID;
+        DingoTimeZoneProcessor processor = new DingoTimeZoneProcessor(ZoneId.systemDefault());
 
         @Override
         public boolean withSimplification() {
@@ -44,6 +47,15 @@ public interface ExprConfig {
 
         public void setExprContext(ExprContext exprContext) {
             this.exprContext = exprContext;
+        }
+
+        @Override
+        public DingoTimeZoneProcessor getProcessor() {
+            return processor;
+        }
+
+        public void setProcessor(DingoTimeZoneProcessor processor) {
+            this.processor = processor;
         }
     };
 
@@ -69,6 +81,14 @@ public interface ExprConfig {
 
     default TimeZone getTimeZone() {
         return TimeZone.getDefault();
+    }
+
+    default void setProcessor(DingoTimeZoneProcessor processor) {
+        return;
+    }
+
+    default DingoTimeZoneProcessor getProcessor() {
+        return new DingoTimeZoneProcessor(ZoneId.systemDefault());
     }
 
     default DateTimeFormatter[] getParseDateFormatters() {

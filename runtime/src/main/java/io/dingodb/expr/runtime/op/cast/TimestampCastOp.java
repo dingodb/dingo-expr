@@ -16,11 +16,12 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.DateTimeUtils;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -28,13 +29,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.TimeZone;
 
 //@Operators
 abstract class TimestampCastOp extends CastOp {
@@ -49,13 +43,9 @@ abstract class TimestampCastOp extends CastOp {
     }
 
     static @NonNull Timestamp timestampCast(Date value, ExprConfig config) {
-        LocalDateTime ts =  new Timestamp(value.getTime()).toLocalDateTime();
-        TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
-        ZonedDateTime zonedDateTime = ts.atZone(timeZone.toZoneId());
+        DingoTimeZoneProcessor processor = config.getProcessor();
 
-        java.time.ZoneOffset zoneOffset = zonedDateTime.getOffset();
-        ZonedDateTime targetZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
-        return new Timestamp(targetZonedDateTime.toLocalDateTime().toInstant(zoneOffset).toEpochMilli());
+        return (Timestamp) processor.processDateTime(value, DateTimeType.DATE, DateTimeType.TIMESTAMP);
     }
 
     static @NonNull Timestamp timestampCast(@NonNull BigDecimal value) {
@@ -63,27 +53,20 @@ abstract class TimestampCastOp extends CastOp {
     }
 
     static @NonNull Timestamp timestampCast(@NonNull Time value, ExprConfig config) {
-        int hours = value.toLocalTime().getHour();
-        int minutes = value.toLocalTime().getMinute();
-        int seconds = value.toLocalTime().getSecond();
+        DingoTimeZoneProcessor processor = config.getProcessor();
 
-        LocalDateTime localDatetime = LocalDate.now().atTime(hours,minutes,seconds);
-        TimeZone timeZone = (config != null ? config.getTimeZone() : TimeZone.getDefault());
-        ZonedDateTime zonedDateTime = localDatetime.atZone(timeZone.toZoneId());
-
-        java.time.ZoneOffset zoneOffset = zonedDateTime.getOffset();
-        ZonedDateTime targetZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
-        int zonedDayOfMonth = targetZonedDateTime.getDayOfMonth();
-        int localDayofMonth = localDatetime.getDayOfMonth();
-        if (zonedDayOfMonth != localDayofMonth) {
-            targetZonedDateTime = targetZonedDateTime.plusDays(localDayofMonth - zonedDayOfMonth);
-        }
-
-        return new Timestamp(targetZonedDateTime.toLocalDateTime().toInstant(zoneOffset).toEpochMilli());
+        return (Timestamp) processor.processDateTime(value, DateTimeType.TIME, DateTimeType.TIMESTAMP);
     }
 
     static @Nullable Timestamp timestampCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseTimestamp(value, config.getParseDateAndTimestampFormatters());
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        DateTimeType inputType = processor.inferInputType(value);
+        if (inputType == DateTimeType.TIME) {
+            return null;
+        }
+        Object dateTime = processor.processDateTime(value, inputType, DateTimeType.TIMESTAMP);
+        return dateTime == null ? null : (Timestamp) dateTime;
     }
 
     static @NonNull Timestamp timestampCast(@NonNull Timestamp value) {

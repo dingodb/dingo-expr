@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -35,20 +34,21 @@ abstract class DayFun extends UnaryOp {
     private static final long serialVersionUID = -2563474369205481106L;
 
     static int extractDay(@NonNull Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.extractDay(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractDay(value);
     }
 
     static int extractDay(@NonNull Timestamp value, @NonNull ExprConfig config) {
-        // return TimestampUtils.extractDay(value);
-        return DateTimeUtils.extractDay(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractDay(value);
     }
 
     static Integer extractDay(String value, @NonNull ExprConfig config) {
-        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        if (date == null) {
-            return null;
-        }
-        return DateTimeUtils.extractDay(date);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractDay(value);
     }
 
     static @Nullable Integer extractDay(Time value, @NonNull ExprConfig config) {

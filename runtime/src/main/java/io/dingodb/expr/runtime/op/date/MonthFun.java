@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -35,19 +34,21 @@ abstract class MonthFun extends UnaryOp {
     private static final long serialVersionUID = 117962350353311032L;
 
     static int extractMonth(@NonNull Date value, ExprConfig config) {
-        return DateTimeUtils.extractMonth(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMonth(value);
     }
 
     static int extractMonth(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractMonth(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMonth(value);
     }
 
     static Integer extractMonth(String value, @NonNull ExprConfig config) {
-        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        if (date == null) {
-            return null;
-        }
-        return DateTimeUtils.extractMonth(date);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractMonth(value);
     }
 
     static @Nullable Integer extractMonth(Time value, @NonNull ExprConfig config) {

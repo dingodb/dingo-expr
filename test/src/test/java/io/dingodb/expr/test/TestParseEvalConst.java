@@ -33,6 +33,9 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,7 +80,7 @@ public class TestParseEvalConst {
         Expr expr = ExprParser.DEFAULT.parse("current_date()");
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
         Object v = expr1.eval();
-        assertThat((Date) v).isCloseTo(DateTimeUtils.currentDate(TimeZone.getDefault()), 5000);
+        assertThat((Date) v).isCloseTo(Date.valueOf(LocalDate.now()), 5000);
     }
 
     @Test
@@ -85,7 +88,7 @@ public class TestParseEvalConst {
         Expr expr = ExprParser.DEFAULT.parse("current_time()");
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
         Object v = expr1.eval();
-        assertThat((Time) v).isCloseTo(DateTimeUtils.currentTime(TimeZone.getDefault()), 5000);
+        assertThat((Time) v).isCloseTo(Time.valueOf(LocalTime.now()), 5000);
     }
 
     @Test
@@ -93,6 +96,6 @@ public class TestParseEvalConst {
         Expr expr = ExprParser.DEFAULT.parse("current_timestamp()");
         Expr expr1 = ExprCompiler.SIMPLE.visit(expr);
         Object v = expr1.eval();
-        assertThat((Timestamp) v).isCloseTo(DateTimeUtils.currentTimestamp(), 5000);
+        assertThat((Timestamp) v).isCloseTo(Timestamp.valueOf(LocalDateTime.now()), 5000);
     }
 }

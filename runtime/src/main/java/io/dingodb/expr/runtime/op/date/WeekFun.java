@@ -17,10 +17,9 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -35,19 +34,21 @@ abstract class WeekFun extends UnaryOp {
     private static final long serialVersionUID = 1808398124954600920L;
 
     static int extractWeek(@NonNull Date value, @NonNull ExprConfig config) {
-        return DateTimeUtils.extractWeek(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractWeek(value);
     }
 
-    static int extractWeek(@NonNull Timestamp value0, @NonNull ExprConfig config) {
-        return TimestampUtils.extractWeek(value0);
+    static int extractWeek(@NonNull Timestamp value, @NonNull ExprConfig config) {
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractWeek(value);
     }
 
     static Integer extractWeek(String value, @NonNull ExprConfig config) {
-        Date date = DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        if (date == null) {
-            return null;
-        }
-        return DateTimeUtils.extractWeek(date);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        return processor.extractWeek(value);
     }
 
     static @Nullable Integer extractWeek(Time value, @NonNull ExprConfig config) {

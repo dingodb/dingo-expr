@@ -16,6 +16,7 @@
 
 package io.dingodb.expr.runtime;
 
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.Type;
 
 public interface CompileContext {
@@ -48,6 +49,10 @@ public interface CompileContext {
     }
 
     default ExprContext getExprContext() {
+        return null;
+    }
+
+    default DingoTimeZoneProcessor getProcessor() {
         return null;
     }
 

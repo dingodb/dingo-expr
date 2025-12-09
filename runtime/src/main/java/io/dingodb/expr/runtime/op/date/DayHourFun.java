@@ -17,10 +17,12 @@
 package io.dingodb.expr.runtime.op.date;
 
 import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.DateTimeUtils;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.core.DingoDateTime;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.UnaryOp;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
-import io.dingodb.expr.runtime.utils.TimestampUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.sql.Date;
@@ -33,11 +35,20 @@ abstract class DayHourFun extends UnaryOp {
     private static final long serialVersionUID = 6424544681050519517L;
 
     static int extractDayHour(@NonNull Date value, ExprConfig config) {
-        return DateTimeUtils.extractDayHour(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+        DingoDateTime dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIMESTAMP);
+
+        int day = processor.extractDay(dateTime);
+        int hour = processor.extractHour(dateTime);
+        return DateTimeUtils.concatIntegers(new int[] {day, hour});
     }
 
     static int extractDayHour(@NonNull Timestamp value, ExprConfig config) {
-        return TimestampUtils.extractDayHour(value);
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        int day = processor.extractDay(value);
+        int hour = processor.extractHour(value);
+        return DateTimeUtils.concatIntegers(new int[] {day, hour});
     }
 
     @Override

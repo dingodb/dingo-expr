@@ -16,11 +16,12 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
+import io.dingodb.expr.common.timezone.DateTimeUtils;
+import io.dingodb.expr.common.timezone.core.DateTimeType;
+import io.dingodb.expr.common.timezone.processor.DingoTimeZoneProcessor;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.utils.DateTimeUtils;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -40,8 +41,10 @@ abstract class DateCastOp extends CastOp {
     }
 
     static @Nullable Date dateCast(String value, @NonNull ExprConfig config) {
-        return DateTimeUtils.parseDate(value, config.getParseDateAndTimestampFormatters());
-        // return DateTimeUtils.parseTimestamp(value, config.getParseTimestampFormatters());
+        DingoTimeZoneProcessor processor = config.getProcessor();
+
+        Object dateTime = processor.processDateTime(value, DateTimeType.DATE);
+        return dateTime == null ? null : (Date) dateTime;
     }
 
     static @NonNull Date dateCast(@NonNull Date value) {
