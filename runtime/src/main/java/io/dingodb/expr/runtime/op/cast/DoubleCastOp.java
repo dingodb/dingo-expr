@@ -16,7 +16,6 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -71,26 +70,6 @@ abstract class DoubleCastOp extends CastOp {
 
     static @Nullable Double doubleCast(Void ignoredValue) {
         return null;
-    }
-
-    static double doubleCastWithStringCompat(String value) {
-        double result = 0;
-        try {
-            //For efficiency.
-            result = Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            int lastNumberPos = 0;
-            if (value != null) {
-                //find the last digit position.
-                String v = trimDigitString(value);
-                try {
-                    result = Double.parseDouble(v);
-                } catch (NumberFormatException e1) {
-                    result = 0;
-                }
-            }
-        }
-        return result;
     }
 
     @Override

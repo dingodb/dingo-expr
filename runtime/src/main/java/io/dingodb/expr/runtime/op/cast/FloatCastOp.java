@@ -16,7 +16,6 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -78,24 +77,4 @@ abstract class FloatCastOp extends CastOp {
         return Types.FLOAT;
     }
 
-    static float floatCastWithStringCompat(@NonNull String value) {
-        float result = 0;
-        String val = value.trim();
-        try {
-            result = Float.parseFloat(val);
-        } catch (NumberFormatException e) {
-            int lastNumberPos = 0;
-            if (value != null) {
-                //find the last digit position.
-                String v = trimDigitString(value);
-                try {
-                    result = Float.parseFloat(v);
-                } catch (NumberFormatException e1) {
-                    result = 0;
-                }
-            }
-        }
-
-        return result;
-    }
 }
