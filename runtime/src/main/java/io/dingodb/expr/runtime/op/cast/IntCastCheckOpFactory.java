@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.dingodb.expr.common.utils.CastWithString.intCastWithStringCompat;
+
 public final class IntCastCheckOpFactory extends IntCastCheckOp {
     private static final long serialVersionUID = 4289317110179811760L;
 

@@ -17,6 +17,7 @@
 package io.dingodb.expr.runtime.op.cast;
 
 import io.dingodb.expr.common.type.Types;
+import io.dingodb.expr.common.utils.CastWithString;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.ExprContext;
 import io.dingodb.expr.runtime.op.OpKey;
@@ -27,6 +28,8 @@ import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.dingodb.expr.common.utils.CastWithString.decimalCastWithStringCompat;
 
 public class DecimalCastOpFactory extends DecimalCastOp {
 

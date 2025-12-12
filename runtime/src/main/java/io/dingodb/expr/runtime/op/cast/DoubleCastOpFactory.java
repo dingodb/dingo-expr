@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.dingodb.expr.common.utils.CastWithString.doubleCastWithStringCompat;
+
 public final class DoubleCastOpFactory extends DoubleCastOp {
     private static final long serialVersionUID = -5477208717628123675L;
 

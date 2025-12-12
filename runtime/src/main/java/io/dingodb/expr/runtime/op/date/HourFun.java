@@ -56,6 +56,11 @@ abstract class HourFun extends UnaryOp {
 
     static Integer extractHour(String value, @NonNull ExprConfig config) {
         DingoTimeZoneProcessor processor = config.getProcessor();
+        DateTimeType inputType = processor.inferInputType(value);
+        if (inputType == null) {
+            // Illegal string returns null
+            return null;
+        }
         DingoDateTime dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIMESTAMP);
         if (dateTime == null) {
             dateTime = processor.getTierProcessor().convertInput(value, DateTimeType.TIME);

@@ -27,13 +27,16 @@ import io.dingodb.expr.common.type.IntervalMinuteType;
 import io.dingodb.expr.common.type.IntervalMonthType;
 import io.dingodb.expr.common.type.IntervalQuarterType;
 import io.dingodb.expr.common.type.IntervalSecondType;
+import io.dingodb.expr.common.type.IntervalType;
 import io.dingodb.expr.common.type.IntervalWeekType;
 import io.dingodb.expr.common.type.IntervalYearType;
+import io.dingodb.expr.common.utils.CastWithString;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryIntervalOp;
 import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -59,6 +62,40 @@ public class AddOp extends BinaryIntervalOp {
         }
         DingoDateTime dateTime = processor.dateAdd(input, amount, unit);
         return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
+    }
+
+    static IntervalType add(Integer value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(Long value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(Double value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(Float value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(Boolean value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(value0 ? 1 : 0);
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(BigDecimal value0, IntervalType value1) {
+        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        return buildInterval(decimal, value1);
+    }
+
+    static IntervalType add(Void value0, IntervalType value1) {
+        return null;
     }
 
     static Date add(Date value0, IntervalMonthType.IntervalMonth value1, ExprConfig config) {

@@ -16,7 +16,6 @@
 
 package io.dingodb.expr.runtime.op.cast;
 
-import io.dingodb.expr.annotations.Operators;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.exception.CastingException;
@@ -90,23 +89,4 @@ abstract class IntCastCheckOp extends CastOp {
         return true;
     }
 
-    static int intCastWithStringCompat(@NonNull String value) {
-        int result = 0;
-        String val = value.trim();
-        try {
-            result = Integer.parseInt(val);
-        } catch (NumberFormatException e) {
-            int lastNumberPos = 0;
-            if (value != null) {
-                String v = trimDigitString(value);
-                try {
-                    result = Integer.parseInt(value.trim());
-                } catch (NumberFormatException e1) {
-                    result = 0;
-                }
-            }
-        }
-
-        return result;
-    }
 }

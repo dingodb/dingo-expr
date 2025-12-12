@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.dingodb.expr.common.utils.CastWithString.floatCastWithStringCompat;
+
 public final class FloatCastOpFactory extends FloatCastOp {
     private static final long serialVersionUID = 5390811599799032720L;
 

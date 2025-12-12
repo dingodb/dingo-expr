@@ -161,7 +161,14 @@ public final class OpKeys {
         private static final List<Type> types0 = Arrays.asList(
             Types.DATE,
             Types.TIME,
-            Types.TIMESTAMP);
+            Types.TIMESTAMP,
+            Types.INT,
+            Types.LONG,
+            Types.DOUBLE,
+            Types.FLOAT,
+            Types.BOOL,
+            Types.DECIMAL,
+            Types.NULL);
 
         private static final List<Type> types1 = Arrays.asList(
             Types.INTERVAL_YEAR,
