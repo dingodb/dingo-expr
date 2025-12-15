@@ -16,6 +16,8 @@
 
 package io.dingodb.expr.runtime.op;
 
+import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
 import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.IntType;
 import io.dingodb.expr.common.type.Type;
@@ -27,6 +29,12 @@ import io.dingodb.expr.runtime.exception.OperatorTypeNotExist;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
 import io.dingodb.expr.runtime.expr.Expr;
 import io.dingodb.expr.runtime.expr.Val;
+import io.dingodb.expr.runtime.op.relational.EqOpFactory;
+import io.dingodb.expr.runtime.op.relational.GeOpFactory;
+import io.dingodb.expr.runtime.op.relational.GtOpFactory;
+import io.dingodb.expr.runtime.op.relational.LeOpFactory;
+import io.dingodb.expr.runtime.op.relational.LtOpFactory;
+import io.dingodb.expr.runtime.op.relational.NeOpFactory;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -76,13 +84,29 @@ public abstract class BinaryOp extends AbstractOp<BinaryOp, BinaryOpExpr> {
             && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB
                 || op.getOpType() == OpType.MUL || op.getOpType() == OpType.DIV)) {
             needCast = true;
+        } else if ( op != null && (op.getOpType() == OpType.GE || op.getOpType() == OpType.GT
+            || op.getOpType() == OpType.LE || op.getOpType() == OpType.GT
+            || op.getOpType() == OpType.EQ || op.getOpType() == OpType.NE)) {
+            if (operand0.getType() instanceof FloatType || operand1.getType() instanceof FloatType) {
+                needCast = true;
+            } else if (operand0.getType() instanceof DoubleType || operand1.getType() instanceof DoubleType) {
+                needCast = true;
+            }
         }
 
         if (op != null && !needCast) {
             result = op.createExpr(operand0, operand1);
         } else {
-            Type[] types;
-            if (op != null && type0 instanceof IntType && type1 instanceof IntType
+            Type[] types = new Type[]{type0, type1};
+            if ( this instanceof LtOpFactory || this instanceof LeOpFactory
+                || this instanceof GeOpFactory || this instanceof GtOpFactory
+                || this instanceof EqOpFactory || this instanceof NeOpFactory) {
+                if (type0 instanceof FloatType || type1 instanceof FloatType) {
+                    types = new Type[]{Types.DOUBLE, Types.DOUBLE};
+                } else if (type0 instanceof DoubleType || type1 instanceof DoubleType) {
+                    types = new Type[]{Types.DOUBLE, Types.DOUBLE};
+                }
+            } else if (op != null && type0 instanceof IntType && type1 instanceof IntType
                 && (op.getOpType() == OpType.ADD || op.getOpType() == OpType.SUB || op.getOpType() == OpType.MUL)) {
                 types = new Type[]{Types.LONG, Types.LONG};
             } else if (op != null && type0 instanceof FloatType && type1 instanceof FloatType

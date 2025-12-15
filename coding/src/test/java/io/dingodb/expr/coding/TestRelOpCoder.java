@@ -43,7 +43,7 @@ public class TestRelOpCoder {
                     .filter("$[2] > 50")
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
-                "7134021442480000930400"
+                "713402f054154049000000000000930500"
             ),
             arguments(
                 RelOpStringBuilder.builder(RelConfig.DEFAULT)
@@ -58,7 +58,7 @@ public class TestRelOpCoder {
                     .project("$[0]", "$[1]", "$[2] / 10")
                     .build(),
                 Types.tuple("INT", "STRING", "FLOAT"),
-                "7134021442480000930400723100370134021441200000860400"
+                "713402f054154049000000000000930500723100370134021441200000860400"
             ),
             arguments(
                 RelOpStringBuilder.builder(RelConfig.DEFAULT)
