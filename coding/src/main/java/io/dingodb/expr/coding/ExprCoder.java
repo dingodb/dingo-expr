@@ -17,6 +17,8 @@
 package io.dingodb.expr.coding;
 
 import io.dingodb.expr.common.type.DecimalType;
+import io.dingodb.expr.common.type.DoubleType;
+import io.dingodb.expr.common.type.FloatType;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.expr.BinaryOpExpr;
@@ -283,7 +285,7 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
                             break;
                         case ModFunFactory.NAME:
                             t = (Type) expr.getOp().getKey();
-                            if (t instanceof DecimalType) {
+                            if (t instanceof DecimalType || t instanceof DoubleType || t instanceof FloatType) {
                                 //decimal type does not support pushing down.
                                 success = false;
                                 break;
