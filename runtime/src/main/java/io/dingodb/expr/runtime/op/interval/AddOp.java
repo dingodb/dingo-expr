@@ -64,40 +64,6 @@ public class AddOp extends BinaryIntervalOp {
         return (Date) processor.getTierProcessor().convertOutput(dateTime, DateTimeType.DATE);
     }
 
-    static IntervalType add(Integer value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(Long value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(Double value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(Float value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(Boolean value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(value0 ? 1 : 0);
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(BigDecimal value0, IntervalType value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
-        return buildInterval(decimal, value1);
-    }
-
-    static IntervalType add(Void value0, IntervalType value1) {
-        return null;
-    }
-
     static Date add(Date value0, IntervalMonthType.IntervalMonth value1, ExprConfig config) {
         DingoTimeZoneProcessor processor = config.getProcessor();
         DingoDateTime input = processor.getTierProcessor().convertInput(value0, DateTimeType.DATE);

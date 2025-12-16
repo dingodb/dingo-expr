@@ -203,6 +203,8 @@ public final class Exprs {
         io.dingodb.expr.runtime.op.interval.SubOpFactory.INSTANCE;
     public static final io.dingodb.expr.runtime.op.interval.AddOpFactory INTERVAL_ADD =
         io.dingodb.expr.runtime.op.interval.AddOpFactory.INSTANCE;
+    public static final io.dingodb.expr.runtime.op.interval.MulOpFactory INTERVAL_MUL =
+        io.dingodb.expr.runtime.op.interval.MulOpFactory.INSTANCE;
 
     // Relations
     public static final EqOpFactory EQ = EqOpFactory.INSTANCE;
