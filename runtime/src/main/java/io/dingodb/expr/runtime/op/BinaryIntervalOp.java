@@ -44,7 +44,7 @@ public abstract class BinaryIntervalOp extends BinaryOp {
             return new IntervalYearType.IntervalYear(value0.multiply(new BigDecimal(12)),
                 ((IntervalYearType.IntervalYear) value1).elementType);
         } else if (value1 instanceof IntervalMonthType.IntervalMonth) {
-            return new IntervalMonthType.IntervalMonth(value0, null);
+            return new IntervalMonthType.IntervalMonth(value0, ((IntervalMonthType.IntervalMonth) value1).elementType);
         } else if (value1 instanceof IntervalDayType.IntervalDay) {
             return new IntervalDayType.IntervalDay(value0.multiply(new BigDecimal(24 * 60 * 60 * 1000)),
                 ((IntervalDayType.IntervalDay) value1).elementType
