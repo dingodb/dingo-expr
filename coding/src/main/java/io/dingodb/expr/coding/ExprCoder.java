@@ -374,16 +374,10 @@ public class ExprCoder extends ExprVisitorBase<CodingFlag, @NonNull OutputStream
             if (typeCode != null && index instanceof Integer) {
                 switch (expr.getOp().getName()) {
                     case CountAgg.NAME:
-                        if ( typeCode == 6) {  //Dont support decimal type now.
-                            return null;
-                        }
                         obj.write(AGG_COUNT | typeCode);
                         break;
                     case SumAgg.NAME:
                     case Sum0Agg.NAME:
-                        if ( typeCode == 6) {  //Dont support decimal type now.
-                            return null;
-                        }
                         obj.write(AGG_SUM | typeCode);
                         break;
                     case MaxAgg.NAME:
