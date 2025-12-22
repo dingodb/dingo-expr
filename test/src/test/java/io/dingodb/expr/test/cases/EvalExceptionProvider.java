@@ -49,7 +49,7 @@ public class EvalExceptionProvider implements ArgumentsProvider {
             arguments(op(TO_LONG_C, BigDecimal.valueOf(Long.MAX_VALUE).add(BigDecimal.ONE)), CastingException.class),
             arguments(op(TO_LONG_C, BigDecimal.valueOf(Long.MIN_VALUE).subtract(BigDecimal.ONE)),
                 CastingException.class),
-            arguments(op(ABS_C, Integer.MIN_VALUE), ExprEvaluatingException.class),
+            /*arguments(op(ABS_C, Integer.MIN_VALUE), ExprEvaluatingException.class),*/
             arguments(op(ABS_C, Long.MIN_VALUE), ExprEvaluatingException.class)
         );
     }

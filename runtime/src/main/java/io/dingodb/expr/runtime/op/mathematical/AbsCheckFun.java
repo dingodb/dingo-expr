@@ -30,9 +30,10 @@ abstract class AbsCheckFun extends UnaryNumericOp {
 
     private static final long serialVersionUID = 6834907753646404442L;
 
-    static int abs(int num) {
+    static Object abs(int num) {
         if (num == Integer.MIN_VALUE) {
-            throw new ExprEvaluatingException(ExceptionUtils.exceedsIntRange());
+            return Math.abs(Long.parseLong(String.valueOf(num)));
+            //throw new ExprEvaluatingException(ExceptionUtils.exceedsIntRange());
         }
         return Math.abs(num);
     }
