@@ -239,7 +239,7 @@ public class DefaultFunFactory implements FunFactory {
 
         // String functions
         registerUnaryFun(CharLengthFunFactory.NAME, Exprs.CHAR_LENGTH);
-        registerBinaryFun(ConcatFun.NAME, Exprs.CONCAT);
+        registerVariadicFun(ConcatFun.NAME, Exprs.CONCAT);
         registerUnaryFun(LowerFunFactory.NAME, Exprs.LOWER);
         registerUnaryFun(UpperFunFactory.NAME, Exprs.UPPER);
         registerBinaryFun(LeftFunFactory.NAME, Exprs.LEFT);

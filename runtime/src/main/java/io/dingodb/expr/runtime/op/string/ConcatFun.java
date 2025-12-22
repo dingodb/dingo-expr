@@ -20,20 +20,31 @@ import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
 import io.dingodb.expr.runtime.op.BinaryOp;
+import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.VariadicOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class ConcatFun extends BinaryOp {
+public class ConcatFun extends VariadicOp {
     public static final String NAME = "CONCAT";
     public static final ConcatFun INSTANCE = new ConcatFun();
 
     private static final long serialVersionUID = 5454356467741754567L;
 
-    @Override
+    //@Override
     public Object evalValue(Object value0, Object value1, ExprConfig config) {
         if (value0 == null || value1 == null) {
             return null;
         }
         return String.valueOf(value0) + value1;
+    }
+
+    @Override
+    protected Object evalNonNullValue(@NonNull Object[] value, ExprConfig config) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object valueItem : value) {
+            stringBuilder.append(valueItem);
+        }
+        return stringBuilder.toString();
     }
 
     @Override
@@ -46,4 +57,8 @@ public class ConcatFun extends BinaryOp {
         return Types.STRING;
     }
 
+    @Override
+    public OpKey keyOf(@NonNull Type @NonNull ... types) {
+        return null;
+    }
 }
