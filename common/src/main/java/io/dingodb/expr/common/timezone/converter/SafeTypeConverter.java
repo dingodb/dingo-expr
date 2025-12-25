@@ -54,12 +54,18 @@ public class SafeTypeConverter {
             if (timestamp instanceof DingoDateTime.DingoLocalDateTime) {
                 DingoDateTime.DingoLocalDateTime localDt = (DingoDateTime.DingoLocalDateTime) timestamp;
                 LocalDate localDate = localDt.getValue().toLocalDate();
+                if (localDate.getYear() < 0) {
+                    return null;
+                }
                 return java.sql.Date.valueOf(localDate);
             } else if (timestamp instanceof DingoDateTime.DingoTimestampTZ) {
                 DingoDateTime.DingoTimestampTZ tzValue = (DingoDateTime.DingoTimestampTZ) timestamp;
                 LocalDate localDate = tzValue.getUtcValue()
                     .atZone(tzValue.getOriginalZone())
                     .toLocalDate();
+                if (localDate.getYear() < 0) {
+                    return null;
+                }
                 return java.sql.Date.valueOf(localDate);
             } else {
                 throw new IllegalArgumentException("Unsupported timestamp type for date conversion: "
@@ -118,12 +124,18 @@ public class SafeTypeConverter {
             if (timestamp instanceof DingoDateTime.DingoLocalDateTime) {
                 DingoDateTime.DingoLocalDateTime localDt = (DingoDateTime.DingoLocalDateTime) timestamp;
                 LocalDateTime localDateTime = localDt.getValue();
+                if (localDateTime.getYear() < 0) {
+                    return null;
+                }
                 return java.sql.Timestamp.valueOf(localDateTime);
             } else if (timestamp instanceof DingoDateTime.DingoTimestampTZ) {
                 DingoDateTime.DingoTimestampTZ tzValue = (DingoDateTime.DingoTimestampTZ) timestamp;
                 LocalDateTime localDateTime = tzValue.getUtcValue()
                     .atZone(tzValue.getOriginalZone())
                     .toLocalDateTime();
+                if (localDateTime.getYear() < 0) {
+                    return null;
+                }
                 return java.sql.Timestamp.valueOf(localDateTime);
             } else {
                 throw new IllegalArgumentException("Unsupported timestamp type for time conversion: "
@@ -150,6 +162,9 @@ public class SafeTypeConverter {
             if (date instanceof DingoDateTime.DingoLocalDate) {
                 DingoDateTime.DingoLocalDate localDate = (DingoDateTime.DingoLocalDate) date;
                 LocalDateTime localDateTime = localDate.getValue().atStartOfDay();
+                if (localDateTime.getYear() < 0) {
+                    return null;
+                }
                 return java.sql.Timestamp.valueOf(localDateTime);
             } else {
                 throw new IllegalArgumentException("Unsupported date type for timestamp conversion: "
@@ -223,7 +238,11 @@ public class SafeTypeConverter {
             if (targetType == DateTimeType.TIMESTAMP || targetType == DateTimeType.TIMESTAMP_TZ) {
                 return dateToTimestamp(source, contextZone);
             } else if (targetType == DateTimeType.DATE) {
-                return Date.valueOf((LocalDate) source.getValue());
+                LocalDate localDate = (LocalDate) source.getValue();
+                if (localDate.getYear() < 0) {
+                    return null;
+                }
+                return Date.valueOf(localDate);
             }
         } else if (sourceType == DateTimeType.TIME) {
             if (targetType == DateTimeType.TIMESTAMP || targetType == DateTimeType.TIMESTAMP_TZ) {
