@@ -225,7 +225,11 @@ public class AddOpFactory extends AddOp {
                 }
             } else if (value0 instanceof Long) {
                 if (value1 instanceof Long) {
-                    return (Long)value0 + ((Long) value1);
+                    try {
+                        return Math.addExact((Long) value0, (Long) value1);
+                    } catch (ArithmeticException e) {
+                        throw new RuntimeException("BIGINT is out of range.");
+                    }
                 } else if (value1 instanceof Integer) {
                     return (long)value0 + ((Integer) value1).longValue();
                 } else if (value1 instanceof Double) {
