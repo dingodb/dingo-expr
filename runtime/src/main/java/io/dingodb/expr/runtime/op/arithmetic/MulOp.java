@@ -32,7 +32,11 @@ abstract class MulOp extends BinaryNumericOp {
     }
 
     static long mul(long value0, long value1) {
-        return value0 * value1;
+        try {
+            return Math.multiplyExact(value0, value1);
+        } catch (ArithmeticException e) {
+            throw new RuntimeException("BIGINT value is out of range.");
+        }
     }
 
     static float mul(float value0, float value1) {

@@ -32,7 +32,11 @@ abstract class SubOp extends BinaryNumericOp {
     }
 
     static long sub(long value0, long value1) {
-        return value0 - value1;
+        try {
+            return Math.subtractExact(value0, value1);
+        } catch (ArithmeticException e) {
+            throw new RuntimeException("BIGINT value is out of range.");
+        }
     }
 
     static float sub(float value0, float value1) {
