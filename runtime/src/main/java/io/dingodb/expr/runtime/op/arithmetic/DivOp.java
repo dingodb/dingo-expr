@@ -48,7 +48,10 @@ abstract class DivOp extends BinaryNumericOp {
     }
 
     static @Nullable BigDecimal div(@NonNull BigDecimal value0, @NonNull BigDecimal value1) {
-        int leftScale = value0.scale() + DivOp.div_precision_increment;
+        int leftScale = value0.scale();
+        if (leftScale == 0) {
+            leftScale = leftScale + div_precision_increment;
+        }
 
         if (value1.compareTo(BigDecimal.ZERO) != 0) {
             return value0.divide(value1, leftScale, RoundingMode.HALF_UP);
