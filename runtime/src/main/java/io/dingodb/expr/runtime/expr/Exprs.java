@@ -50,6 +50,7 @@ import io.dingodb.expr.runtime.op.aggregation.SingleValueAgg;
 import io.dingodb.expr.runtime.op.aggregation.Sum0Agg;
 import io.dingodb.expr.runtime.op.aggregation.SumAgg;
 import io.dingodb.expr.runtime.op.arithmetic.AddOpFactory;
+import io.dingodb.expr.runtime.op.arithmetic.DivOp1Factory;
 import io.dingodb.expr.runtime.op.arithmetic.DivOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.MulOpFactory;
 import io.dingodb.expr.runtime.op.arithmetic.NegOpFactory;
@@ -197,6 +198,7 @@ public final class Exprs {
     public static final SubOpFactory SUB = SubOpFactory.INSTANCE;
     public static final MulOpFactory MUL = MulOpFactory.INSTANCE;
     public static final DivOpFactory DIV = DivOpFactory.INSTANCE;
+    public static final DivOp1Factory DIV1 = DivOp1Factory.INSTANCE;
 
     // Interval
     public static final io.dingodb.expr.runtime.op.interval.SubOpFactory INTERVAL_SUB =
