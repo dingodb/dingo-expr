@@ -40,32 +40,57 @@ public abstract class BinaryIntervalOp extends BinaryOp {
     }
 
     public static IntervalType buildInterval(BigDecimal value0, IntervalType value1) {
-        if (value1 instanceof IntervalYearType.IntervalYear) {
-            return new IntervalYearType.IntervalYear(value0.multiply(new BigDecimal(12)),
-                ((IntervalYearType.IntervalYear) value1).elementType);
-        } else if (value1 instanceof IntervalMonthType.IntervalMonth) {
-            return new IntervalMonthType.IntervalMonth(value0, ((IntervalMonthType.IntervalMonth) value1).elementType);
-        } else if (value1 instanceof IntervalDayType.IntervalDay) {
-            return new IntervalDayType.IntervalDay(value0.multiply(new BigDecimal(24 * 60 * 60 * 1000)),
-                ((IntervalDayType.IntervalDay) value1).elementType
-            );
-        } else if (value1 instanceof IntervalWeekType.IntervalWeek) {
-            return new IntervalWeekType.IntervalWeek(value0.multiply(new BigDecimal(60 * 60 * 1000)),
-                ((IntervalWeekType.IntervalWeek) value1).elementType
-            );
-        } else if (value1 instanceof IntervalHourType.IntervalHour) {
-            return new IntervalHourType.IntervalHour(value0.multiply(new BigDecimal(60 * 60 * 1000)),
-                ((IntervalHourType.IntervalHour) value1).elementType
-            );
-        } else if (value1 instanceof IntervalMinuteType.IntervalMinute) {
-            return new IntervalHourType.IntervalHour(value0.multiply(new BigDecimal(60 * 1000)),
-                ((IntervalMinuteType.IntervalMinute) value1).elementType
-            );
-        } else if (value1 instanceof IntervalSecondType.IntervalSecond) {
-            return new IntervalSecondType.IntervalSecond(value0.multiply(new BigDecimal(1000)),
-                ((IntervalSecondType.IntervalSecond) value1).elementType
-            );
+        checkLegalRange(value0);
+        try {
+            if (value1 instanceof IntervalYearType.IntervalYear) {
+                return new IntervalYearType.IntervalYear(new BigDecimal(Math.multiplyExact(value0.longValue(), 12)),
+                    ((IntervalYearType.IntervalYear) value1).elementType);
+            } else if (value1 instanceof IntervalMonthType.IntervalMonth) {
+                return new IntervalMonthType.IntervalMonth(
+                    value0, ((IntervalMonthType.IntervalMonth) value1).elementType);
+            } else if (value1 instanceof IntervalDayType.IntervalDay) {
+                return new IntervalDayType.IntervalDay(
+                    new BigDecimal(Math.multiplyExact(value0.longValue(), 24 * 60 * 60 * 1000L)),
+                    ((IntervalDayType.IntervalDay) value1).elementType
+                );
+            } else if (value1 instanceof IntervalWeekType.IntervalWeek) {
+                return new IntervalWeekType.IntervalWeek(
+                    new BigDecimal(Math.multiplyExact(value0.longValue(), 60 * 60 * 1000L)),
+                    ((IntervalWeekType.IntervalWeek) value1).elementType
+                );
+            } else if (value1 instanceof IntervalHourType.IntervalHour) {
+                return new IntervalHourType.IntervalHour(
+                    new BigDecimal(Math.multiplyExact(value0.longValue(), 60 * 60 * 1000L)),
+                    ((IntervalHourType.IntervalHour) value1).elementType
+                );
+            } else if (value1 instanceof IntervalMinuteType.IntervalMinute) {
+                return new IntervalHourType.IntervalHour(
+                    new BigDecimal(Math.multiplyExact(value0.longValue(), 60 * 1000)),
+                    ((IntervalMinuteType.IntervalMinute) value1).elementType
+                );
+            } else if (value1 instanceof IntervalSecondType.IntervalSecond) {
+                return new IntervalSecondType.IntervalSecond(
+
+
+                    new BigDecimal(Math.multiplyExact(value0.longValue(), 1000)),
+                    ((IntervalSecondType.IntervalSecond) value1).elementType
+                );
+            }
+        } catch (ArithmeticException e) {
+            return null;
         }
         return null;
+    }
+
+    private static void checkLegalRange(BigDecimal value0) {
+        if (value0.signum() == -1) {
+            if (value0.compareTo(new BigDecimal(Long.MIN_VALUE / 1000)) < 0) {
+                throw new RuntimeException("Interval parameter is smaller than the minimum range: -9223372036854775");
+            }
+        } else {
+            if (value0.compareTo(new BigDecimal(Long.MAX_VALUE / 1000)) > 0) {
+                throw new RuntimeException("Interval parameter is larger than the maximum range: 9223372036854775");
+            }
+        }
     }
 }
