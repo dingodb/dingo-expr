@@ -31,6 +31,7 @@ import io.dingodb.expr.runtime.op.OpType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -76,142 +77,142 @@ public class MulOp extends BinaryIntervalOp {
     }
 
     static IntervalYearType.IntervalYear mul(Integer value0, IntervalYearType.IntervalYear value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalYearType.IntervalYear) buildInterval(decimal, value1);
     }
 
     static IntervalMonthType.IntervalMonth mul(Integer value0, IntervalMonthType.IntervalMonth value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalMonthType.IntervalMonth) buildInterval(decimal, value1);
     }
 
     static IntervalDayType.IntervalDay mul(Integer value0, IntervalDayType.IntervalDay value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalDayType.IntervalDay) buildInterval(decimal, value1);
     }
 
     static IntervalWeekType.IntervalWeek mul(Integer value0, IntervalWeekType.IntervalWeek value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalWeekType.IntervalWeek) buildInterval(decimal, value1);
     }
 
     static IntervalHourType.IntervalHour mul(Integer value0, IntervalHourType.IntervalHour value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalHourType.IntervalHour) buildInterval(decimal, value1);
     }
 
     static IntervalMinuteType.IntervalMinute mul(Integer value0, IntervalMinuteType.IntervalMinute value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalMinuteType.IntervalMinute) buildInterval(decimal, value1);
     }
 
     static IntervalSecondType.IntervalSecond mul(Integer value0, IntervalSecondType.IntervalSecond value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalSecondType.IntervalSecond) buildInterval(decimal, value1);
     }
 
     static IntervalYearType.IntervalYear mul(Long value0, IntervalYearType.IntervalYear value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalYearType.IntervalYear) buildInterval(decimal, value1);
     }
 
     static IntervalMonthType.IntervalMonth mul(Long value0, IntervalMonthType.IntervalMonth value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalMonthType.IntervalMonth) buildInterval(decimal, value1);
     }
 
     static IntervalDayType.IntervalDay mul(Long value0, IntervalDayType.IntervalDay value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalDayType.IntervalDay) buildInterval(decimal, value1);
     }
 
     static IntervalWeekType.IntervalWeek mul(Long value0, IntervalWeekType.IntervalWeek value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalWeekType.IntervalWeek) buildInterval(decimal, value1);
     }
 
     static IntervalHourType.IntervalHour mul(Long value0, IntervalHourType.IntervalHour value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalHourType.IntervalHour) buildInterval(decimal, value1);
     }
 
     static IntervalMinuteType.IntervalMinute mul(Long value0, IntervalMinuteType.IntervalMinute value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalMinuteType.IntervalMinute) buildInterval(decimal, value1);
     }
 
     static IntervalSecondType.IntervalSecond mul(Long value0, IntervalSecondType.IntervalSecond value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(value0);
         return (IntervalSecondType.IntervalSecond) buildInterval(decimal, value1);
     }
 
     static IntervalYearType.IntervalYear mul(Double value0, IntervalYearType.IntervalYear value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalYearType.IntervalYear) buildInterval(decimal, value1);
     }
 
     static IntervalMonthType.IntervalMonth mul(Double value0, IntervalMonthType.IntervalMonth value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalMonthType.IntervalMonth) buildInterval(decimal, value1);
     }
 
     static IntervalDayType.IntervalDay mul(Double value0, IntervalDayType.IntervalDay value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalDayType.IntervalDay) buildInterval(decimal, value1);
     }
 
     static IntervalWeekType.IntervalWeek mul(Double value0, IntervalWeekType.IntervalWeek value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalWeekType.IntervalWeek) buildInterval(decimal, value1);
     }
 
     static IntervalHourType.IntervalHour mul(Double value0, IntervalHourType.IntervalHour value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalHourType.IntervalHour) buildInterval(decimal, value1);
     }
 
     static IntervalMinuteType.IntervalMinute mul(Double value0, IntervalMinuteType.IntervalMinute value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalMinuteType.IntervalMinute) buildInterval(decimal, value1);
     }
 
     static IntervalSecondType.IntervalSecond mul(Double value0, IntervalSecondType.IntervalSecond value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalSecondType.IntervalSecond) buildInterval(decimal, value1);
     }
 
     static IntervalYearType.IntervalYear mul(Float value0, IntervalYearType.IntervalYear value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalYearType.IntervalYear) buildInterval(decimal, value1);
     }
 
     static IntervalMonthType.IntervalMonth mul(Float value0, IntervalMonthType.IntervalMonth value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalMonthType.IntervalMonth) buildInterval(decimal, value1);
     }
 
     static IntervalDayType.IntervalDay mul(Float value0, IntervalDayType.IntervalDay value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalDayType.IntervalDay) buildInterval(decimal, value1);
     }
 
     static IntervalWeekType.IntervalWeek mul(Float value0, IntervalWeekType.IntervalWeek value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalWeekType.IntervalWeek) buildInterval(decimal, value1);
     }
 
     static IntervalHourType.IntervalHour mul(Float value0, IntervalHourType.IntervalHour value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalHourType.IntervalHour) buildInterval(decimal, value1);
     }
 
     static IntervalMinuteType.IntervalMinute mul(Float value0, IntervalMinuteType.IntervalMinute value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalMinuteType.IntervalMinute) buildInterval(decimal, value1);
     }
 
     static IntervalSecondType.IntervalSecond mul(Float value0, IntervalSecondType.IntervalSecond value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = new BigDecimal(Math.round(value0));
         return (IntervalSecondType.IntervalSecond) buildInterval(decimal, value1);
     }
 
@@ -251,37 +252,37 @@ public class MulOp extends BinaryIntervalOp {
     }
 
     static IntervalYearType.IntervalYear mul(BigDecimal value0, IntervalYearType.IntervalYear value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalYearType.IntervalYear) buildInterval(decimal, value1);
     }
 
     static IntervalMonthType.IntervalMonth mul(BigDecimal value0, IntervalMonthType.IntervalMonth value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalMonthType.IntervalMonth) buildInterval(decimal, value1);
     }
 
     static IntervalDayType.IntervalDay mul(BigDecimal value0, IntervalDayType.IntervalDay value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalDayType.IntervalDay) buildInterval(decimal, value1);
     }
 
     static IntervalWeekType.IntervalWeek mul(BigDecimal value0, IntervalWeekType.IntervalWeek value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalWeekType.IntervalWeek) buildInterval(decimal, value1);
     }
 
     static IntervalHourType.IntervalHour mul(BigDecimal value0, IntervalHourType.IntervalHour value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalHourType.IntervalHour) buildInterval(decimal, value1);
     }
 
     static IntervalMinuteType.IntervalMinute mul(BigDecimal value0, IntervalMinuteType.IntervalMinute value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalMinuteType.IntervalMinute) buildInterval(decimal, value1);
     }
 
     static IntervalSecondType.IntervalSecond mul(BigDecimal value0, IntervalSecondType.IntervalSecond value1) {
-        BigDecimal decimal = new BigDecimal(Math.round(CastWithString.doubleCastWithStringCompat(value0.toString())));
+        BigDecimal decimal = value0.setScale(0, RoundingMode.HALF_UP);
         return (IntervalSecondType.IntervalSecond) buildInterval(decimal, value1);
     }
 
