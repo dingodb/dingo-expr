@@ -37,16 +37,16 @@ abstract class ModFun extends BinaryNumericOp {
         return value1 != 0 ? value0 % value1 : null;
     }
 
-    static @Nullable float mod(float value0, float value1) {
+    static @Nullable Float mod(float value0, float value1) {
         if (value1 == 0) {
-            return value0;
+            return null;
         }
         return (float)(value0 % value1);
     }
 
-    static @Nullable double mod(double value0, double value1) {
+    static @Nullable Double mod(double value0, double value1) {
         if (value1 == 0) {
-            return value0;
+            return null;
         }
         return (double)(value0 % value1);
     }
