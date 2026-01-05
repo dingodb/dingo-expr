@@ -64,14 +64,12 @@ public abstract class BinaryIntervalOp extends BinaryOp {
                     ((IntervalHourType.IntervalHour) value1).elementType
                 );
             } else if (value1 instanceof IntervalMinuteType.IntervalMinute) {
-                return new IntervalHourType.IntervalHour(
+                return new IntervalMinuteType.IntervalMinute(
                     new BigDecimal(Math.multiplyExact(value0.longValue(), 60 * 1000)),
                     ((IntervalMinuteType.IntervalMinute) value1).elementType
                 );
             } else if (value1 instanceof IntervalSecondType.IntervalSecond) {
                 return new IntervalSecondType.IntervalSecond(
-
-
                     new BigDecimal(Math.multiplyExact(value0.longValue(), 1000)),
                     ((IntervalSecondType.IntervalSecond) value1).elementType
                 );
