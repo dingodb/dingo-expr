@@ -57,7 +57,7 @@ abstract class Round2Fun extends BinaryOp {
     }
 
     static @NonNull BigDecimal round(@NonNull BigDecimal value, int scale) {
-        if (-10 <= scale && scale <= 10) {
+        if (-30 <= scale && scale <= 30) {
             BigDecimal result = value.setScale(scale, RoundingMode.HALF_UP);
             if (scale < 0) {
                 result = result.setScale(0, RoundingMode.HALF_UP);
@@ -65,7 +65,7 @@ abstract class Round2Fun extends BinaryOp {
             return result;
         }
         throw new ExprEvaluatingException(
-            new ArithmeticException("Scale of " + NAME + " function must be in range [-10, 10].")
+            new ArithmeticException("Scale of " + NAME + " function must be in range [-30, 30].")
         );
     }
 
