@@ -19,30 +19,30 @@ package io.dingodb.expr.runtime.op.string;
 import io.dingodb.expr.common.type.Type;
 import io.dingodb.expr.common.type.Types;
 import io.dingodb.expr.runtime.ExprConfig;
-import io.dingodb.expr.runtime.op.BinaryOp;
 import io.dingodb.expr.runtime.op.OpKey;
+import io.dingodb.expr.runtime.op.OpKeys;
 import io.dingodb.expr.runtime.op.VariadicOp;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.io.Serial;
+
 public class ConcatFun extends VariadicOp {
-    public static final String NAME = "CONCAT";
     public static final ConcatFun INSTANCE = new ConcatFun();
 
-    private static final long serialVersionUID = 5454356467741754567L;
+    public static final String NAME = "CONCAT";
 
-    //@Override
-    public Object evalValue(Object value0, Object value1, ExprConfig config) {
-        if (value0 == null || value1 == null) {
-            return null;
-        }
-        return String.valueOf(value0) + value1;
-    }
+    @Serial
+    private static final long serialVersionUID = -6456730710140240892L;
 
     @Override
-    protected Object evalNonNullValue(@NonNull Object[] value, ExprConfig config) {
+    public Object evalValue(Object @NonNull [] values, ExprConfig config) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Object valueItem : value) {
-            stringBuilder.append(valueItem);
+        for (Object value : values) {
+            if (value == null) {
+                return null;
+            } else {
+                stringBuilder.append(value);
+            }
         }
         return stringBuilder.toString();
     }
@@ -53,12 +53,12 @@ public class ConcatFun extends VariadicOp {
     }
 
     @Override
-    public Type getType() {
-        return Types.STRING;
+    public OpKey keyOf(@NonNull Type @NonNull ... types) {
+        return OpKeys.ALL_STRING.keyOf(types);
     }
 
     @Override
-    public OpKey keyOf(@NonNull Type @NonNull ... types) {
-        return null;
+    public Type getType() {
+        return Types.STRING;
     }
 }
