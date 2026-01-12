@@ -320,9 +320,28 @@ public final class DateTimeUtils {
             Integer isoYear = zonedDateTime.get(IsoFields.WEEK_BASED_YEAR);
             format = format.replace("x", isoYear.toString());
         }
+        if (format.contains("X")) {
+            Integer isoYear = zonedDateTime.get(IsoFields.WEEK_BASED_YEAR);
+            format = format.replace("X", isoYear.toString());
+        }
         if (format.contains("v")) {
             Integer isoWeek = zonedDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
-            format = format.replace("v", isoWeek.toString());
+            if (isoWeek >= 10) {
+                format = format.replace("v", isoWeek.toString());
+            } else {
+                String isoWeekStr = "0" + isoWeek;
+                format = format.replace("v", isoWeekStr);
+            }
+        }
+        if (format.contains("V")) {
+            Integer isoWeek = zonedDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            if (isoWeek >= 10) {
+                format = format.replace("V", isoWeek.toString());
+            } else {
+                String isoWeekStr = "0" + isoWeek;
+                format = format.replace("V", isoWeekStr);
+
+            }
         }
         if (format.contains("'y'")) {
             format = format.replace("'y'", "yy");
@@ -367,9 +386,27 @@ public final class DateTimeUtils {
             Integer isoYear = localDateTime.get(IsoFields.WEEK_BASED_YEAR);
             format = format.replace("x", isoYear.toString());
         }
+        if (format.contains("X")) {
+            Integer isoYear = localDateTime.get(IsoFields.WEEK_BASED_YEAR);
+            format = format.replace("X", isoYear.toString());
+        }
         if (format.contains("v")) {
             Integer isoWeek = localDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
-            format = format.replace("v", isoWeek.toString());
+            if (isoWeek >= 10) {
+                format = format.replace("v", isoWeek.toString());
+            } else {
+                String isoWeekStr = "0" + isoWeek;
+                format = format.replace("v", isoWeekStr);
+            }
+        }
+        if (format.contains("V")) {
+            Integer isoWeek = localDateTime.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            if (isoWeek >= 10) {
+                format = format.replace("V", isoWeek.toString());
+            } else {
+                String isoWeekStr = "0" + isoWeek;
+                format = format.replace("V", isoWeekStr);
+            }
         }
         if (format.contains("'y'")) {
             format = format.replace("'y'", "yy");
