@@ -34,7 +34,7 @@ public interface RelConfig {
     }
 
     default ExprCompiler getExprCompiler() {
-        ExprCompiler ret = ExprCompiler.ADVANCED;
+        ExprCompiler ret = ExprCompiler.getAdvancedExprCompiler();
         ret.setExprContext(ExprContext.INVALID);
         ret.setProcessor(new DingoTimeZoneProcessor(ZoneId.systemDefault()));
         return ret;
