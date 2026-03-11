@@ -50,6 +50,11 @@ public class ExprCompiler extends ExprVisitorBase<Expr, CompileContext> {
     public static final ExprCompiler SIMPLE = new ExprCompiler(ExprConfig.SIMPLE);
     public static final ExprCompiler ADVANCED = new ExprCompiler(ExprConfig.ADVANCED);
 
+    public static ExprCompiler getAdvancedExprCompiler() {
+        return new ExprCompiler(new ExprConfigImpl());
+        //return ADVANCED;
+    }
+
     @Getter
     private final ExprConfig config;
 
