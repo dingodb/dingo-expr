@@ -1,8 +1,8 @@
-name: Build
+name: Build and Publish
 
 on:
   push:
-    branches: [ main, quickBI-v3.0.0  ]
+    branches: [ main, quickBI-v4.0.0 ]
     paths:
       - "**/*.java"
       - "**/*.h"
@@ -13,7 +13,7 @@ on:
       - "settings.gradle"
       - ".github/workflows/build.yml"
   pull_request:
-    branches: [ main, quickBI-v3.0.0  ]
+    branches: [ main, quickBI-v4.0.0  ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -27,26 +27,43 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: 'quickBI-v4.0.0'
           submodules: recursive
+      
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Configure libexpr
         working-directory: ${{github.workspace}}/libexpr
         run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=OFF
+
       - name: Build libexpr
         working-directory: ${{github.workspace}}/libexpr
         run: cmake --build build --config ${{env.BUILD_TYPE}}
+
       - name: Config jni
         working-directory: ${{github.workspace}}/jni/src/main/cpp
         run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
       - name: Build jni
         working-directory: ${{github.workspace}}/jni/src/main/cpp
         run: cmake --build build --config ${{env.BUILD_TYPE}}
-      - name: Check and test with Gradle
-        run: ./gradlew check
+
+    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+    # the publishing section of your build.gradle
+      - name: Publish Packages to Maven Central
+        run: ./gradlew publishToMavenCentral --stacktrace
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
