@@ -22,7 +22,6 @@ import io.dingodb.expr.common.timezone.core.DateTimeProcessingException;
 import io.dingodb.expr.common.timezone.core.DateTimeType;
 import io.dingodb.expr.common.timezone.core.DingoDateTime;
 import io.dingodb.expr.common.timezone.core.SimpleTimeZoneConfig;
-import io.dingodb.expr.common.timezone.operations.ArithmeticOperations;
 import io.dingodb.expr.common.timezone.operations.ExtractionOperations;
 import io.dingodb.expr.common.timezone.operations.FormattingOperations;
 import io.dingodb.expr.common.timezone.operations.OperationResult;
@@ -30,7 +29,10 @@ import lombok.Getter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
@@ -59,6 +61,18 @@ public class DingoTimeZoneProcessor {
                                   DateTimeType outputType) {
         if (input == null || inputType == null) {
             return null;
+        }
+        // Fast path: same type, non-TZ-sensitive SQL types — no conversion needed
+        if (inputType == outputType) {
+            if (input instanceof java.sql.Date && inputType == DateTimeType.DATE) {
+                return input;
+            }
+            if (input instanceof java.sql.Time && inputType == DateTimeType.TIME) {
+                return input;
+            }
+            if (input instanceof java.sql.Timestamp && inputType == DateTimeType.TIMESTAMP) {
+                return input;
+            }
         }
         try {
             DingoDateTime internal = tierProcessor.convertInput(input, inputType);
@@ -134,29 +148,50 @@ public class DingoTimeZoneProcessor {
     }
 
     public DingoDateTime dateAdd(DingoDateTime dateTime, long amount, ChronoUnit unit) {
-        ArithmeticOperations.AddOperation operation = new ArithmeticOperations.AddOperation(unit, amount);
-
-        OperationResult result = (OperationResult) operation.execute(new DingoDateTime[]{dateTime}, getOutputZone());
-
-        if (result.isSuccess() && result.getValue() instanceof DingoDateTime) {
-            return (DingoDateTime) result.getValue();
+        if (dateTime.isTimeZoneSensitive()) {
+            DingoDateTime.DingoTimestampTZ tzValue = (DingoDateTime.DingoTimestampTZ) dateTime;
+            ZonedDateTime zdt = tzValue.getUtcValue().atZone(tzValue.getOriginalZone());
+            return new DingoDateTime.DingoTimestampTZ(zdt.plus(amount, unit).toInstant(), tzValue.getOriginalZone());
         }
-
-        throw new DateTimeProcessingException("Date add operation failed: "
-              + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+        Object value = dateTime.getValue();
+        if (value instanceof LocalDate) {
+            return new DingoDateTime.DingoLocalDate(((LocalDate) value).plus(amount, unit));
+        } else if (value instanceof LocalDateTime) {
+            return new DingoDateTime.DingoLocalDateTime(((LocalDateTime) value).plus(amount, unit));
+        } else if (value instanceof LocalTime) {
+            return new DingoDateTime.DingoLocalTime(((LocalTime) value).plus(amount, unit));
+        }
+        throw new DateTimeProcessingException("Unsupported type for add: " + value.getClass());
     }
 
     public DingoDateTime dateSubtract(DingoDateTime dateTime, long amount, ChronoUnit unit) {
-        ArithmeticOperations.SubtractOperation operation = new ArithmeticOperations.SubtractOperation(unit, amount);
-
-        OperationResult result = (OperationResult) operation.execute(new DingoDateTime[]{dateTime}, getOutputZone());
-
-        if (result.isSuccess() && result.getValue() instanceof DingoDateTime) {
-            return (DingoDateTime) result.getValue();
+        if (dateTime.isTimeZoneSensitive()) {
+            DingoDateTime.DingoTimestampTZ tzValue = (DingoDateTime.DingoTimestampTZ) dateTime;
+            ZonedDateTime zdt = tzValue.getUtcValue().atZone(tzValue.getOriginalZone());
+            return new DingoDateTime.DingoTimestampTZ(zdt.minus(amount, unit).toInstant(), tzValue.getOriginalZone());
         }
+        Object value = dateTime.getValue();
+        if (value instanceof LocalDate) {
+            return new DingoDateTime.DingoLocalDate(((LocalDate) value).minus(amount, unit));
+        } else if (value instanceof LocalDateTime) {
+            return new DingoDateTime.DingoLocalDateTime(((LocalDateTime) value).minus(amount, unit));
+        } else if (value instanceof LocalTime) {
+            return new DingoDateTime.DingoLocalTime(((LocalTime) value).minus(amount, unit));
+        }
+        throw new DateTimeProcessingException("Unsupported type for subtract: " + value.getClass());
+    }
 
-        throw new DateTimeProcessingException("Date subtract operation failed: "
-              + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+    // -------------------------------------------------------------------------
+    // Type-specialized extraction fast paths — bypass the full pipeline
+    // for non-timezone-sensitive java.sql types (Date, Timestamp).
+    // -------------------------------------------------------------------------
+
+    public Integer extractYear(java.sql.Date value) {
+        return value == null ? null : value.toLocalDate().getYear();
+    }
+
+    public Integer extractYear(java.sql.Timestamp value) {
+        return value == null ? null : value.toLocalDateTime().getYear();
     }
 
     public Integer extractYear(Object input) {
@@ -176,6 +211,14 @@ public class DingoTimeZoneProcessor {
         }
         throw new DateTimeProcessingException("Extract year operation failed: "
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+    }
+
+    public Integer extractMonth(java.sql.Date value) {
+        return value == null ? null : value.toLocalDate().getMonthValue();
+    }
+
+    public Integer extractMonth(java.sql.Timestamp value) {
+        return value == null ? null : value.toLocalDateTime().getMonthValue();
     }
 
     public Integer extractMonth(Object input) {
@@ -198,6 +241,14 @@ public class DingoTimeZoneProcessor {
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
     }
 
+    public Integer extractDay(java.sql.Date value) {
+        return value == null ? null : value.toLocalDate().getDayOfMonth();
+    }
+
+    public Integer extractDay(java.sql.Timestamp value) {
+        return value == null ? null : value.toLocalDateTime().getDayOfMonth();
+    }
+
     public Integer extractDay(Object input) {
         ExtractionOperations.ExtractFieldOperation operation = ExtractionOperations.dayOfMonth();
         DateTimeType inputType = inferInputType(input);
@@ -218,6 +269,14 @@ public class DingoTimeZoneProcessor {
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
     }
 
+    public Integer extractQuarter(java.sql.Date value) {
+        return value == null ? null : (value.toLocalDate().getMonthValue() - 1) / 3 + 1;
+    }
+
+    public Integer extractQuarter(java.sql.Timestamp value) {
+        return value == null ? null : (value.toLocalDateTime().getMonthValue() - 1) / 3 + 1;
+    }
+
     public Integer extractQuarter(Object input) {
         ExtractionOperations.ExtractQuarterOperation operation = ExtractionOperations.quarter();
         DateTimeType inputType = inferInputType(input);
@@ -236,6 +295,20 @@ public class DingoTimeZoneProcessor {
         }
         throw new DateTimeProcessingException("Extract quarter operation failed: "
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+    }
+
+    public Integer extractWeek(java.sql.Date value) {
+        if (value == null) {
+            return null;
+        }
+        return value.toLocalDate().get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+    }
+
+    public Integer extractWeek(java.sql.Timestamp value) {
+        if (value == null) {
+            return null;
+        }
+        return value.toLocalDateTime().get(java.time.temporal.IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     }
 
     public Integer extractWeek(Object input) {
@@ -259,6 +332,18 @@ public class DingoTimeZoneProcessor {
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
     }
 
+    public Integer extractHour(java.sql.Date value) {
+        return 0;
+    }
+
+    public Integer extractHour(java.sql.Timestamp value) {
+        return value == null ? 0 : value.toLocalDateTime().getHour();
+    }
+
+    public Integer extractHour(java.sql.Time value) {
+        return value == null ? 0 : value.toLocalTime().getHour();
+    }
+
     public Integer extractHour(Object input) {
         ExtractionOperations.ExtractFieldOperation operation = ExtractionOperations.hour();
         DateTimeType inputType = inferInputType(input);
@@ -274,6 +359,18 @@ public class DingoTimeZoneProcessor {
         }
         throw new DateTimeProcessingException("Extract hour operation failed: "
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+    }
+
+    public Integer extractMinute(java.sql.Date value) {
+        return 0;
+    }
+
+    public Integer extractMinute(java.sql.Timestamp value) {
+        return value == null ? 0 : value.toLocalDateTime().getMinute();
+    }
+
+    public Integer extractMinute(java.sql.Time value) {
+        return value == null ? 0 : value.toLocalTime().getMinute();
     }
 
     public Integer extractMinute(Object input) {
@@ -293,6 +390,18 @@ public class DingoTimeZoneProcessor {
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
     }
 
+    public Integer extractSecond(java.sql.Date value) {
+        return 0;
+    }
+
+    public Integer extractSecond(java.sql.Timestamp value) {
+        return value == null ? 0 : value.toLocalDateTime().getSecond();
+    }
+
+    public Integer extractSecond(java.sql.Time value) {
+        return value == null ? 0 : value.toLocalTime().getSecond();
+    }
+
     public Integer extractSecond(Object input) {
         ExtractionOperations.ExtractFieldOperation operation = ExtractionOperations.second();
         DateTimeType inputType = inferInputType(input);
@@ -308,6 +417,17 @@ public class DingoTimeZoneProcessor {
         }
         throw new DateTimeProcessingException("Extract second operation failed: "
               + (result.getErrorMessage() != null ? result.getErrorMessage() : "Unknown error"));
+    }
+
+    public Integer extractMillisecond(java.sql.Date value) {
+        return 0;
+    }
+    
+    public Integer extractMillisecond(java.sql.Timestamp value) {
+        if (value == null) {
+            return 0;
+        }
+        return value.toLocalDateTime().getNano() / 1_000_000;
     }
 
     public Integer extractMillisecond(Object input) {
