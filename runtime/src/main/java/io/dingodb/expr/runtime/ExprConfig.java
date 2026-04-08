@@ -88,7 +88,7 @@ public interface ExprConfig {
     }
 
     default DingoTimeZoneProcessor getProcessor() {
-        return new DingoTimeZoneProcessor(ZoneId.systemDefault());
+        return DefaultProcessorHolder.INSTANCE;
     }
 
     default DateTimeFormatter[] getParseDateFormatters() {
@@ -121,5 +121,12 @@ public interface ExprConfig {
 
     default DateTimeFormatter getOutputTimestampFormatter() {
         return DateTimeUtils.DEFAULT_OUTPUT_TIMESTAMP_FORMATTER;
+    }
+
+    // Lazy initialization holder for the default DingoTimeZoneProcessor singleton.
+    // Avoids creating a new processor instance on every getProcessor() call.
+    class DefaultProcessorHolder {
+        static final DingoTimeZoneProcessor INSTANCE =
+            new DingoTimeZoneProcessor(ZoneId.systemDefault());
     }
 }
