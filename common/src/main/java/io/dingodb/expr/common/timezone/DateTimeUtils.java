@@ -238,6 +238,43 @@ public final class DateTimeUtils {
         if (trimmed.isEmpty()) {
             return null;
         }
+
+        // Structural pre-classification to reduce unnecessary formatter attempts.
+        // Each failed DateTimeFormatter.parse() throws DateTimeParseException with
+        // expensive stack trace capture (~1-5us per exception).
+        boolean hasColon = trimmed.indexOf(':') > 0;
+        boolean hasDateSep = trimmed.length() >= 8
+            && (trimmed.indexOf('-') > 0 || trimmed.indexOf('/') > 0
+                || Character.isDigit(trimmed.charAt(0)));
+        boolean hasZoneInfo = false;
+        if (trimmed.length() > 10) {
+            hasZoneInfo = trimmed.indexOf('+', 10) >= 0
+                || trimmed.indexOf('Z', 10) >= 0
+                || trimmed.contains("[");
+        }
+
+        if (hasZoneInfo) {
+            if (matchesTimestampWithZone(trimmed, timestampTzFormatters)) {
+                return DateTimeType.TIMESTAMP_TZ;
+            }
+        }
+        if (hasDateSep && hasColon) {
+            if (matchesLocalDateTime(trimmed, timestampFormatters)) {
+                return DateTimeType.TIMESTAMP;
+            }
+        }
+        if (hasDateSep && !hasColon) {
+            if (matchesLocalDate(trimmed, dateFormatters)) {
+                return DateTimeType.DATE;
+            }
+        }
+        if (hasColon && !hasDateSep) {
+            if (matchesLocalTime(trimmed, timeFormatters)) {
+                return DateTimeType.TIME;
+            }
+        }
+
+        // Fallback: full scan for ambiguous inputs
         if (matchesTimestampWithZone(trimmed, timestampTzFormatters)) {
             return DateTimeType.TIMESTAMP_TZ;
         }
