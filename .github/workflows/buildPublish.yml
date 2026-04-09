@@ -60,6 +60,7 @@ jobs:
     # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
     # the publishing section of your build.gradle
       - name: Publish Packages to Maven Central
+        if: github.event_name == 'push'
         run: ./gradlew publishToMavenCentral --stacktrace
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_USERNAME }}
