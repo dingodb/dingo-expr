@@ -30,6 +30,7 @@ import java.time.ZonedDateTime;
 public class DateTimeConverter {
 
     private final ZoneId defaultZone;
+    private final StringDateTimeParser stringParser = new StringDateTimeParser();
 
     public DateTimeConverter(ZoneId defaultZone) {
         this.defaultZone = defaultZone;
@@ -53,8 +54,7 @@ public class DateTimeConverter {
         } else if (input instanceof java.util.Date) {
             return convertUtilDate((java.util.Date) input, targetType);
         } else if (input instanceof String) {
-            StringDateTimeParser parser = new StringDateTimeParser();
-            return parser.parseString((String) input, targetType, defaultZone);
+            return stringParser.parseString((String) input, targetType, defaultZone);
         } else if (input instanceof DingoDateTime) {
             return convertDingoDateTime((DingoDateTime) input, targetType);
         } else {

@@ -52,7 +52,7 @@ public class CurrentTimeFun extends NullaryOp {
 
     @Override
     public boolean isConst(@NonNull NullaryOpExpr expr) {
-        return false;
+        return true;
     }
 
     @Override
