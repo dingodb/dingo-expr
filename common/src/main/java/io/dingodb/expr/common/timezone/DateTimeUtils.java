@@ -115,6 +115,7 @@ public final class DateTimeUtils {
     public static final DateTimeFormatter DATE_TIME_T_SECONDS = strictFormatter("yyyy-MM-dd'T'HH:mm:ss");
     public static final DateTimeFormatter DATE_TIME_T_MILLIS = strictFormatter("yyyy-MM-dd'T'HH:mm:ss.SSS");
     public static final DateTimeFormatter DATE_TIME_T_MICRO = strictFormatter("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+    public static final DateTimeFormatter DATE_TIME_MICRO = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
     public static final DateTimeFormatter[] DEFAULT_PARSE_TIMESTAMP_FORMATTERS = new DateTimeFormatter[]{
         DateTimeFormatter.ISO_LOCAL_DATE_TIME,
         DateTimeUtils.DATE_TIME_SEP_BY_HYPHEN_COLON,
@@ -122,6 +123,7 @@ public final class DateTimeUtils {
         DateTimeUtils.DATE_TIME_T_SECONDS,
         DateTimeUtils.DATE_TIME_T_MILLIS,
         DateTimeUtils.DATE_TIME_T_MICRO,
+        DATE_TIME_MICRO,
         DateTimeUtils.DATE_TIME_HYPHEN_MINUTE,
         DateTimeUtils.DATE_TIME_HYPHEN_MILLIS,
         DateTimeUtils.DATE_TIME_HYPHEN_MICRO,
