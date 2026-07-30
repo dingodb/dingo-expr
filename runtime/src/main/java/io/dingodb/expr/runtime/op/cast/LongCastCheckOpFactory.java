@@ -189,6 +189,9 @@ public final class LongCastCheckOpFactory extends LongCastCheckOp {
                 if (config.getExprContext() != ExprContext.CALC_VALUE) {
                     return longCastWithStringCompat((String)value);
                 }
+                if (((String) value).length() > 15) {
+                    return longCastWithStringCompat((String)value);
+                }
                 return longCast(Double.parseDouble((String) value));
             } else if (value instanceof Boolean) {
                 return longCast((Boolean) value);
